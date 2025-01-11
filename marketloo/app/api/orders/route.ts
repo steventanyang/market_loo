@@ -20,6 +20,14 @@ interface User {
   email: string;
 }
 
+interface Position {
+  id: string;
+  user_id: string;
+  market_id: string;
+  outcome_id: string;
+  amount: number;
+}
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -173,6 +181,30 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { market_id, outcome_id, amount, type } = body;
+
+    // If selling, check if user has enough shares
+    if (type === "selling") {
+      const { data: position, error: positionError } = await supabase
+        .from("positions")
+        .select("amount")
+        .eq("user_id", user.id)
+        .eq("market_id", market_id)
+        .eq("outcome_id", outcome_id)
+        .single();
+
+      if (positionError && positionError.code !== "PGRST116") {
+        // PGRST116 is "no rows returned"
+        throw positionError;
+      }
+
+      const currentPosition = position?.amount || 0;
+      if (currentPosition < amount) {
+        return NextResponse.json(
+          { error: "Insufficient shares to sell" },
+          { status: 400 }
+        );
+      }
+    }
 
     // Get current price from outcomes table
     const { data: outcome, error: outcomeError } = await supabase
@@ -369,6 +401,162 @@ export async function POST(request: Request) {
       .eq("id", newOrder.id);
 
     if (updateNewOrderError) throw updateNewOrderError;
+
+    // After processing trades, update positions
+    for (const trade of matchedTrades) {
+      if (type === "buying") {
+        // Update buyer position (current user)
+        const { data: currentPosition } = await supabase
+          .from("positions")
+          .select("amount")
+          .eq("user_id", user.id)
+          .eq("market_id", market_id)
+          .eq("outcome_id", outcome_id)
+          .single();
+
+        if (currentPosition) {
+          // Update existing position
+          const { error: updateError } = await supabase
+            .from("positions")
+            .update({
+              amount: currentPosition.amount + trade.amount,
+            })
+            .eq("user_id", user.id)
+            .eq("market_id", market_id)
+            .eq("outcome_id", outcome_id);
+
+          if (updateError) throw updateError;
+        } else {
+          // Create new position
+          const { error: insertError } = await supabase
+            .from("positions")
+            .insert({
+              user_id: user.id,
+              market_id,
+              outcome_id,
+              amount: trade.amount,
+            });
+
+          if (insertError) throw insertError;
+        }
+
+        // Update seller position if not market maker
+        if (!trade.market_maker) {
+          const sellerId = matchingOrders.find(
+            (o) => o.price === trade.price
+          )?.user_id;
+
+          if (sellerId) {
+            const { data: sellerPosition } = await supabase
+              .from("positions")
+              .select("amount")
+              .eq("user_id", sellerId)
+              .eq("market_id", market_id)
+              .eq("outcome_id", outcome_id)
+              .single();
+
+            if (sellerPosition) {
+              const { error: updateError } = await supabase
+                .from("positions")
+                .update({
+                  amount: sellerPosition.amount - trade.amount,
+                })
+                .eq("user_id", sellerId)
+                .eq("market_id", market_id)
+                .eq("outcome_id", outcome_id);
+
+              if (updateError) throw updateError;
+            } else {
+              const { error: insertError } = await supabase
+                .from("positions")
+                .insert({
+                  user_id: sellerId,
+                  market_id,
+                  outcome_id,
+                  amount: -trade.amount,
+                });
+
+              if (insertError) throw insertError;
+            }
+          }
+        }
+      } else {
+        // Selling
+        // Update seller position (current user)
+        const { data: currentPosition } = await supabase
+          .from("positions")
+          .select("amount")
+          .eq("user_id", user.id)
+          .eq("market_id", market_id)
+          .eq("outcome_id", outcome_id)
+          .single();
+
+        if (currentPosition) {
+          const { error: updateError } = await supabase
+            .from("positions")
+            .update({
+              amount: currentPosition.amount - trade.amount,
+            })
+            .eq("user_id", user.id)
+            .eq("market_id", market_id)
+            .eq("outcome_id", outcome_id);
+
+          if (updateError) throw updateError;
+        } else {
+          const { error: insertError } = await supabase
+            .from("positions")
+            .insert({
+              user_id: user.id,
+              market_id,
+              outcome_id,
+              amount: -trade.amount,
+            });
+
+          if (insertError) throw insertError;
+        }
+
+        // Update buyer position if not market maker
+        if (!trade.market_maker) {
+          const buyerId = matchingOrders.find(
+            (o) => o.price === trade.price
+          )?.user_id;
+
+          if (buyerId) {
+            const { data: buyerPosition } = await supabase
+              .from("positions")
+              .select("amount")
+              .eq("user_id", buyerId)
+              .eq("market_id", market_id)
+              .eq("outcome_id", outcome_id)
+              .single();
+
+            if (buyerPosition) {
+              const { error: updateError } = await supabase
+                .from("positions")
+                .update({
+                  amount: buyerPosition.amount + trade.amount,
+                })
+                .eq("user_id", buyerId)
+                .eq("market_id", market_id)
+                .eq("outcome_id", outcome_id);
+
+              if (updateError) throw updateError;
+            } else {
+              const { error: insertError } = await supabase
+                .from("positions")
+                .insert({
+                  user_id: buyerId,
+                  market_id,
+                  outcome_id,
+                  amount: trade.amount,
+                });
+
+              if (insertError) throw insertError;
+            }
+          }
+        }
+      }
+    }
 
     // After trades are processed, if it was a sell order, credit the user's account
     if (type === "selling") {
