@@ -6,9 +6,9 @@
 
 
 #####
-- rigorous testing on order book
-- buy / sell changes poo balance
-- resolve markets / dish payouts functionality
+- rigorous testing on order book -- done
+- buy / sell changes poo balance -- done
+- resolve markets / dish payouts functionality -- done
 - connect testing page to main frontend
 - frontend / backend for leaderboard
 
