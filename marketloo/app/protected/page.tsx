@@ -323,6 +323,15 @@ export default async function ProtectedPage() {
           </button>
         </div>
 
+        {/* Testing Button */}
+        <div className="flex justify-center mt-4">
+          <Link href="/testing">
+            <button className="bg-blue-500 text-white p-2 rounded">
+              Testing
+            </button>
+          </Link>
+        </div>
+
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           {/* Recent Activity */}
