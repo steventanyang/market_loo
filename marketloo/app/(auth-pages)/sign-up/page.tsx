@@ -35,6 +35,16 @@ export default async function Signup(props: {
 
       <form className="space-y-4">
         <div className="space-y-2">
+          <Label htmlFor="username">Username</Label>
+          <Input
+            name="username"
+            placeholder="cooltrader123"
+            required
+            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             name="email"
