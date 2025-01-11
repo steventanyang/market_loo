@@ -136,11 +136,12 @@ const CHART_LINES = [
   { key: "bills", color: "#9C27B0", name: "Bills" },
 ];
 
-export default async function MarketPage({
-  params,
-}: {
+type MarketPageProps = {
   params: { id: string };
-}) {
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export default async function MarketPage({ params }: MarketPageProps) {
   return (
     <div className="min-h-screen bg-[#1C2127] text-white">
       <TopBar />
