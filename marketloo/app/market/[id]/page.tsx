@@ -137,11 +137,12 @@ const CHART_LINES = [
 ];
 
 type MarketPageProps = {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
 };
 
-export default async function MarketPage({ params }: MarketPageProps) {
+export default async function MarketPage(props: MarketPageProps) {
+  const { id } = await props.params;
+
   return (
     <div className="min-h-screen bg-[#1C2127] text-white">
       <TopBar />
