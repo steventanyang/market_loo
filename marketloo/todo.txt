@@ -1,0 +1,25 @@
+##### - must do
+####  - important
+###   - neutral
+##    - nice to have
+#     - if we have time
+
+
+#####
+- rigorous testing on order book
+- buy / sell changes poo balance
+- resolve markets / dish payouts functionality
+- connect testing page to main frontend
+- frontend / backend for leaderboard
+
+#### 
+- make landing page nicer ~ more detail on markets
+- real time functionality ~ activity feed
+
+
+###
+- improve matching algorithm (AMM?)
+
+##
+
+#
