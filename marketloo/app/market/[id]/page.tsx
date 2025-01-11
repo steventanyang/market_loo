@@ -154,15 +154,16 @@ const CHART_LINES = [
   { key: "bills", color: "#9C27B0", name: "Bills" },
 ];
 
-// Add proper type for the page props
-interface PageProps {
+// Update the type definition for page props
+type PageProps = {
   params: {
     id: string;
   };
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 // Update the component signature
-export default function MarketPage({ params }: PageProps) {
+export default function MarketPage({ params, searchParams }: PageProps) {
   // State for form controls
   const [selectedOutcome, setSelectedOutcome] = useState<"Yes" | "No">("Yes");
   const [tradeType, setTradeType] = useState<"Buy" | "Sell">("Buy");
