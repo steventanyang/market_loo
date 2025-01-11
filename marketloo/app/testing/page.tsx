@@ -30,7 +30,6 @@ interface Outcome {
 
 interface FormData {
   market_id: string;
-  user_id: string;
   outcome_id: string;
   amount: string;
   type: "buying" | "selling";
@@ -61,7 +60,6 @@ interface OrderResponse {
 export default function TestingPage() {
   const [formData, setFormData] = useState<FormData>({
     market_id: "",
-    user_id: "",
     outcome_id: "",
     amount: "",
     type: "buying",
@@ -75,6 +73,7 @@ export default function TestingPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [lastOrderResponse, setLastOrderResponse] =
     useState<OrderResponse | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -149,18 +148,38 @@ export default function TestingPage() {
     };
   }, [formData.market_id]);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUserEmail(user?.email || null);
+    };
+    fetchUser();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setFeedback("");
 
     try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        throw new Error("You must be logged in to place orders");
+      }
+
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+        }),
       });
 
       const data: OrderResponse = await response.json();
@@ -184,7 +203,6 @@ export default function TestingPage() {
 
       setFormData({
         market_id: "",
-        user_id: "",
         outcome_id: "",
         amount: "",
         type: "buying",
@@ -207,6 +225,12 @@ export default function TestingPage() {
   return (
     <div className="min-h-screen bg-[#1C2127] text-white p-8">
       <h1 className="text-3xl font-bold mb-8">Order Book Testing Interface</h1>
+
+      {userEmail && (
+        <div className="mb-6 text-gray-400">
+          Logged in as: <span className="text-white">{userEmail}</span>
+        </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
@@ -262,19 +286,6 @@ export default function TestingPage() {
                 </div>
               )}
             </div>
-          </div>
-
-          <div>
-            <label className="block mb-2">User ID</label>
-            <input
-              type="text"
-              value={formData.user_id}
-              onChange={(e) =>
-                setFormData({ ...formData, user_id: e.target.value })
-              }
-              className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
-              required
-            />
           </div>
 
           <div>
