@@ -5,13 +5,16 @@ import MarketChart from "@/components/MarketChart";
 import { OutcomesList, TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
 
+type MarketParams = Promise<{
+  id: string;
+}>;
+
 interface MarketPageProps {
-  params: {
-    id: string;
-  };
+  params: MarketParams;
 }
 
-export default async function MarketPage({ params }: MarketPageProps) {
+export default async function MarketPage(props: MarketPageProps) {
+  const { id } = await props.params;
   const supabase = await createClient();
 
   // Check authentication
@@ -36,7 +39,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
       )
     `
     )
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (marketError) {
@@ -64,7 +67,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
   const { data: positions, error: positionsError } = await supabase
     .from("positions")
     .select("*")
-    .eq("market_id", params.id)
+    .eq("market_id", id)
     .eq("user_id", user.id);
 
   if (positionsError) {
