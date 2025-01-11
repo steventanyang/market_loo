@@ -57,6 +57,13 @@ interface OrderResponse {
   error?: string;
 }
 
+interface User {
+  id: string;
+  balance: number;
+  username: string;
+  email: string;
+}
+
 export default function TestingPage() {
   const [formData, setFormData] = useState<FormData>({
     market_id: "",
@@ -74,6 +81,7 @@ export default function TestingPage() {
   const [lastOrderResponse, setLastOrderResponse] =
     useState<OrderResponse | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userBalance, setUserBalance] = useState<number | null>(null);
 
   const supabase = createClient();
 
@@ -154,6 +162,18 @@ export default function TestingPage() {
         data: { user },
       } = await supabase.auth.getUser();
       setUserEmail(user?.email || null);
+
+      if (user) {
+        const { data: userData } = await supabase
+          .from("users")
+          .select("balance")
+          .eq("id", user.id)
+          .single();
+
+        if (userData) {
+          setUserBalance(userData.balance);
+        }
+      }
     };
     fetchUser();
   }, []);
@@ -172,10 +192,19 @@ export default function TestingPage() {
         throw new Error("You must be logged in to place orders");
       }
 
+      // Get the session to access the token
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("No active session");
+      }
+
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           ...formData,
@@ -229,6 +258,12 @@ export default function TestingPage() {
       {userEmail && (
         <div className="mb-6 text-gray-400">
           Logged in as: <span className="text-white">{userEmail}</span>
+        </div>
+      )}
+
+      {userBalance !== null && (
+        <div className="mb-6 text-gray-400">
+          Balance: <span className="text-green-400">{userBalance} POO</span>
         </div>
       )}
 

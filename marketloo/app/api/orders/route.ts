@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 interface Order {
@@ -12,6 +11,13 @@ interface Order {
   type: "buying" | "selling";
   status: "pending" | "filled" | "cancelled";
   created_at: string;
+}
+
+interface User {
+  id: string;
+  balance: number;
+  username: string;
+  email: string;
 }
 
 const supabase = createClient(
@@ -125,20 +131,48 @@ async function updatePricesWithConstraint(
 export async function POST(request: Request) {
   try {
     const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
-    const body = await request.json();
-    const { market_id, outcome_id, amount, type } = body;
-
-    // Validate input
-    if (!market_id || !outcome_id || !amount || !type) {
+    // Get the authorization header from the request
+    const authHeader = request.headers.get("authorization");
+    if (!authHeader) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Authorization header required" },
+        { status: 401 }
+      );
+    }
+
+    // Verify the session
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    // Just get the user's balance
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("balance_of_poo")
+      .eq("id", user.id)
+      .single();
+
+    if (userError || !userData) {
+      return NextResponse.json(
+        { error: "Failed to fetch user balance" },
         { status: 400 }
       );
     }
+
+    const body = await request.json();
+    const { market_id, outcome_id, amount, type } = body;
 
     // Get current price from outcomes table
     const { data: outcome, error: outcomeError } = await supabase
@@ -151,13 +185,24 @@ export async function POST(request: Request) {
       throw new Error("Failed to get outcome price");
     }
 
-    // Create the initial order
+    // Calculate total cost
+    const totalCost = amount * outcome.current_price;
+
+    // Check if user has enough balance for buying
+    if (type === "buying" && userData.balance_of_poo < totalCost) {
+      return NextResponse.json(
+        { error: "Insufficient balance" },
+        { status: 400 }
+      );
+    }
+
+    // Create the initial order with the user's ID (not market maker)
     const { data: newOrder, error: insertError } = await supabase
       .from("orders")
       .insert([
         {
           market_id,
-          user_id: MARKET_MAKER_ID,
+          user_id: user.id, // Use actual user ID instead of market maker
           outcome_id,
           amount,
           price: outcome.current_price,
@@ -169,6 +214,16 @@ export async function POST(request: Request) {
       .single();
 
     if (insertError) throw insertError;
+
+    // Update user's balance immediately for the initial order
+    if (type === "buying") {
+      const { error: balanceError } = await supabase
+        .from("users")
+        .update({ balance_of_poo: userData.balance_of_poo - totalCost })
+        .eq("id", user.id);
+
+      if (balanceError) throw balanceError;
+    }
 
     // Find matching orders
     const { data: matchingOrders, error: matchError } = await supabase
@@ -314,6 +369,21 @@ export async function POST(request: Request) {
       .eq("id", newOrder.id);
 
     if (updateNewOrderError) throw updateNewOrderError;
+
+    // After trades are processed, if it was a sell order, credit the user's account
+    if (type === "selling") {
+      const totalEarned = matchedTrades.reduce(
+        (sum, trade) => sum + trade.amount * trade.price,
+        0
+      );
+
+      const { error: balanceError } = await supabase
+        .from("users")
+        .update({ balance_of_poo: userData.balance_of_poo + totalEarned })
+        .eq("id", user.id);
+
+      if (balanceError) throw balanceError;
+    }
 
     return NextResponse.json({
       order: newOrder,

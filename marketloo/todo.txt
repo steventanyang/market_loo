@@ -21,5 +21,6 @@
 - improve matching algorithm (AMM?)
 
 ##
+- when people sign up they can use their user as a sign up code. for every 3 signups they get 10000 POO
 
 #
