@@ -1,6 +1,6 @@
 "use client";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import Image from "next/image";
 import { useState } from "react";
@@ -154,7 +154,15 @@ const CHART_LINES = [
   { key: "bills", color: "#9C27B0", name: "Bills" },
 ];
 
-export default function MarketPage({ params }: { params: { id: string } }) {
+// Add proper type for the page props
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+// Update the component signature
+export default function MarketPage({ params }: PageProps) {
   // State for form controls
   const [selectedOutcome, setSelectedOutcome] = useState<"Yes" | "No">("Yes");
   const [tradeType, setTradeType] = useState<"Buy" | "Sell">("Buy");
