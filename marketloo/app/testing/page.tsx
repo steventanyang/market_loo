@@ -64,6 +64,11 @@ interface User {
   email: string;
 }
 
+interface ResolutionFormData {
+  market_id: string;
+  outcome_id: string;
+}
+
 export default function TestingPage() {
   const [formData, setFormData] = useState<FormData>({
     market_id: "",
@@ -82,6 +87,11 @@ export default function TestingPage() {
     useState<OrderResponse | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userBalance, setUserBalance] = useState<number | null>(null);
+  const [mode, setMode] = useState<"trading" | "resolution">("trading");
+  const [resolutionForm, setResolutionForm] = useState<ResolutionFormData>({
+    market_id: "",
+    outcome_id: "",
+  });
 
   const supabase = createClient();
 
@@ -251,9 +261,87 @@ export default function TestingPage() {
     });
   };
 
+  const handleResolution = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setFeedback("");
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("No active session");
+      }
+
+      const response = await fetch("/api/resolve", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(resolutionForm),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to resolve market");
+      }
+
+      setFeedback(
+        `Market resolved successfully! Winning outcome: ${
+          outcomes.find((o) => o.outcome_id === resolutionForm.outcome_id)?.name
+        }`
+      );
+
+      setResolutionForm({
+        market_id: "",
+        outcome_id: "",
+      });
+
+      fetchData();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  // Add this function to calculate order details
+  const calculateOrderDetails = () => {
+    if (!formData.amount || !formData.outcome_id) return null;
+
+    const outcome = outcomes.find((o) => o.outcome_id === formData.outcome_id);
+    if (!outcome) return null;
+
+    const amount = Number(formData.amount);
+    const price = outcome.current_price;
+
+    if (formData.type === "buying") {
+      const cost = amount * price;
+      const totalReturn = amount; // If you win, you get the full amount (1.0)
+      const percentageGain = (((totalReturn - cost) / cost) * 100).toFixed(1);
+      return {
+        cost: cost.toFixed(2),
+        totalReturn: totalReturn.toFixed(2),
+        percentageGain,
+      };
+    } else {
+      const proceeds = amount * price;
+      const maxLoss = amount;
+      const percentageLoss = (((maxLoss - proceeds) / proceeds) * 100).toFixed(
+        1
+      );
+      return {
+        proceeds: proceeds.toFixed(2),
+        totalLoss: maxLoss.toFixed(2),
+        percentageLoss,
+      };
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#1C2127] text-white p-8">
-      <h1 className="text-3xl font-bold mb-8">Order Book Testing Interface</h1>
+      <h1 className="text-3xl font-bold mb-8">Testing Interface</h1>
 
       {userEmail && (
         <div className="mb-6 text-gray-400">
@@ -267,103 +355,241 @@ export default function TestingPage() {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-[#2C3038] p-6 rounded-lg mb-8"
-      >
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2">Market</label>
-            <select
-              value={formData.market_id}
-              onChange={handleMarketChange}
-              className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
-              required
-            >
-              <option value="">Select Market</option>
-              {markets.map((market) => (
-                <option key={market.id} value={market.id}>
-                  {market.title}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="mb-6">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setMode("trading")}
+            className={`px-4 py-2 rounded ${
+              mode === "trading"
+                ? "bg-green-500 text-white"
+                : "bg-[#2C3038] text-gray-400"
+            }`}
+          >
+            Trading
+          </button>
+          <button
+            onClick={() => setMode("resolution")}
+            className={`px-4 py-2 rounded ${
+              mode === "resolution"
+                ? "bg-blue-500 text-white"
+                : "bg-[#2C3038] text-gray-400"
+            }`}
+          >
+            Market Resolution
+          </button>
+        </div>
+      </div>
 
-          <div>
-            <label className="block mb-2">Outcome</label>
-            <div className="flex gap-2">
+      {mode === "trading" ? (
+        <form
+          onSubmit={handleSubmit}
+          className="bg-[#2C3038] p-6 rounded-lg mb-8"
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-2">Market</label>
               <select
-                value={formData.outcome_id}
-                onChange={(e) =>
-                  setFormData({ ...formData, outcome_id: e.target.value })
-                }
-                className="flex-1 p-2 rounded bg-[#1C2127] border border-gray-700"
+                value={formData.market_id}
+                onChange={handleMarketChange}
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
                 required
               >
-                <option value="">Select Outcome</option>
+                <option value="">Select Market</option>
+                {markets.map((market) => (
+                  <option key={market.id} value={market.id}>
+                    {market.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-2">Outcome</label>
+              <div className="flex gap-2">
+                <select
+                  value={formData.outcome_id}
+                  onChange={(e) =>
+                    setFormData({ ...formData, outcome_id: e.target.value })
+                  }
+                  className="flex-1 p-2 rounded bg-[#1C2127] border border-gray-700"
+                  required
+                >
+                  <option value="">Select Outcome</option>
+                  {outcomes
+                    .filter(
+                      (outcome) => outcome.market_id === formData.market_id
+                    )
+                    .map((outcome) => (
+                      <option
+                        key={outcome.outcome_id}
+                        value={outcome.outcome_id}
+                      >
+                        {outcome.name}
+                      </option>
+                    ))}
+                </select>
+                {formData.outcome_id && (
+                  <div className="flex items-center bg-[#1C2127] border border-gray-700 rounded px-3">
+                    <span className="text-gray-400 mr-2">Current Price:</span>
+                    <span className="text-green-400">
+                      {
+                        outcomes.find(
+                          (o) => o.outcome_id === formData.outcome_id
+                        )?.current_price
+                      }
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block mb-2">Amount</label>
+              <input
+                type="number"
+                step="1"
+                min="1"
+                value={formData.amount}
+                onChange={(e) =>
+                  setFormData({ ...formData, amount: e.target.value })
+                }
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block mb-2">Order Type</label>
+              <select
+                value={formData.type}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    type: e.target.value as "buying" | "selling",
+                  })
+                }
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                required
+              >
+                <option value="buying">Buy</option>
+                <option value="selling">Sell</option>
+              </select>
+            </div>
+          </div>
+
+          {calculateOrderDetails() && (
+            <div className="mt-4 p-4 bg-[#1C2127] rounded">
+              {formData.type === "buying" ? (
+                <>
+                  <p className="text-gray-400">
+                    Cost:{" "}
+                    <span className="text-red-400">
+                      {calculateOrderDetails()?.cost} POO
+                    </span>
+                  </p>
+                  <p className="text-gray-400">
+                    Total Return if Win:{" "}
+                    <span className="text-green-400">
+                      {calculateOrderDetails()?.totalReturn} POO
+                    </span>
+                    <span className="text-green-400 ml-2">
+                      (+{calculateOrderDetails()?.percentageGain}%)
+                    </span>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-400">
+                    Immediate Proceeds:{" "}
+                    <span className="text-green-400">
+                      {calculateOrderDetails()?.proceeds} POO
+                    </span>
+                  </p>
+                  <p className="text-gray-400">
+                    Maximum Loss:{" "}
+                    <span className="text-red-400">
+                      {calculateOrderDetails()?.totalLoss} POO
+                    </span>
+                    <span className="text-red-400 ml-2">
+                      (-{calculateOrderDetails()?.percentageLoss}%)
+                    </span>
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="mt-6 bg-green-500 hover:bg-green-600 px-6 py-2 rounded transition-colors"
+          >
+            Place Order
+          </button>
+        </form>
+      ) : (
+        <form
+          onSubmit={handleResolution}
+          className="bg-[#2C3038] p-6 rounded-lg mb-8"
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-2">Market to Resolve</label>
+              <select
+                value={resolutionForm.market_id}
+                onChange={(e) =>
+                  setResolutionForm({
+                    ...resolutionForm,
+                    market_id: e.target.value,
+                    outcome_id: "", // Reset outcome when market changes
+                  })
+                }
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                required
+              >
+                <option value="">Select Market</option>
+                {markets.map((market) => (
+                  <option key={market.id} value={market.id}>
+                    {market.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-2">Winning Outcome</label>
+              <select
+                value={resolutionForm.outcome_id}
+                onChange={(e) =>
+                  setResolutionForm({
+                    ...resolutionForm,
+                    outcome_id: e.target.value,
+                  })
+                }
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                required
+              >
+                <option value="">Select Winning Outcome</option>
                 {outcomes
-                  .filter((outcome) => outcome.market_id === formData.market_id)
+                  .filter(
+                    (outcome) => outcome.market_id === resolutionForm.market_id
+                  )
                   .map((outcome) => (
                     <option key={outcome.outcome_id} value={outcome.outcome_id}>
                       {outcome.name}
                     </option>
                   ))}
               </select>
-              {formData.outcome_id && (
-                <div className="flex items-center bg-[#1C2127] border border-gray-700 rounded px-3">
-                  <span className="text-gray-400 mr-2">Current Price:</span>
-                  <span className="text-green-400">
-                    {
-                      outcomes.find((o) => o.outcome_id === formData.outcome_id)
-                        ?.current_price
-                    }
-                  </span>
-                </div>
-              )}
             </div>
           </div>
 
-          <div>
-            <label className="block mb-2">Amount</label>
-            <input
-              type="number"
-              step="1"
-              min="1"
-              value={formData.amount}
-              onChange={(e) =>
-                setFormData({ ...formData, amount: e.target.value })
-              }
-              className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2">Order Type</label>
-            <select
-              value={formData.type}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  type: e.target.value as "buying" | "selling",
-                })
-              }
-              className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
-              required
-            >
-              <option value="buying">Buy</option>
-              <option value="selling">Sell</option>
-            </select>
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="mt-6 bg-green-500 hover:bg-green-600 px-6 py-2 rounded transition-colors"
-        >
-          Place Order
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded transition-colors"
+          >
+            Resolve Market
+          </button>
+        </form>
+      )}
 
       {feedback && (
         <div className="bg-green-500/20 text-green-400 p-4 rounded mb-4">
