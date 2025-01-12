@@ -78,6 +78,21 @@ interface ResolutionFormData {
   outcome_id: string;
 }
 
+// Add new interfaces for market creation
+interface BinaryMarketForm {
+  title: string;
+  description: string;
+  option_name: string;
+  closes_at: string;
+}
+
+interface MultiOutcomeMarketForm {
+  title: string;
+  description: string;
+  outcomes: string[];
+  closes_at: string;
+}
+
 // Add logging utility
 const log = (context: string, data: any) => {
   console.log(
@@ -105,12 +120,29 @@ export default function TestingPage() {
     useState<OrderResponse | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userBalance, setUserBalance] = useState<number | null>(null);
-  const [mode, setMode] = useState<"trading" | "resolution">("trading");
+  const [mode, setMode] = useState<"trading" | "resolution" | "creation">(
+    "trading"
+  );
   const [resolutionForm, setResolutionForm] = useState<ResolutionFormData>({
     market_id: "",
     outcome_id: "",
   });
   const [options, setOptions] = useState<Option[]>([]);
+
+  // Add new state variables for market creation
+  const [marketMode, setMarketMode] = useState<"binary" | "multi">("binary");
+  const [binaryForm, setBinaryForm] = useState<BinaryMarketForm>({
+    title: "",
+    description: "",
+    option_name: "",
+    closes_at: "",
+  });
+  const [multiForm, setMultiForm] = useState<MultiOutcomeMarketForm>({
+    title: "",
+    description: "",
+    outcomes: [""],
+    closes_at: "",
+  });
 
   const supabase = createClient();
 
@@ -411,6 +443,113 @@ export default function TestingPage() {
     }
   };
 
+  // Add new handler for binary market creation
+  const handleBinarySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setFeedback("");
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        throw new Error("No active session");
+      }
+
+      const response = await fetch("/api/markets/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          type: "binary",
+          ...binaryForm,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create market");
+      }
+
+      setFeedback("Binary market created successfully!");
+      setBinaryForm({
+        title: "",
+        description: "",
+        option_name: "",
+        closes_at: "",
+      });
+      fetchData();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  // Add new handler for multi-outcome market creation
+  const handleMultiSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setFeedback("");
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        throw new Error("No active session");
+      }
+
+      const response = await fetch("/api/markets/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          type: "multi",
+          ...multiForm,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create market");
+      }
+
+      setFeedback("Multi-outcome market created successfully!");
+      setMultiForm({
+        title: "",
+        description: "",
+        outcomes: [""],
+        closes_at: "",
+      });
+      fetchData();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  // Add handler for adding/removing outcome fields
+  const handleAddOutcome = () => {
+    setMultiForm({
+      ...multiForm,
+      outcomes: [...multiForm.outcomes, ""],
+    });
+  };
+
+  const handleRemoveOutcome = (index: number) => {
+    setMultiForm({
+      ...multiForm,
+      outcomes: multiForm.outcomes.filter((_, i) => i !== index),
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#1C2127] text-white p-8">
       <h1 className="text-3xl font-bold mb-8">Testing Interface</h1>
@@ -449,8 +588,200 @@ export default function TestingPage() {
           >
             Market Resolution
           </button>
+          <button
+            onClick={() => setMode("creation")}
+            className={`px-4 py-2 rounded ${
+              mode === "creation"
+                ? "bg-purple-500 text-white"
+                : "bg-[#2C3038] text-gray-400"
+            }`}
+          >
+            Create Markets
+          </button>
         </div>
       </div>
+
+      {/* Add new market creation section */}
+      {mode === "creation" && (
+        <div className="bg-[#2C3038] p-6 rounded-lg mb-8">
+          <div className="mb-6">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setMarketMode("binary")}
+                className={`px-4 py-2 rounded ${
+                  marketMode === "binary"
+                    ? "bg-purple-500 text-white"
+                    : "bg-[#1C2127] text-gray-400"
+                }`}
+              >
+                Binary Market
+              </button>
+              <button
+                onClick={() => setMarketMode("multi")}
+                className={`px-4 py-2 rounded ${
+                  marketMode === "multi"
+                    ? "bg-purple-500 text-white"
+                    : "bg-[#1C2127] text-gray-400"
+                }`}
+              >
+                Multi-Outcome Market
+              </button>
+            </div>
+          </div>
+
+          {marketMode === "binary" ? (
+            <form onSubmit={handleBinarySubmit}>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block mb-2">Market Title</label>
+                  <input
+                    type="text"
+                    value={binaryForm.title}
+                    onChange={(e) =>
+                      setBinaryForm({ ...binaryForm, title: e.target.value })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Market Description</label>
+                  <textarea
+                    value={binaryForm.description}
+                    onChange={(e) =>
+                      setBinaryForm({
+                        ...binaryForm,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Option Name</label>
+                  <input
+                    type="text"
+                    value={binaryForm.option_name}
+                    onChange={(e) =>
+                      setBinaryForm({
+                        ...binaryForm,
+                        option_name: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Closes At</label>
+                  <input
+                    type="datetime-local"
+                    value={binaryForm.closes_at}
+                    onChange={(e) =>
+                      setBinaryForm({
+                        ...binaryForm,
+                        closes_at: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="mt-6 bg-purple-500 hover:bg-purple-600 px-6 py-2 rounded transition-colors"
+              >
+                Create Binary Market
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleMultiSubmit}>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block mb-2">Market Title</label>
+                  <input
+                    type="text"
+                    value={multiForm.title}
+                    onChange={(e) =>
+                      setMultiForm({ ...multiForm, title: e.target.value })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Market Description</label>
+                  <textarea
+                    value={multiForm.description}
+                    onChange={(e) =>
+                      setMultiForm({
+                        ...multiForm,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Outcomes</label>
+                  {multiForm.outcomes.map((outcome, index) => (
+                    <div key={index} className="flex gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={outcome}
+                        onChange={(e) => {
+                          const newOutcomes = [...multiForm.outcomes];
+                          newOutcomes[index] = e.target.value;
+                          setMultiForm({ ...multiForm, outcomes: newOutcomes });
+                        }}
+                        className="flex-1 p-2 rounded bg-[#1C2127] border border-gray-700"
+                        required
+                      />
+                      {multiForm.outcomes.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveOutcome(index)}
+                          className="px-3 py-1 bg-red-500 rounded hover:bg-red-600"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleAddOutcome}
+                    className="mt-2 px-4 py-1 bg-[#1C2127] rounded hover:bg-[#2C3038]"
+                  >
+                    Add Outcome
+                  </button>
+                </div>
+                <div>
+                  <label className="block mb-2">Closes At</label>
+                  <input
+                    type="datetime-local"
+                    value={multiForm.closes_at}
+                    onChange={(e) =>
+                      setMultiForm({ ...multiForm, closes_at: e.target.value })
+                    }
+                    className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="mt-6 bg-purple-500 hover:bg-purple-600 px-6 py-2 rounded transition-colors"
+              >
+                Create Multi-Outcome Market
+              </button>
+            </form>
+          )}
+        </div>
+      )}
 
       {mode === "trading" ? (
         <form
