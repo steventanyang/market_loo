@@ -84,7 +84,7 @@ export default async function MarketPage(props: MarketPageProps) {
         <div className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 bg-[#2C3038] rounded-lg flex items-center justify-center">
             <Image
-              src="/nfl-logo.png" // We can update this later with dynamic icons
+              src="/nfl-logo.png"
               alt="Market icon"
               width={32}
               height={32}
@@ -102,14 +102,9 @@ export default async function MarketPage(props: MarketPageProps) {
           </div>
         </div>
 
-        <div className="mb-8">
-          <MarketChart data={{ "1H": [] }} lines={[]} />
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* We'll update this for multi-option markets later */}
-          <div className="hidden lg:block">
-            <OutcomesList outcomes={[]} />
+          <div>
+            <MarketChart data={{ "1H": [] }} lines={[]} />
           </div>
 
           <TradingInterface
