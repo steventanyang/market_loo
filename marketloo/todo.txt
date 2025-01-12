@@ -9,12 +9,13 @@
 - rigorous testing on order book -- done
 - buy / sell changes poo balance -- done
 - resolve markets / dish payouts functionality -- done
-- connect testing page to main frontend
+- connect testing page to main frontend -- multi option markets TODO
 - frontend / backend for leaderboard
 
 #### 
 - make landing page nicer ~ more detail on markets
 - real time functionality ~ activity feed
+- AI summaries for markets
 
 
 ###

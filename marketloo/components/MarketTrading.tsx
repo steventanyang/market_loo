@@ -62,8 +62,8 @@ export function TradingInterface({
     setShares((prev) => Math.max(0, prev - 10));
   };
 
-  const getPosition = (outcome: string) => {
-    return positions.find((p) => p.outcome_id === outcome)?.amount || 0;
+  const getPosition = (outcome_id: string) => {
+    return positions.find((p) => p.outcome_id === outcome_id)?.amount || 0;
   };
 
   const formatPrice = (price: number) => {
@@ -105,6 +105,8 @@ export function TradingInterface({
         amount: shares,
         type: orderType,
       };
+      console.log("ORDER DATA:");
+      console.log(market.outcomes); // Log the order data
 
       const response = await fetch("/api/orders", {
         method: "POST",
@@ -174,7 +176,7 @@ export function TradingInterface({
               />
             </button>
             <div className="text-sm text-gray-400 font-bold text-center">
-              Position: {getPosition(market.outcomes[0]?.outcome_id)}
+              Position: {getPosition(market.outcomes[0].outcome_id)}
             </div>
           </div>
 
@@ -199,7 +201,7 @@ export function TradingInterface({
               />
             </button>
             <div className="text-sm text-gray-400 font-bold text-center">
-              Position: {getPosition(market.outcomes[1]?.outcome_id)}
+              Position: {getPosition(market.outcomes[1].outcome_id)}
             </div>
           </div>
         </div>

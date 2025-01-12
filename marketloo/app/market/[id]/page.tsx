@@ -107,11 +107,10 @@ export default async function MarketPage(props: MarketPageProps) {
             <MarketChart data={{ "1H": [] }} lines={[]} />
           </div>
 
-          <TradingInterface
-            market={market}
-            userBalance={userData.balance_of_poo}
-            positions={positions || []}
-          />
+          {/*
+           * we want to put the trading interface here....
+           */}
+
         </div>
       </div>
     </div>
