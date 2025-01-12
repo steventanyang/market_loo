@@ -9,16 +9,17 @@
 - rigorous testing on order book -- done
 - buy / sell changes poo balance -- done
 - resolve markets / dish payouts functionality -- done
-- connect testing page to main frontend -- multi option markets TODO
+- connect testing page to main frontend -- done
 - frontend / backend for leaderboard
+- admin page for market creation / reset user / unresolve market
 
 #### 
 - make landing page nicer ~ more detail on markets
 - real time functionality ~ activity feed
 - AI summaries for markets
 
-
 ###
+- show market volume on main page
 - improve matching algorithm (AMM?)
 
 ##
