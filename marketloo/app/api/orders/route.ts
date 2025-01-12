@@ -103,48 +103,77 @@ async function updatePricesWithConstraint(
   marketId: string,
   newPrice: number
 ) {
-  // First, get all outcomes for this market
-  const { data: outcomes, error: fetchError } = await supabase
-    .from("outcomes")
-    .select("outcome_id, current_price")
-    .eq("market_id", marketId);
+  log("Updating prices", { outcomeId, marketId, newPrice });
 
-  if (fetchError) throw fetchError;
-  if (!outcomes) throw new Error("No outcomes found");
+  // First, get the option that contains this outcome
+  const { data: option, error: optionError } = await supabase
+    .from("options")
+    .select("*")
+    .eq("market_id", marketId)
+    .or(`yes_outcome_id.eq.${outcomeId},no_outcome_id.eq.${outcomeId}`)
+    .single();
 
-  // For binary markets, adjust the other outcome to maintain sum = 1
-  if (outcomes.length === 2) {
-    const otherOutcome = outcomes.find((o) => o.outcome_id !== outcomeId);
-    if (!otherOutcome) throw new Error("Other outcome not found");
+  if (optionError) throw optionError;
+  if (!option) throw new Error("Option not found");
 
-    // Ensure the new price is between 0 and 1
-    const constrainedPrice = Math.max(0.01, Math.min(0.99, newPrice));
-    const otherPrice = 1 - constrainedPrice;
+  log("Found option", { option });
 
-    // Update both prices atomically
-    const { error: updateError } = await supabase.from("outcomes").upsert([
-      { outcome_id: outcomeId, current_price: constrainedPrice },
-      { outcome_id: otherOutcome.outcome_id, current_price: otherPrice },
-    ]);
+  // Determine if this is the yes or no outcome
+  const isYesOutcome = option.yes_outcome_id === outcomeId;
+  const otherOutcomeId = isYesOutcome
+    ? option.no_outcome_id
+    : option.yes_outcome_id;
 
-    if (updateError) throw updateError;
+  // Ensure the new price is between 0 and 1
+  const constrainedPrice = Math.max(0.01, Math.min(0.99, newPrice));
+  const otherPrice = 1 - constrainedPrice;
 
-    return { updatedPrice: constrainedPrice };
-  }
+  log("Calculated prices", {
+    constrainedPrice,
+    otherPrice,
+    isYesOutcome,
+    otherOutcomeId,
+  });
 
-  // For non-binary markets (if you add them later)
-  throw new Error("Only binary markets are supported currently");
+  // Update both prices atomically
+  const { error: updateError } = await supabase.from("outcomes").upsert([
+    { outcome_id: outcomeId, current_price: constrainedPrice },
+    { outcome_id: otherOutcomeId, current_price: otherPrice },
+  ]);
+
+  if (updateError) throw updateError;
+
+  log("Prices updated successfully", {
+    outcomeId,
+    newPrice: constrainedPrice,
+    otherOutcomeId,
+    otherPrice,
+  });
+
+  return { updatedPrice: constrainedPrice };
 }
+
+// Add logging utility
+const log = (context: string, data: any) => {
+  console.log(
+    `[${new Date().toISOString()}] ${context}:`,
+    JSON.stringify(data, null, 2)
+  );
+};
 
 export async function POST(request: Request) {
   try {
+    log("Request received", { method: "POST", url: request.url });
+
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
-    // Get the authorization header from the request
+    // Get auth header
     const authHeader = request.headers.get("authorization");
+    log("Auth header", { authHeader: authHeader ? "present" : "missing" });
+
     if (!authHeader) {
       return NextResponse.json(
         { error: "Authorization header required" },
@@ -152,16 +181,54 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify the session
+    // Verify session
     const {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
 
+    log("Auth verification", { user: user?.id, error: authError });
+
     if (authError || !user) {
       return NextResponse.json(
         { error: "Authentication required" },
         { status: 401 }
+      );
+    }
+
+    // Get request body
+    const body = await request.json();
+    log("Request body", body);
+
+    const { market_id, outcome_id, amount, type } = body;
+
+    // Validate market exists
+    const { data: market, error: marketError } = await supabase
+      .from("markets")
+      .select("*")
+      .eq("id", market_id)
+      .single();
+
+    log("Market validation", { market, error: marketError });
+
+    if (marketError || !market) {
+      return NextResponse.json({ error: "Invalid market" }, { status: 400 });
+    }
+
+    // Validate outcome exists and belongs to an option in this market
+    const { data: option, error: optionError } = await supabase
+      .from("options")
+      .select("*")
+      .eq("market_id", market_id)
+      .or(`yes_outcome_id.eq.${outcome_id},no_outcome_id.eq.${outcome_id}`)
+      .single();
+
+    log("Option/Outcome validation", { option, error: optionError });
+
+    if (optionError || !option) {
+      return NextResponse.json(
+        { error: "Invalid outcome for this market" },
+        { status: 400 }
       );
     }
 
@@ -178,9 +245,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
-    const body = await request.json();
-    const { market_id, outcome_id, amount, type } = body;
 
     // If selling, check if user has enough shares
     if (type === "selling") {
@@ -573,13 +637,17 @@ export async function POST(request: Request) {
       if (balanceError) throw balanceError;
     }
 
+    log("Order processing complete", {
+      /* final order details */
+    });
+
     return NextResponse.json({
       order: newOrder,
       trades: matchedTrades,
       remainingAmount,
     });
   } catch (error: any) {
-    console.error("Order processing error:", error);
+    log("Error processing order", { error: error.message, stack: error.stack });
     return NextResponse.json(
       { error: error.message || "Failed to process order" },
       { status: 500 }

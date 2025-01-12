@@ -28,8 +28,17 @@ interface Outcome {
   current_price: number;
 }
 
+interface Option {
+  id: string;
+  market_id: string;
+  name: string;
+  yes_outcome_id: string;
+  no_outcome_id: string;
+}
+
 interface FormData {
   market_id: string;
+  option_id: string;
   outcome_id: string;
   amount: string;
   type: "buying" | "selling";
@@ -69,9 +78,18 @@ interface ResolutionFormData {
   outcome_id: string;
 }
 
+// Add logging utility
+const log = (context: string, data: any) => {
+  console.log(
+    `[${new Date().toISOString()}] ${context}:`,
+    JSON.stringify(data, null, 2)
+  );
+};
+
 export default function TestingPage() {
   const [formData, setFormData] = useState<FormData>({
     market_id: "",
+    option_id: "",
     outcome_id: "",
     amount: "",
     type: "buying",
@@ -92,6 +110,7 @@ export default function TestingPage() {
     market_id: "",
     outcome_id: "",
   });
+  const [options, setOptions] = useState<Option[]>([]);
 
   const supabase = createClient();
 
@@ -142,6 +161,15 @@ export default function TestingPage() {
       if (tradesError) throw tradesError;
       console.log("Fetched trades:", tradesData);
       setTrades(tradesData || []);
+
+      // Fetch options
+      const { data: optionsData, error: optionsError } = await supabase
+        .from("options")
+        .select("*");
+
+      if (optionsError) throw optionsError;
+      console.log("Fetched options:", optionsData);
+      setOptions(optionsData || []);
     } catch (err: any) {
       console.error("Fetch error:", err);
       setError(err.message);
@@ -193,21 +221,52 @@ export default function TestingPage() {
     setError("");
     setFeedback("");
 
+    log("Form submission", { formData });
+
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
+      log("User verification", { userId: user?.id });
+
       if (!user) {
         throw new Error("You must be logged in to place orders");
       }
 
-      // Get the session to access the token
+      // Get the session
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
+      log("Session verification", { sessionPresent: !!session });
+
       if (!session) {
         throw new Error("No active session");
+      }
+
+      // Validate the selected option and outcome
+      const selectedOption = options.find(
+        (opt) => opt.id === formData.option_id
+      );
+      log("Selected option", { selectedOption });
+
+      if (!selectedOption) {
+        throw new Error("Invalid option selected");
+      }
+
+      // Verify the outcome belongs to the selected option
+      const isValidOutcome =
+        selectedOption.yes_outcome_id === formData.outcome_id ||
+        selectedOption.no_outcome_id === formData.outcome_id;
+
+      log("Outcome validation", {
+        outcomeId: formData.outcome_id,
+        isValid: isValidOutcome,
+      });
+
+      if (!isValidOutcome) {
+        throw new Error("Invalid outcome for selected option");
       }
 
       const response = await fetch("/api/orders", {
@@ -222,6 +281,7 @@ export default function TestingPage() {
       });
 
       const data: OrderResponse = await response.json();
+      log("API response", data);
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to place order");
@@ -242,6 +302,7 @@ export default function TestingPage() {
 
       setFormData({
         market_id: "",
+        option_id: "",
         outcome_id: "",
         amount: "",
         type: "buying",
@@ -249,6 +310,7 @@ export default function TestingPage() {
 
       fetchData();
     } catch (err: any) {
+      log("Error in handleSubmit", { error: err.message, stack: err.stack });
       setError(err.message);
     }
   };
@@ -257,7 +319,17 @@ export default function TestingPage() {
     setFormData({
       ...formData,
       market_id: e.target.value,
-      outcome_id: "", // Reset outcome when market changes
+      option_id: "",
+      outcome_id: "",
+    });
+  };
+
+  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = options.find((opt) => opt.id === e.target.value);
+    setFormData({
+      ...formData,
+      option_id: e.target.value,
+      outcome_id: "",
     });
   };
 
@@ -404,6 +476,25 @@ export default function TestingPage() {
             </div>
 
             <div>
+              <label className="block mb-2">Option</label>
+              <select
+                value={formData.option_id}
+                onChange={handleOptionChange}
+                className="w-full p-2 rounded bg-[#1C2127] border border-gray-700"
+                required
+              >
+                <option value="">Select Option</option>
+                {options
+                  .filter((option) => option.market_id === formData.market_id)
+                  .map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            <div>
               <label className="block mb-2">Outcome</label>
               <div className="flex gap-2">
                 <select
@@ -415,18 +506,28 @@ export default function TestingPage() {
                   required
                 >
                   <option value="">Select Outcome</option>
-                  {outcomes
-                    .filter(
-                      (outcome) => outcome.market_id === formData.market_id
-                    )
-                    .map((outcome) => (
-                      <option
-                        key={outcome.outcome_id}
-                        value={outcome.outcome_id}
-                      >
-                        {outcome.name}
-                      </option>
-                    ))}
+                  {formData.option_id && (
+                    <>
+                      {options
+                        .filter((option) => option.id === formData.option_id)
+                        .map((option) => (
+                          <>
+                            <option
+                              key={option.yes_outcome_id}
+                              value={option.yes_outcome_id}
+                            >
+                              Yes
+                            </option>
+                            <option
+                              key={option.no_outcome_id}
+                              value={option.no_outcome_id}
+                            >
+                              No
+                            </option>
+                          </>
+                        ))}
+                    </>
+                  )}
                 </select>
                 {formData.outcome_id && (
                   <div className="flex items-center bg-[#1C2127] border border-gray-700 rounded px-3">
