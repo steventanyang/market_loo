@@ -506,28 +506,23 @@ export default function TestingPage() {
                   required
                 >
                   <option value="">Select Outcome</option>
-                  {formData.option_id && (
-                    <>
-                      {options
-                        .filter((option) => option.id === formData.option_id)
-                        .map((option) => (
-                          <>
-                            <option
-                              key={option.yes_outcome_id}
-                              value={option.yes_outcome_id}
-                            >
-                              Yes
-                            </option>
-                            <option
-                              key={option.no_outcome_id}
-                              value={option.no_outcome_id}
-                            >
-                              No
-                            </option>
-                          </>
-                        ))}
-                    </>
-                  )}
+                  {formData.option_id &&
+                    options
+                      .filter((option) => option.id === formData.option_id)
+                      .map((option) => [
+                        <option
+                          key={option.yes_outcome_id}
+                          value={option.yes_outcome_id}
+                        >
+                          Yes
+                        </option>,
+                        <option
+                          key={option.no_outcome_id}
+                          value={option.no_outcome_id}
+                        >
+                          No
+                        </option>,
+                      ])}
                 </select>
                 {formData.outcome_id && (
                   <div className="flex items-center bg-[#1C2127] border border-gray-700 rounded px-3">
