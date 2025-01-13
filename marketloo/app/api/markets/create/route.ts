@@ -114,18 +114,51 @@ export async function POST(request: Request) {
       const { outcomes } = body;
       const initialPrice = 1 / outcomes.length;
 
-      // Create outcomes
+      // For each outcome, create a Yes/No pair of outcomes and an option
       for (const outcomeName of outcomes) {
-        const { error: outcomeError } = await supabase.from("outcomes").insert([
+        // Create Yes outcome
+        const { data: yesOutcome, error: yesError } = await supabase
+          .from("outcomes")
+          .insert([
+            {
+              market_id: market.id,
+              name: "Yes",
+              initial_price: initialPrice,
+              current_price: initialPrice,
+            },
+          ])
+          .select()
+          .single();
+
+        if (yesError) throw yesError;
+
+        // Create No outcome
+        const { data: noOutcome, error: noError } = await supabase
+          .from("outcomes")
+          .insert([
+            {
+              market_id: market.id,
+              name: "No",
+              initial_price: 1 - initialPrice,
+              current_price: 1 - initialPrice,
+            },
+          ])
+          .select()
+          .single();
+
+        if (noError) throw noError;
+
+        // Create option linking the Yes/No outcomes
+        const { error: optionError } = await supabase.from("options").insert([
           {
             market_id: market.id,
-            name: outcomeName,
-            initial_price: initialPrice,
-            current_price: initialPrice,
+            name: `${outcomeName}`,
+            yes_outcome_id: yesOutcome.outcome_id,
+            no_outcome_id: noOutcome.outcome_id,
           },
         ]);
 
-        if (outcomeError) throw outcomeError;
+        if (optionError) throw optionError;
       }
     }
 
