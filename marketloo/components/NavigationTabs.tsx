@@ -19,7 +19,7 @@ export default function NavigationTabs() {
                 ? "4px"
                 : pathname === "/profile"
                   ? "calc(200% + 8px)"
-                  : "calc(100% + 6px)"
+                  : "calc(100% + 9px)"
             })`,
           }}
         />

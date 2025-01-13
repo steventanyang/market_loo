@@ -4,6 +4,7 @@ import Image from "next/image";
 import MarketChart from "@/components/MarketChart";
 import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
+import { CheckCircle2 } from "lucide-react";
 
 type MarketParams = Promise<{
   id: string;
@@ -96,7 +97,9 @@ export default async function MarketPage(props: MarketPageProps) {
               <span>${market.volume || 0} Vol.</span>
               <span>•</span>
               <span>
-                Ends {new Date(market.closes_at).toLocaleDateString()}
+                {market.status === "resolved"
+                  ? "Resolved"
+                  : `Ends ${new Date(market.closes_at).toLocaleDateString()}`}
               </span>
             </div>
           </div>
@@ -108,7 +111,24 @@ export default async function MarketPage(props: MarketPageProps) {
           </div>
 
           <div>
-            <TradingInterface marketId={id} userId={user.id} />
+            {market.status === "resolved" ? (
+              <div className="bg-[#2C3038] rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-400" />
+                  <h3 className="text-xl font-semibold">Market Resolved</h3>
+                </div>
+                <p className="text-gray-400 mb-4">
+                  This market has been resolved with the following outcome:
+                </p>
+                <div className="bg-[#1C2127] rounded-lg p-4">
+                  <span className="text-green-400 font-medium">
+                    {market.outcome}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <TradingInterface marketId={id} userId={user.id} />
+            )}
           </div>
         </div>
       </div>

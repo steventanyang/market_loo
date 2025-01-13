@@ -87,6 +87,7 @@ export default async function ProtectedPage() {
       )
     `
     )
+    .eq("status", "open")
     .order("created_at", { ascending: false });
 
   if (error) {

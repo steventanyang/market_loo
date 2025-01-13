@@ -637,6 +637,48 @@ export async function POST(request: Request) {
       if (balanceError) throw balanceError;
     }
 
+    // Calculate total trade volume for this order
+    const totalTradeVolume = matchedTrades.reduce((sum, trade) => {
+      return sum + trade.amount * trade.price;
+    }, 0);
+
+    // Get current user stats
+    const { data: currentStats, error: statsError } = await supabase
+      .from("users")
+      .select("trade_volume")
+      .eq("id", user.id)
+      .single();
+
+    if (statsError) throw statsError;
+
+    // Update user's trade volume
+    const { error: updateStatsError } = await supabase
+      .from("users")
+      .update({
+        trade_volume: (currentStats?.trade_volume || 0) + totalTradeVolume,
+      })
+      .eq("id", user.id);
+
+    if (updateStatsError) throw updateStatsError;
+
+    // Update positions count
+    const { data: positionsCount, error: positionsError } = await supabase
+      .from("positions")
+      .select("id")
+      .eq("user_id", user.id)
+      .gt("amount", 0);
+
+    if (positionsError) throw positionsError;
+
+    const { error: updatePositionsError } = await supabase
+      .from("users")
+      .update({
+        positions: positionsCount.length,
+      })
+      .eq("id", user.id);
+
+    if (updatePositionsError) throw updatePositionsError;
+
     log("Order processing complete", {
       /* final order details */
     });

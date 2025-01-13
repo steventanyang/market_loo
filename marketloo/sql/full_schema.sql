@@ -118,7 +118,6 @@ create index if not exists trades_seller_order_id_idx on public.trades using btr
 create index if not exists trades_outcome_id_idx on public.trades using btree (outcome_id) tablespace pg_default;
 
 
-
 create table
   public.users (
     id uuid not null default gen_random_uuid (),
@@ -127,6 +126,9 @@ create table
     balance_of_poo numeric null default '500'::numeric,
     created_at timestamp without time zone null default now(),
     is_admin boolean not null default false,
+    trade_volume numeric null default 0,
+    profit numeric null default 0,
+    positions numeric null default 0,
     constraint users_pkey primary key (id),
     constraint users_email1_key unique (email)
   ) tablespace pg_default;

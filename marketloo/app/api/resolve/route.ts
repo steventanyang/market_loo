@@ -111,6 +111,83 @@ export async function POST(request: Request) {
       }
     }
 
+    // Calculate and update profit for each user
+    const { data: uniqueUsers, error: uniqueUsersError } = await supabase
+      .from("positions")
+      .select("user_id", { head: false, count: "exact" })
+      .eq("market_id", market_id);
+
+    if (uniqueUsersError) throw uniqueUsersError;
+
+    for (const { user_id } of uniqueUsers) {
+      // Get all positions for this user in this market
+      const { data: userPositions, error: userPositionsError } = await supabase
+        .from("positions")
+        .select("amount, outcome_id")
+        .eq("market_id", market_id)
+        .eq("user_id", user_id);
+
+      if (userPositionsError) throw userPositionsError;
+
+      // Calculate profit from winning positions
+      let marketProfit = 0;
+      for (const position of userPositions) {
+        const isWinningOutcome = winningOutcomeIds.includes(
+          position.outcome_id
+        );
+        if (isWinningOutcome) {
+          marketProfit += position.amount; // Winning positions are worth 1 POO each
+        }
+      }
+
+      // Get current user stats
+      const { data: currentStats, error: statsError } = await supabase
+        .from("users")
+        .select("profit")
+        .eq("id", user_id)
+        .single();
+
+      if (statsError) throw statsError;
+
+      // Update user's profit
+      const { error: updateProfitError } = await supabase
+        .from("users")
+        .update({
+          profit: (currentStats?.profit || 0) + marketProfit,
+        })
+        .eq("id", user_id);
+
+      if (updateProfitError) throw updateProfitError;
+
+      // Delete all positions for this market for this user
+      const { error: deletePositionsError } = await supabase
+        .from("positions")
+        .delete()
+        .eq("market_id", market_id)
+        .eq("user_id", user_id);
+
+      if (deletePositionsError) throw deletePositionsError;
+
+      // Update positions count after deletion
+      const { data: remainingPositions, error: remainingPositionsError } =
+        await supabase
+          .from("positions")
+          .select("id")
+          .eq("user_id", user_id)
+          .gt("amount", 0);
+
+      if (remainingPositionsError) throw remainingPositionsError;
+
+      const { error: updatePositionsError } = await supabase
+        .from("users")
+        .update({
+          positions: remainingPositions.length,
+        })
+        .eq("id", user_id);
+
+      if (updatePositionsError) throw updatePositionsError;
+    }
+
     // 3. Mark market as resolved with the winning outcome name
     const { error: marketError } = await supabase
       .from("markets")
