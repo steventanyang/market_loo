@@ -4,6 +4,7 @@ import TopBar from "@/components/TopBar";
 import Link from "next/link";
 import Image from "next/image";
 import NavigationTabs from "@/components/NavigationTabs";
+import ActivityFeed from "@/components/ActivityFeed";
 
 // Add this component for the percentage bar
 const PercentageBar = ({ percentage }: { percentage: number }) => (
@@ -178,6 +179,8 @@ export default async function ProtectedPage() {
             Show More Markets
           </button>
         </div>
+
+        <ActivityFeed />
       </div>
     </div>
   );

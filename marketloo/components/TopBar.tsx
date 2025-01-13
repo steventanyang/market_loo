@@ -29,7 +29,7 @@ export default function TopBar() {
   };
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+    <div className="flex items-center justify-between px-6 py-4">
       {/* Left side - Larger Marketloo text */}
       <Link href="/" className="text-white text-xl font-semibold">
         Marketloo
@@ -37,9 +37,6 @@ export default function TopBar() {
 
       {/* Right side */}
       <div className="flex items-center gap-4">
-        {userEmail && (
-          <div className="text-gray-400 text-sm">Hey, {userEmail}!</div>
-        )}
         <button
           onClick={handleSignOut}
           className="bg-[#0066FF] hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
