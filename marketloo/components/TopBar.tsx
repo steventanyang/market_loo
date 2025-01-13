@@ -5,18 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// Create supabase client outside component to persist between renders
-const supabase = createClient();
-
 export default function TopBar() {
   const router = useRouter();
-  const [userEmail, setUserEmail] = useState<string | null>(
-    // Initialize from session if available
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("userEmail") || "null")
-      : null
-  );
+  const supabase = createClient();
+  const [userEmail, setUserEmail] = useState<string>("");
 
+  // Fetch user email once when component mounts
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -24,34 +18,13 @@ export default function TopBar() {
       } = await supabase.auth.getUser();
       if (user?.email) {
         setUserEmail(user.email);
-        localStorage.setItem("userEmail", JSON.stringify(user.email));
       }
     };
-
-    // Set up auth state listener
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      const email = session?.user?.email || null;
-      setUserEmail(email);
-      if (email) {
-        localStorage.setItem("userEmail", JSON.stringify(email));
-      } else {
-        localStorage.removeItem("userEmail");
-      }
-    });
-
     getUser();
-
-    // Cleanup subscription
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  }, []); // Only run once on mount
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("userEmail");
     router.push("/sign-in");
   };
 
@@ -64,9 +37,9 @@ export default function TopBar() {
 
       {/* Right side */}
       <div className="flex items-center gap-4">
-        <div className="text-gray-400 text-sm min-w-[100px]">
-          {userEmail ? `Hey, ${userEmail}!` : ""}
-        </div>
+        {userEmail && (
+          <div className="text-gray-400 text-sm">Hey, {userEmail}!</div>
+        )}
         <button
           onClick={handleSignOut}
           className="bg-[#0066FF] hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm transition-colors"
