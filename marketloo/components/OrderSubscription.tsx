@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+// used for testing, TODO: remove
+import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 export default function OrderSubscription() {
   useEffect(() => {
     const supabase = createClient();
-    
+
     const subscription = supabase
-      .channel('trade-orders-channel')
+      .channel("trade-orders-channel")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'orders'
+          event: "INSERT",
+          schema: "public",
+          table: "orders",
         },
         (payload) => {
-          console.log('🔔 New order placed:', payload.new);
+          console.log("🔔 New order placed:", payload.new);
         }
       )
       .subscribe();
 
-    console.log('🎯 Subscribed to order changes');
-    
+    console.log("🎯 Subscribed to order changes");
+
     return () => {
       subscription.unsubscribe();
-      console.log('🎯 Unsubscribed from order changes');
+      console.log("🎯 Unsubscribed from order changes");
     };
   }, []);
 
   return null; // This component doesn't render anything
-} 
+}
