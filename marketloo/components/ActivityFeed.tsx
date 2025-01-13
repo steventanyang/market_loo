@@ -18,6 +18,8 @@ function formatTimeAgo(dateStr: string) {
   return `${seconds}s ago`;
 }
 
+const MARKET_MAKER_ID = process.env.NEXT_PUBLIC_MARKET_MAKER_ID;
+
 export default function ActivityFeed() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
 
@@ -26,6 +28,7 @@ export default function ActivityFeed() {
 
     // Simplified fetch query
     const fetchActivities = async () => {
+      console.log("Fetching activities...");
       const { data, error } = await supabase
         .from("orders")
         .select("id, type, amount, price, created_at")
@@ -37,6 +40,7 @@ export default function ActivityFeed() {
         return;
       }
 
+      console.log("Fetched activities:", data);
       if (data) {
         setActivities(data);
       }
