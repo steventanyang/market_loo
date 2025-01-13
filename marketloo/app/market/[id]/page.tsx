@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import TopBar from "@/components/TopBar";
 import Image from "next/image";
 import MarketChart from "@/components/MarketChart";
-import { OutcomesList, TradingInterface } from "@/components/MarketTrading";
+import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
 
 type MarketParams = Promise<{
@@ -107,10 +107,9 @@ export default async function MarketPage(props: MarketPageProps) {
             <MarketChart data={{ "1H": [] }} lines={[]} />
           </div>
 
-          {/*
-           * we want to put the trading interface here....
-           */}
-
+          <div>
+            <TradingInterface marketId={id} userId={user.id} />
+          </div>
         </div>
       </div>
     </div>

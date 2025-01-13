@@ -1,112 +1,72 @@
 "use client";
 
-import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-
-interface Outcome {
-  outcome_id: string;
-  name: string;
-  current_price: number;
-}
-
-interface Market {
-  id: string;
-  title: string;
-  outcomes: Outcome[];
-}
-
-interface Position {
-  outcome_id: string;
-  amount: number;
-}
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface TradingInterfaceProps {
-  market: Market;
-  userBalance: number;
-  positions: Position[];
+  marketId: string;
+  userId: string;
 }
 
-// Add OrderNotification component
-interface NotificationProps {
-  message: string;
-  onClose: () => void;
-}
+export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
+  const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
+  const [amount, setAmount] = useState("20");
+  const [selectedOutcome, setSelectedOutcome] = useState<{
+    id: string;
+    price: number;
+    name: string;
+  } | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [outcomes, setOutcomes] = useState<any[]>([]);
+  const [userBalance, setUserBalance] = useState<number | null>(null);
 
-function OrderNotification({ message, onClose }: NotificationProps) {
-  return (
-    <div className="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-center gap-4">
-      <span>{message}</span>
-      <button onClick={onClose} className="hover:opacity-80">
-        ✕
-      </button>
-    </div>
-  );
-}
+  const supabase = createClient();
 
-export function TradingInterface({
-  market,
-  userBalance,
-  positions,
-}: TradingInterfaceProps) {
-  const [shares, setShares] = useState(60);
-  const [selectedOutcome, setSelectedOutcome] = useState<"Yes" | "No">("Yes");
-  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-  const [orderType, setOrderType] = useState<"buying" | "selling">("buying");
-  const [notification, setNotification] = useState<string | null>(null);
+  useEffect(() => {
+    fetchData();
+  }, [marketId]);
 
-  const handleIncrement = () => {
-    setShares((prev) => prev + 10);
-  };
-
-  const handleDecrement = () => {
-    setShares((prev) => Math.max(0, prev - 10));
-  };
-
-  const getPosition = (outcome_id: string) => {
-    return positions.find((p) => p.outcome_id === outcome_id)?.amount || 0;
-  };
-
-  const formatPrice = (price: number) => {
-    return (price * 100).toFixed(1);
-  };
-
-  // Calculate trading metrics based on selected outcome and shares
-  const selectedPrice =
-    selectedOutcome === "Yes"
-      ? market.outcomes[0]?.current_price
-      : market.outcomes[1]?.current_price;
-
-  const avgPrice = selectedPrice * 100; // Convert to cents
-  const totalShares = shares;
-  const potentialReturn = shares * (1 - selectedPrice);
-  const potentialReturnPercentage = (
-    (potentialReturn / (shares * selectedPrice)) *
-    100
-  ).toFixed(0);
-
-  const handlePlaceOrder = async () => {
+  const fetchData = async () => {
     try {
-      setIsPlacingOrder(true);
-      const supabase = createClient();
+      // Fetch outcomes for this market
+      const { data: outcomesData, error: outcomesError } = await supabase
+        .from("outcomes")
+        .select("*")
+        .eq("market_id", marketId);
 
+      if (outcomesError) throw outcomesError;
+      setOutcomes(outcomesData || []);
+
+      // Fetch user balance
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("balance_of_poo")
+        .eq("id", userId)
+        .single();
+
+      if (userError) throw userError;
+      setUserBalance(userData?.balance_of_poo || 0);
+    } catch (err: any) {
+      console.error("Error fetching data:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleTrade = async () => {
+    if (!selectedOutcome) return;
+    setLoading(true);
+    setError("");
+
+    try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error("Not authenticated");
-      }
 
-      const orderData = {
-        market_id: market.id,
-        outcome_id:
-          selectedOutcome === "Yes"
-            ? market.outcomes[0].outcome_id
-            : market.outcomes[1].outcome_id,
-        amount: shares,
-        type: orderType,
-      };
-      console.log("ORDER DATA:");
-      console.log(market.outcomes); // Log the order data
+      if (!session) {
+        throw new Error("No active session");
+      }
 
       const response = await fetch("/api/orders", {
         method: "POST",
@@ -114,196 +74,214 @@ export function TradingInterface({
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({
+          market_id: marketId,
+          outcome_id: selectedOutcome.id,
+          amount: Number(amount),
+          type: activeTab === "buy" ? "buying" : "selling",
+        }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to place order");
+        throw new Error(data.error || "Failed to place order");
       }
 
-      const result = await response.json();
-      console.log("Order placed successfully:", result);
-
-      // Reset shares to default
-      setShares(60);
-
-      // Show notification
-      setNotification(
-        `Successfully ${orderType === "buying" ? "bought" : "sold"} ${shares} shares of ${selectedOutcome}`
-      );
-
-      // Auto-hide notification after 5 seconds
-      setTimeout(() => setNotification(null), 5000);
-    } catch (error: any) {
-      console.error("Error placing order:", error);
-      setNotification(error.message || "Failed to place order");
+      // Refresh data after successful trade
+      fetchData();
+    } catch (err: any) {
+      setError(err.message);
     } finally {
-      setIsPlacingOrder(false);
+      setLoading(false);
+    }
+  };
+
+  const calculateOrderDetails = () => {
+    if (!selectedOutcome || !amount) return null;
+
+    const numAmount = Number(amount);
+    const price = selectedOutcome.price;
+
+    if (activeTab === "buy") {
+      const cost = numAmount * price;
+      const totalReturn = numAmount;
+      const percentageGain = ((totalReturn - cost) / cost) * 100;
+      return {
+        cost: cost.toFixed(2),
+        totalReturn: totalReturn.toFixed(2),
+        percentageGain: percentageGain.toFixed(1),
+      };
+    } else {
+      const proceeds = numAmount * price;
+      const maxLoss = numAmount;
+      const percentageLoss = ((maxLoss - proceeds) / proceeds) * 100;
+      return {
+        proceeds: proceeds.toFixed(2),
+        maxLoss: maxLoss.toFixed(2),
+        percentageLoss: percentageLoss.toFixed(1),
+      };
     }
   };
 
   return (
-    <div className="bg-[#1C2127] p-6 rounded-lg">
-      <div className="mb-8 text-center">
-        <h2 className="text-gray-400 font-bold mb-2">Available Balance</h2>
-        <div className="text-3xl font-bold text-white">
-          ${userBalance.toFixed(2)}
-        </div>
+    <div className="bg-[#2C3038] rounded-lg overflow-hidden">
+      {/* Trading Tabs */}
+      <div className="flex border-b border-gray-700">
+        <button
+          onClick={() => setActiveTab("buy")}
+          className={cn(
+            "flex-1 px-4 py-3 text-sm font-medium transition",
+            activeTab === "buy"
+              ? "text-green-400 border-b-2 border-green-400"
+              : "text-gray-400 hover:text-white"
+          )}
+        >
+          Buy
+        </button>
+        <button
+          onClick={() => setActiveTab("sell")}
+          className={cn(
+            "flex-1 px-4 py-3 text-sm font-medium transition",
+            activeTab === "sell"
+              ? "text-red-400 border-b-2 border-red-400"
+              : "text-gray-400 hover:text-white"
+          )}
+        >
+          Sell
+        </button>
       </div>
 
-      <div className="mb-6">
-        <h2 className="text-white font-bold mb-4">Outcome</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <button
-              className={`p-4 rounded font-bold relative overflow-hidden transition-all duration-200 ${
-                selectedOutcome === "Yes"
-                  ? "bg-green-600/80 text-white"
-                  : "bg-[#2C3038] text-gray-300"
-              }`}
-              onClick={() => setSelectedOutcome("Yes")}
-            >
-              <div className="relative z-10 transition-opacity duration-200">
-                Yes {formatPrice(market.outcomes[0]?.current_price)}¢
-              </div>
-              <div
-                className={`absolute inset-0 bg-green-600/80 transition-transform duration-300 ${
-                  selectedOutcome === "Yes"
-                    ? "translate-x-0"
-                    : "-translate-x-full"
-                }`}
-              />
-            </button>
-            <div className="text-sm text-gray-400 font-bold text-center">
-              Position: {getPosition(market.outcomes[0].outcome_id)}
-            </div>
+      {/* Trading Form */}
+      <div className="p-4">
+        {/* Outcome Selection */}
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-400">Outcome</span>
+            {selectedOutcome && (
+              <span className="text-sm text-gray-400">
+                Price: {selectedOutcome.price}
+              </span>
+            )}
           </div>
-
-          <div className="flex flex-col gap-2">
-            <button
-              className={`p-4 rounded font-bold relative overflow-hidden transition-all duration-200 ${
-                selectedOutcome === "No"
-                  ? "bg-red-600/80 text-white"
-                  : "bg-[#2C3038] text-gray-300"
-              }`}
-              onClick={() => setSelectedOutcome("No")}
-            >
-              <div className="relative z-10 transition-opacity duration-200">
-                No {formatPrice(market.outcomes[1]?.current_price)}¢
-              </div>
-              <div
-                className={`absolute inset-0 bg-red-600/80 transition-transform duration-300 ${
-                  selectedOutcome === "No"
-                    ? "translate-x-0"
-                    : "translate-x-full"
-                }`}
-              />
-            </button>
-            <div className="text-sm text-gray-400 font-bold text-center">
-              Position: {getPosition(market.outcomes[1].outcome_id)}
-            </div>
+          <div className="grid grid-cols-2 gap-2">
+            {outcomes.map((outcome) => (
+              <button
+                key={outcome.outcome_id}
+                onClick={() =>
+                  setSelectedOutcome({
+                    id: outcome.outcome_id,
+                    price: outcome.current_price,
+                    name: outcome.name,
+                  })
+                }
+                className={cn(
+                  "px-3 py-2 text-sm font-medium rounded-lg transition",
+                  selectedOutcome?.id === outcome.outcome_id
+                    ? activeTab === "buy"
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                )}
+              >
+                {outcome.name}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
 
-      <div className="mb-6">
-        <div className="bg-[#2C3038] p-1 rounded relative">
-          <div className="grid grid-cols-2 relative z-10">
+        {/* Amount Input */}
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-400">Amount</span>
+            {userBalance !== null && (
+              <span className="text-sm text-gray-400">
+                Balance: {userBalance} POO
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
             <button
-              className={`py-2 rounded font-bold transition-colors duration-200 relative z-10 ${
-                orderType === "buying" ? "text-white" : "text-gray-400"
-              }`}
-              onClick={() => setOrderType("buying")}
+              onClick={() => setAmount(String(Math.max(0, Number(amount) - 1)))}
+              className="p-2 bg-[#1C2127] rounded-lg hover:bg-[#363B44] transition"
             >
-              Buy
+              -
             </button>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="flex-1 bg-[#1C2127] border border-gray-700 rounded-lg px-3 py-2 text-center"
+              min="1"
+            />
             <button
-              className={`py-2 rounded font-bold transition-colors duration-200 relative z-10 ${
-                orderType === "selling" ? "text-white" : "text-gray-400"
-              }`}
-              onClick={() => setOrderType("selling")}
+              onClick={() => setAmount(String(Number(amount) + 1))}
+              className="p-2 bg-[#1C2127] rounded-lg hover:bg-[#363B44] transition"
             >
-              Sell
+              +
             </button>
           </div>
-          <div
-            className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded bg-blue-500 transition-transform duration-300 ease-in-out ${
-              orderType === "selling"
-                ? "translate-x-[calc(100%+8px)]"
-                : "translate-x-0"
-            }`}
-          />
         </div>
+
+        {/* Order Details */}
+        {selectedOutcome && amount && (
+          <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
+            {activeTab === "buy" ? (
+              <>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-400">Cost</span>
+                  <span className="text-red-400">
+                    {calculateOrderDetails()?.cost} POO
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-400">Potential return</span>
+                  <span className="text-green-400">
+                    {calculateOrderDetails()?.totalReturn} POO (
+                    {calculateOrderDetails()?.percentageGain}%)
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-400">Proceeds</span>
+                  <span className="text-green-400">
+                    {calculateOrderDetails()?.proceeds} POO
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-400">Maximum loss</span>
+                  <span className="text-red-400">
+                    {calculateOrderDetails()?.maxLoss} POO (
+                    {calculateOrderDetails()?.percentageLoss}%)
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/20 text-red-400 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        <button
+          onClick={handleTrade}
+          disabled={!selectedOutcome || loading}
+          className={cn(
+            "w-full py-3 px-4 rounded-lg font-medium transition",
+            activeTab === "buy"
+              ? "bg-green-500 hover:bg-green-600 text-white"
+              : "bg-red-500 hover:bg-red-600 text-white",
+            (!selectedOutcome || loading) && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          {loading ? "Processing..." : "Place Order"}
+        </button>
       </div>
-
-      <div className="mb-6">
-        <h2 className="text-white font-bold mb-2">Shares</h2>
-        <div className="flex items-center bg-[#2C3038] rounded p-2">
-          <button
-            onClick={handleDecrement}
-            className="px-4 py-2 text-gray-400 hover:text-white font-bold text-lg"
-          >
-            −
-          </button>
-          <input
-            type="number"
-            value={shares}
-            onChange={(e) => setShares(Number(e.target.value))}
-            className="flex-1 bg-transparent text-center text-white font-medium [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          />
-          <button
-            onClick={handleIncrement}
-            className="px-4 py-2 text-gray-400 hover:text-white font-bold text-lg"
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-2 mb-6">
-        <div className="flex justify-between text-sm font-bold">
-          <span className="text-gray-400">Avg price</span>
-          <span className="text-blue-400">{avgPrice.toFixed(1)}¢</span>
-        </div>
-        <div className="flex justify-between text-sm font-bold">
-          <span className="text-gray-400">Shares</span>
-          <span className="text-white">{totalShares}</span>
-        </div>
-        <div className="flex justify-between text-sm font-bold">
-          <span className="text-gray-400">Potential return</span>
-          <span className="text-green-500">
-            ${potentialReturn.toFixed(2)} ({potentialReturnPercentage}%)
-          </span>
-        </div>
-      </div>
-
-      <button
-        onClick={handlePlaceOrder}
-        disabled={isPlacingOrder}
-        className={`w-full bg-blue-500 text-white rounded py-3 hover:bg-blue-600 font-bold
-          ${isPlacingOrder ? "opacity-50 cursor-not-allowed" : ""}`}
-      >
-        {isPlacingOrder
-          ? "Placing Order..."
-          : `Place ${orderType === "buying" ? "Buy" : "Sell"} Order`}
-      </button>
-
-      {notification && (
-        <OrderNotification
-          message={notification}
-          onClose={() => setNotification(null)}
-        />
-      )}
-    </div>
-  );
-}
-
-// You can keep or modify the OutcomesList component as needed
-export function OutcomesList({ outcomes }: { outcomes: any[] }) {
-  return (
-    <div className="bg-[#1C2127] p-6 rounded-lg">
-      {/* Outcome list content */}
     </div>
   );
 }
