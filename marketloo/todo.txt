@@ -21,6 +21,7 @@
 ###
 - show market volume on main page
 - improve matching algorithm (AMM?)
+- refine trading interface (styling)
 
 ##
 - when people sign up they can use their user as a sign up code. for every 3 signups they get 10000 POO

@@ -22,6 +22,12 @@ interface Outcome {
   current_price: number;
 }
 
+interface Position {
+  id: string;
+  amount: number;
+  outcome_id: string;
+}
+
 export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
   const [amount, setAmount] = useState("20");
@@ -36,6 +42,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
   const [options, setOptions] = useState<Option[]>([]);
   const [outcomes, setOutcomes] = useState<Outcome[]>([]);
   const [userBalance, setUserBalance] = useState<number | null>(null);
+  const [positions, setPositions] = useState<Position[]>([]);
 
   const supabase = createClient();
   const isBinaryMarket = options.length === 1;
@@ -78,6 +85,16 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
 
       if (userError) throw userError;
       setUserBalance(userData?.balance_of_poo || 0);
+
+      // Fetch user's positions for this market
+      const { data: positionsData, error: positionsError } = await supabase
+        .from("positions")
+        .select("*")
+        .eq("market_id", marketId)
+        .eq("user_id", userId);
+
+      if (positionsError) throw positionsError;
+      setPositions(positionsData || []);
     } catch (err: any) {
       console.error("Error fetching data:", err);
       setError(err.message);
@@ -118,8 +135,8 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
         throw new Error(data.error || "Failed to place order");
       }
 
-      // Refresh data after successful trade
-      fetchData();
+      // After successful trade, fetch fresh data
+      await fetchData();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -152,6 +169,11 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
         percentageLoss: percentageLoss.toFixed(2),
       };
     }
+  };
+
+  const getPositionAmount = (outcomeId: string) => {
+    const position = positions.find((p) => p.outcome_id === outcomeId);
+    return position ? position.amount : 0;
   };
 
   const renderBinaryInterface = () => (
@@ -220,18 +242,21 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 Price: {Number(selectedOutcome.price).toFixed(2)}
               </div>
             </div>
-            
+
             {/* Current Position Section */}
             <div className="p-3 bg-[#1C2127] rounded-lg">
               <div className="text-sm text-gray-400 mb-2">Your Position</div>
               <div className="text-lg font-semibold text-white">
-                0 Shares {/* You'll need to fetch and display actual position */}
+                {selectedOutcome ? getPositionAmount(selectedOutcome.id) : 0}{" "}
+                Shares
               </div>
             </div>
           </div>
         ) : (
           <div className="text-center text-gray-400 mt-8">
-            <div className="text-lg font-medium">Select an option to start trading</div>
+            <div className="text-lg font-medium">
+              Select an option to start trading
+            </div>
           </div>
         )}
       </div>
@@ -310,23 +335,49 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 Price: {Number(selectedOutcome.price).toFixed(2)}
               </div>
             </div>
-            
+
             {/* Current Position Section */}
             <div className="p-3 bg-[#1C2127] rounded-lg">
               <div className="text-sm text-gray-400 mb-2">Your Position</div>
               <div className="text-lg font-semibold text-white">
-                0 Shares {/* You'll need to fetch and display actual position */}
+                {selectedOutcome ? getPositionAmount(selectedOutcome.id) : 0}{" "}
+                Shares
               </div>
             </div>
           </div>
         ) : (
           <div className="text-center text-gray-400 mt-8">
-            <div className="text-lg font-medium">Select an option to start trading</div>
+            <div className="text-lg font-medium">
+              Select an option to start trading
+            </div>
           </div>
         )}
       </div>
     </div>
   );
+
+  // Add real-time subscription for position updates
+  useEffect(() => {
+    const subscription = supabase
+      .channel("positions")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "positions",
+          filter: `market_id=eq.${marketId}`,
+        },
+        () => {
+          fetchData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [marketId]);
 
   return (
     <div className="bg-[#2C3038] rounded-lg overflow-hidden">
