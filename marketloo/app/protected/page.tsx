@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import NavigationTabs from "@/components/NavigationTabs";
 import ActivityFeed from "@/components/ActivityFeed";
+import OrderSubscription from "@/components/OrderSubscription";
 
 // Add this component for the percentage bar
 const PercentageBar = ({ percentage }: { percentage: number }) => (
@@ -98,6 +99,7 @@ export default async function ProtectedPage() {
 
   return (
     <div className="min-h-screen bg-[#1C2127] text-white">
+      <OrderSubscription />
       <TopBar />
       <NavigationTabs />
 
