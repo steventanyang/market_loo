@@ -10,9 +10,11 @@
 - buy / sell changes poo balance -- done
 - resolve markets / dish payouts functionality -- done
 - connect testing page to main frontend -- done
-- frontend / backend for leaderboard
-- admin page for market creation / reset user / unresolve market
-- after market is resolved the market should disappear
+- frontend / backend for leaderboard -- done
+- admin page for market creation / reset user / unresolve market -- done
+- after market is resolved the market should disappear -- done
+- backend bugs for placing orders
+- overall frontend performance
 
 #### 
 - make landing page nicer ~ more detail on markets

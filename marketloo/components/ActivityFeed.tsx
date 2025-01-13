@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import React from "react";
 
 // Simplified types
 interface ActivityItem {
@@ -10,6 +11,7 @@ interface ActivityItem {
   amount: number;
   price: number;
   created_at: string;
+  user_id: string;
 }
 
 function formatTimeAgo(dateStr: string) {
@@ -18,40 +20,43 @@ function formatTimeAgo(dateStr: string) {
   return `${seconds}s ago`;
 }
 
+// const MARKET_MAKER_ID = process.env.NEXT_PUBLIC_MARKET_MAKER_ID;
 const MARKET_MAKER_ID = process.env.NEXT_PUBLIC_MARKET_MAKER_ID;
 
-export default function ActivityFeed() {
+export default React.memo(function ActivityFeed() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
 
   useEffect(() => {
+    let isSubscribed = true; // Add this flag to prevent updates after unmount
     const supabase = createClient();
 
-    // Simplified fetch query
     const fetchActivities = async () => {
-      console.log("Fetching activities...");
-      const { data, error } = await supabase
-        .from("orders")
-        .select("id, type, amount, price, created_at")
-        .order("created_at", { ascending: false })
-        .limit(10);
+      try {
+        const { data, error } = await supabase
+          .from("orders")
+          .select("id, type, amount, price, created_at, user_id")
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-      if (error) {
-        console.error("Error fetching activities:", error);
-        return;
-      }
+        if (error) throw error;
 
-      console.log("Fetched activities:", data);
-      if (data) {
-        setActivities(data);
+        if (data && isSubscribed) {
+          const filtered = data.filter(
+            (order) => order.user_id !== MARKET_MAKER_ID
+          );
+          setActivities(filtered.slice(0, 10));
+        }
+      } catch (e) {
+        console.error("Error fetching activities:", e);
       }
     };
 
     // Initial fetch
     fetchActivities();
 
-    // Simple subscription
+    // Set up subscription
     const subscription = supabase
-      .channel("orders-channel")
+      .channel("orders")
       .on(
         "postgres_changes",
         {
@@ -61,15 +66,19 @@ export default function ActivityFeed() {
         },
         (payload) => {
           const newOrder = payload.new as ActivityItem;
-          setActivities((prev) => [newOrder, ...prev.slice(0, 9)]);
+          if (newOrder.user_id !== MARKET_MAKER_ID && isSubscribed) {
+            setActivities((prev) => [newOrder, ...prev.slice(0, 9)]);
+          }
         }
       )
       .subscribe();
 
+    // Cleanup function
     return () => {
+      isSubscribed = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, []); // Empty dependency array
 
   return (
     <div className="max-w-2xl mx-auto mt-12 bg-[#2C3038] rounded-lg border border-gray-700">
@@ -91,10 +100,13 @@ export default function ActivityFeed() {
               <span className="text-xs text-gray-500 ml-2">
                 {formatTimeAgo(activity.created_at)}
               </span>
+              <span className="text-xs text-gray-400 ml-auto">
+                by {activity.user_id.slice(0, 8)}...
+              </span>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-}
+});
