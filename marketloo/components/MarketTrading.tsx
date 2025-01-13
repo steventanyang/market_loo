@@ -131,7 +131,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
     if (!selectedOutcome || !amount) return null;
 
     const numAmount = Number(amount);
-    const price = selectedOutcome.price;
+    const price = Number(selectedOutcome.price);
 
     if (activeTab === "buy") {
       const cost = numAmount * price;
@@ -140,7 +140,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
       return {
         cost: cost.toFixed(2),
         totalReturn: totalReturn.toFixed(2),
-        percentageGain: percentageGain.toFixed(1),
+        percentageGain: percentageGain.toFixed(2),
       };
     } else {
       const proceeds = numAmount * price;
@@ -149,62 +149,99 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
       return {
         proceeds: proceeds.toFixed(2),
         maxLoss: maxLoss.toFixed(2),
-        percentageLoss: percentageLoss.toFixed(1),
+        percentageLoss: percentageLoss.toFixed(2),
       };
     }
   };
 
   const renderBinaryInterface = () => (
-    <div className="grid grid-cols-2 gap-2">
-      {options[0] && (
-        <>
-          <button
-            onClick={() =>
-              setSelectedOutcome({
-                id: options[0].yes_outcome_id,
-                price: (options[0] as any).yes_outcome.current_price,
-                name: "Yes",
-              })
-            }
-            className={cn(
-              "px-3 py-2 text-sm font-medium rounded-lg transition",
-              selectedOutcome?.id === options[0].yes_outcome_id
-                ? activeTab === "buy"
-                  ? "bg-green-500/20 text-green-400"
-                  : "bg-red-500/20 text-red-400"
-                : "bg-[#1C2127] text-gray-400 hover:text-white"
-            )}
-          >
-            Yes
-          </button>
-          <button
-            onClick={() =>
-              setSelectedOutcome({
-                id: options[0].no_outcome_id,
-                price: (options[0] as any).no_outcome.current_price,
-                name: "No",
-              })
-            }
-            className={cn(
-              "px-3 py-2 text-sm font-medium rounded-lg transition",
-              selectedOutcome?.id === options[0].no_outcome_id
-                ? activeTab === "buy"
-                  ? "bg-green-500/20 text-green-400"
-                  : "bg-red-500/20 text-red-400"
-                : "bg-[#1C2127] text-gray-400 hover:text-white"
-            )}
-          >
-            No
-          </button>
-        </>
-      )}
+    <div className="grid grid-cols-[1fr,1fr] gap-4">
+      <div className="grid grid-cols-2 gap-2">
+        {options[0] && (
+          <>
+            <button
+              onClick={() =>
+                setSelectedOutcome({
+                  id: options[0].yes_outcome_id,
+                  price: Number((options[0] as any).yes_outcome.current_price),
+                  name: "Yes",
+                })
+              }
+              className={cn(
+                "px-3 py-2 text-base font-semibold rounded-lg transition",
+                selectedOutcome?.id === options[0].yes_outcome_id
+                  ? activeTab === "buy"
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-red-500/20 text-red-400"
+                  : "bg-[#1C2127] text-gray-400 hover:text-white"
+              )}
+            >
+              Yes
+            </button>
+            <button
+              onClick={() =>
+                setSelectedOutcome({
+                  id: options[0].no_outcome_id,
+                  price: Number((options[0] as any).no_outcome.current_price),
+                  name: "No",
+                })
+              }
+              className={cn(
+                "px-3 py-2 text-base font-semibold rounded-lg transition",
+                selectedOutcome?.id === options[0].no_outcome_id
+                  ? activeTab === "buy"
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-red-500/20 text-red-400"
+                  : "bg-[#1C2127] text-gray-400 hover:text-white"
+              )}
+            >
+              No
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Right column - balance and positions */}
+      <div>
+        <div className="mb-6">
+          <div className="text-gray-400 text-sm mb-1">Balance</div>
+          <div className="text-2xl font-bold text-white">
+            {userBalance?.toFixed(2)} POO
+          </div>
+        </div>
+
+        {selectedOutcome ? (
+          <div>
+            <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
+              <div className="text-base font-semibold text-white mb-2">
+                Selected: {selectedOutcome.name}
+              </div>
+              <div className="text-base font-medium text-gray-400">
+                Price: {Number(selectedOutcome.price).toFixed(2)}
+              </div>
+            </div>
+            
+            {/* Current Position Section */}
+            <div className="p-3 bg-[#1C2127] rounded-lg">
+              <div className="text-sm text-gray-400 mb-2">Your Position</div>
+              <div className="text-lg font-semibold text-white">
+                0 Shares {/* You'll need to fetch and display actual position */}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center text-gray-400 mt-8">
+            <div className="text-lg font-medium">Select an option to start trading</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 
   const renderMultiOptionInterface = () => (
     <div className="grid grid-cols-[1fr,1fr] gap-4">
       {/* Left column - scrollable options list */}
-      <div className="max-h-[300px] overflow-y-auto pr-4">
+      <div className="max-h-[300px] overflow-y-auto pr-4 scrollbar-hide">
         {options.map((option) => (
           <div key={option.id} className="mb-2">
             <div className="text-sm text-gray-400 mb-1">{option.name}</div>
@@ -213,13 +250,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 onClick={() =>
                   setSelectedOutcome({
                     id: option.yes_outcome_id,
-                    price: (option as any).yes_outcome.current_price,
+                    price: Number((option as any).yes_outcome.current_price),
                     name: "Yes",
                     optionName: option.name,
                   })
                 }
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-lg transition",
+                  "px-3 py-2 text-base font-semibold rounded-lg transition",
                   selectedOutcome?.id === option.yes_outcome_id
                     ? activeTab === "buy"
                       ? "bg-green-500/20 text-green-400"
@@ -233,13 +270,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 onClick={() =>
                   setSelectedOutcome({
                     id: option.no_outcome_id,
-                    price: (option as any).no_outcome.current_price,
+                    price: Number((option as any).no_outcome.current_price),
                     name: "No",
                     optionName: option.name,
                   })
                 }
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-lg transition",
+                  "px-3 py-2 text-base font-semibold rounded-lg transition",
                   selectedOutcome?.id === option.no_outcome_id
                     ? activeTab === "buy"
                       ? "bg-green-500/20 text-green-400"
@@ -254,16 +291,37 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
         ))}
       </div>
 
-      {/* Right column - trading interface */}
+      {/* Right column - balance and positions */}
       <div>
-        {selectedOutcome && (
-          <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
-            <div className="text-sm text-gray-400 mb-2">
-              Selected: {selectedOutcome.optionName} - {selectedOutcome.name}
+        <div className="mb-6">
+          <div className="text-gray-400 text-sm mb-1">Balance</div>
+          <div className="text-2xl font-bold text-white">
+            {userBalance?.toFixed(2)} POO
+          </div>
+        </div>
+
+        {selectedOutcome ? (
+          <div>
+            <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
+              <div className="text-base font-semibold text-white mb-2">
+                {selectedOutcome.optionName} - {selectedOutcome.name}
+              </div>
+              <div className="text-base font-medium text-gray-400">
+                Price: {Number(selectedOutcome.price).toFixed(2)}
+              </div>
             </div>
-            <div className="text-sm text-gray-400">
-              Price: {selectedOutcome.price}
+            
+            {/* Current Position Section */}
+            <div className="p-3 bg-[#1C2127] rounded-lg">
+              <div className="text-sm text-gray-400 mb-2">Your Position</div>
+              <div className="text-lg font-semibold text-white">
+                0 Shares {/* You'll need to fetch and display actual position */}
+              </div>
             </div>
+          </div>
+        ) : (
+          <div className="text-center text-gray-400 mt-8">
+            <div className="text-lg font-medium">Select an option to start trading</div>
           </div>
         )}
       </div>
