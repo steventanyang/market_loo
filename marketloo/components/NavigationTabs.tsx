@@ -7,51 +7,58 @@ export default function NavigationTabs() {
   const pathname = usePathname();
 
   return (
-    <div className="w-full max-w-md mx-auto mb-8">
-      <div className="relative flex rounded-lg bg-[#2C3038] p-1">
+    <div className="w-full flex justify-center px-4 mb-8">
+      <nav className="flex relative rounded-lg bg-[#2C3038] p-1 w-full max-w-[400px]">
         {/* Sliding background */}
         <div
-          className="absolute h-[calc(100%-8px)] top-1 transition-transform duration-200 ease-out bg-[#1C2127] rounded-md"
+          className="absolute transition-all duration-200 ease-in-out bg-[#1C2127] rounded-md"
           style={{
-            width: "calc(100% / 3 - 8px)",
-            transform: `translateX(${
+            width: "33.333333%",
+            height: "85%",
+            top: "7.5%",
+            left:
               pathname === "/leaderboard"
-                ? "4px"
-                : pathname === "/profile"
-                  ? "calc(200% + 8px)"
-                  : "calc(100% + 9px)"
-            })`,
+                ? "1%"
+                : pathname === "/protected"
+                  ? "33.333333%"
+                  : "65.666666%",
           }}
         />
 
         {/* Navigation buttons */}
         <Link
           href="/leaderboard"
-          className={`flex-1 px-4 py-2 text-center text-sm font-medium z-10 transition-colors duration-200 ${
-            pathname === "/leaderboard" ? "text-white" : "text-gray-400"
+          className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
+            pathname === "/leaderboard"
+              ? "text-white"
+              : "text-gray-400 hover:text-gray-200"
           }`}
         >
-          Leaderboard
+          <span className="px-3">Leaderboard</span>
         </Link>
 
         <Link
           href="/protected"
-          className={`flex-1 px-4 py-2 text-center text-sm font-medium z-10 transition-colors duration-200 ${
-            pathname === "/protected" ? "text-white" : "text-gray-400"
+          className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
+            pathname === "/protected"
+              ? "text-white"
+              : "text-gray-400 hover:text-gray-200"
           }`}
         >
-          Trade
+          <span className="px-3">Trade</span>
         </Link>
 
         <Link
           href="/profile"
-          className={`flex-1 px-4 py-2 text-center text-sm font-medium z-10 transition-colors duration-200 ${
-            pathname === "/profile" ? "text-white" : "text-gray-400"
+          className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
+            pathname === "/profile"
+              ? "text-white"
+              : "text-gray-400 hover:text-gray-200"
           }`}
         >
-          Profile
+          <span className="px-3">Profile</span>
         </Link>
-      </div>
+      </nav>
     </div>
   );
 }
