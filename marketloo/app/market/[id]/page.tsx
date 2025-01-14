@@ -6,12 +6,10 @@ import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 
-type MarketParams = Promise<{
-  id: string;
-}>;
-
 interface MarketPageProps {
-  params: MarketParams;
+  params: {
+    id: string;
+  };
 }
 
 // Type definition
@@ -48,11 +46,7 @@ const chartLines = [
   { key: "NO", color: "#EF4444", name: "No" },
 ];
 
-export default async function MarketPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function MarketPage({ params }: MarketPageProps) {
   const supabase = await createClient();
 
   // Check authentication

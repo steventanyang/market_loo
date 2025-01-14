@@ -113,11 +113,17 @@ function findClosestPrice(
   return latestTrade.price * 100;
 }
 
-type Params = { id: string };
+// Update the Params interface to match Next.js expectations
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
 
-export async function GET(request: Request, { params }: { params: Params }) {
+export async function GET(request: Request, { params }: RouteParams) {
   try {
-    const marketId = params.id;
+    const resolvedParams = await params;
+    const marketId = resolvedParams.id;
     const now = new Date();
     const marketStart = subHours(now, 24);
 
