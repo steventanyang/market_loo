@@ -12,41 +12,10 @@ interface MarketPageProps {
   };
 }
 
-// Type definition
-interface MarketChartData {
-  [timeRange: string]: {
-    timestamp: string;
-    [outcomeName: string]: string | number; // timestamp is string, prices are numbers
-  }[];
-}
-
-// First update the TIME_RANGES constant in your MarketChart component
-const TIME_RANGES = [
-  { label: "5M", value: "5M" },
-  { label: "30M", value: "30M" },
-  { label: "1H", value: "1H" },
-  { label: "6H", value: "6H" },
-  { label: "12H", value: "12H" },
-  { label: "ALL", value: "ALL" },
-];
-
-// Then update your sample data
-const sampleChartData: MarketChartData = {
-  "5M": [{ timestamp: "2024-03-20T11:35:00Z", YES: 28, NO: 72 }],
-  "30M": [{ timestamp: "2024-03-20T09:30:00Z", YES: 22, NO: 78 }],
-  "1H": [{ timestamp: "2024-03-20T07:00:00Z", YES: 20, NO: 80 }],
-  "6H": [{ timestamp: "2024-03-19T18:00:00Z", YES: 15, NO: 85 }],
-  "12H": [{ timestamp: "2024-03-19T12:00:00Z", YES: 12, NO: 88 }],
-  ALL: [{ timestamp: "2024-03-14T12:00:00Z", YES: 10, NO: 90 }],
-};
-
-// Sample lines configuration
-const chartLines = [
-  { key: "YES", color: "#22C55E", name: "Yes" },
-  { key: "NO", color: "#EF4444", name: "No" },
-];
-
 export default async function MarketPage({ params }: MarketPageProps) {
+  // Ensure params.id is resolved at the start of the component
+  const resolvedParams = await params;
+  const marketId = resolvedParams.id;
   const supabase = await createClient();
 
   // Check authentication
@@ -58,7 +27,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
     return redirect("/sign-in");
   }
 
-  // Fetch market data
+  // Use marketId instead of params.id throughout the component
   const { data: market, error: marketError } = await supabase
     .from("markets")
     .select(
@@ -71,7 +40,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
       )
     `
     )
-    .eq("id", params.id)
+    .eq("id", marketId)
     .single();
 
   if (marketError) {
@@ -99,7 +68,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
   const { data: positions, error: positionsError } = await supabase
     .from("positions")
     .select("*")
-    .eq("market_id", params.id)
+    .eq("market_id", marketId)
     .eq("user_id", user.id);
 
   if (positionsError) {
@@ -138,7 +107,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <MarketChart marketId={params.id} />
+            <MarketChart marketId={marketId} />
           </div>
 
           <div>
@@ -158,7 +127,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
                 </div>
               </div>
             ) : (
-              <TradingInterface marketId={params.id} userId={user.id} />
+              <TradingInterface marketId={marketId} userId={user.id} />
             )}
           </div>
         </div>
