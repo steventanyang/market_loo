@@ -28,6 +28,14 @@ interface Position {
   amount: number;
 }
 
+interface PositionWithOutcome {
+  amount: number;
+  outcome_id: string;
+  outcomes: {
+    current_price: number;
+  };
+}
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -161,6 +169,43 @@ const log = (context: string, data: any) => {
   );
 };
 
+async function updateUserPositionValue(supabase: any, userId: string) {
+  // Get all user's positions with amounts > 0
+  const { data: positions, error: positionsError } = await supabase
+    .from("positions")
+    .select(
+      `
+      amount,
+      outcome_id,
+      outcomes!inner (
+        current_price
+      )
+    `
+    )
+    .eq("user_id", userId)
+    .gt("amount", 0);
+
+  if (positionsError) throw positionsError;
+
+  // Calculate total value of all positions
+  const totalValue = positions.reduce(
+    (sum: number, position: PositionWithOutcome) => {
+      return sum + position.amount * position.outcomes.current_price;
+    },
+    0
+  );
+
+  // Update user's positions value
+  const { error: updateError } = await supabase
+    .from("users")
+    .update({ positions: totalValue })
+    .eq("id", userId);
+
+  if (updateError) throw updateError;
+
+  return totalValue;
+}
+
 export async function POST(request: Request) {
   try {
     log("Request received", { method: "POST", url: request.url });
@@ -281,24 +326,27 @@ export async function POST(request: Request) {
       throw new Error("Failed to get outcome price");
     }
 
-    // Calculate total cost
-    const totalCost = amount * outcome.current_price;
+    // Calculate total cost/proceeds
+    const totalAmount = amount * outcome.current_price;
 
-    // Check if user has enough balance for buying
-    if (type === "buying" && userData.balance_of_poo < totalCost) {
-      return NextResponse.json(
-        { error: "Insufficient balance" },
-        { status: 400 }
-      );
+    // Update user's balance immediately based on order type
+    if (type === "buying") {
+      // For buy orders, deduct the cost immediately
+      const { error: balanceError } = await supabase
+        .from("users")
+        .update({ balance_of_poo: userData.balance_of_poo - totalAmount })
+        .eq("id", user.id);
+
+      if (balanceError) throw balanceError;
     }
 
-    // Create the initial order with the user's ID (not market maker)
+    // Create the initial order
     const { data: newOrder, error: insertError } = await supabase
       .from("orders")
       .insert([
         {
           market_id,
-          user_id: user.id, // Use actual user ID instead of market maker
+          user_id: user.id,
           outcome_id,
           amount,
           price: outcome.current_price,
@@ -310,16 +358,6 @@ export async function POST(request: Request) {
       .single();
 
     if (insertError) throw insertError;
-
-    // Update user's balance immediately for the initial order
-    if (type === "buying") {
-      const { error: balanceError } = await supabase
-        .from("users")
-        .update({ balance_of_poo: userData.balance_of_poo - totalCost })
-        .eq("id", user.id);
-
-      if (balanceError) throw balanceError;
-    }
 
     // Find matching orders
     const { data: matchingOrders, error: matchError } = await supabase
@@ -544,6 +582,44 @@ export async function POST(request: Request) {
             }
           }
         }
+
+        // Update buyer's balance (current user)
+        const { error: buyerBalanceError } = await supabase
+          .from("users")
+          .update({
+            balance_of_poo:
+              userData.balance_of_poo - trade.amount * trade.price,
+          })
+          .eq("id", user.id);
+
+        if (buyerBalanceError) throw buyerBalanceError;
+
+        // Update seller's balance if not market maker
+        if (!trade.market_maker) {
+          const sellerId = matchingOrders.find(
+            (o) => o.price === trade.price
+          )?.user_id;
+
+          if (sellerId) {
+            const { data: sellerData, error: sellerFetchError } = await supabase
+              .from("users")
+              .select("balance_of_poo")
+              .eq("id", sellerId)
+              .single();
+
+            if (sellerFetchError) throw sellerFetchError;
+
+            const { error: sellerBalanceError } = await supabase
+              .from("users")
+              .update({
+                balance_of_poo:
+                  sellerData.balance_of_poo + trade.amount * trade.price,
+              })
+              .eq("id", sellerId);
+
+            if (sellerBalanceError) throw sellerBalanceError;
+          }
+        }
       } else {
         // Selling
         // Update seller position (current user)
@@ -619,28 +695,60 @@ export async function POST(request: Request) {
             }
           }
         }
+
+        // Update seller's balance (current user)
+        const { error: sellerBalanceError } = await supabase
+          .from("users")
+          .update({
+            balance_of_poo:
+              userData.balance_of_poo + trade.amount * trade.price,
+          })
+          .eq("id", user.id);
+
+        if (sellerBalanceError) throw sellerBalanceError;
+
+        // Update buyer's balance if not market maker
+        if (!trade.market_maker) {
+          const buyerId = matchingOrders.find(
+            (o) => o.price === trade.price
+          )?.user_id;
+
+          if (buyerId) {
+            const { data: buyerData, error: buyerFetchError } = await supabase
+              .from("users")
+              .select("balance_of_poo")
+              .eq("id", buyerId)
+              .single();
+
+            if (buyerFetchError) throw buyerFetchError;
+
+            const { error: buyerBalanceError } = await supabase
+              .from("users")
+              .update({
+                balance_of_poo:
+                  buyerData.balance_of_poo - trade.amount * trade.price,
+              })
+              .eq("id", buyerId);
+
+            if (buyerBalanceError) throw buyerBalanceError;
+          }
+        }
       }
     }
 
     // After trades are processed, if it was a sell order, credit the user's account
     if (type === "selling") {
-      const totalEarned = matchedTrades.reduce(
-        (sum, trade) => sum + trade.amount * trade.price,
-        0
-      );
-
+      // For sell orders, credit the proceeds immediately
       const { error: balanceError } = await supabase
         .from("users")
-        .update({ balance_of_poo: userData.balance_of_poo + totalEarned })
+        .update({ balance_of_poo: userData.balance_of_poo + totalAmount })
         .eq("id", user.id);
 
       if (balanceError) throw balanceError;
     }
 
-    // Calculate total trade volume for this order
-    const totalTradeVolume = matchedTrades.reduce((sum, trade) => {
-      return sum + trade.amount * trade.price;
-    }, 0);
+    // Calculate total trade volume for this order (use the initial order amount and price)
+    const orderVolume = amount * outcome.current_price;
 
     // Get current user stats
     const { data: currentStats, error: statsError } = await supabase
@@ -651,33 +759,32 @@ export async function POST(request: Request) {
 
     if (statsError) throw statsError;
 
-    // Update user's trade volume
+    // Update user's trade volume with the full order amount
     const { error: updateStatsError } = await supabase
       .from("users")
       .update({
-        trade_volume: (currentStats?.trade_volume || 0) + totalTradeVolume,
+        trade_volume: (currentStats?.trade_volume || 0) + orderVolume,
       })
       .eq("id", user.id);
 
     if (updateStatsError) throw updateStatsError;
 
-    // Update positions count
-    const { data: positionsCount, error: positionsError } = await supabase
-      .from("positions")
-      .select("id")
-      .eq("user_id", user.id)
-      .gt("amount", 0);
+    // After processing trades and updating positions, update the positions value
+    await updateUserPositionValue(supabase, user.id);
 
-    if (positionsError) throw positionsError;
+    // If we matched with another user, update their positions value too
+    for (const trade of matchedTrades) {
+      if (!trade.market_maker) {
+        const otherUserId =
+          type === "buying"
+            ? matchingOrders.find((o) => o.price === trade.price)?.user_id
+            : matchingOrders.find((o) => o.price === trade.price)?.user_id;
 
-    const { error: updatePositionsError } = await supabase
-      .from("users")
-      .update({
-        positions: positionsCount.length,
-      })
-      .eq("id", user.id);
-
-    if (updatePositionsError) throw updatePositionsError;
+        if (otherUserId) {
+          await updateUserPositionValue(supabase, otherUserId);
+        }
+      }
+    }
 
     log("Order processing complete", {
       /* final order details */
