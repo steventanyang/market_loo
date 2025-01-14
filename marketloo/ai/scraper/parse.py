@@ -4,8 +4,103 @@ import requests
 import time
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from thefuzz import fuzz
+import re
 
-def parse_project_page(url):
+def get_and_save_tracks(hackathon_url):
+    """Extract prize tracks from hackathon page and save to tracks.json"""
+    try:
+        response = requests.get(hackathon_url)
+        if response.status_code != 200:
+            print(f"Failed to fetch hackathon page: {hackathon_url}")
+            return []
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        tracks_data = {
+            "hackathon_url": hackathon_url,
+            "tracks": [],
+            "scraped_at": time.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        # Find the prizes section
+        prizes_section = soup.find('div', class_='challenge-prizes')
+        if not prizes_section:
+            print("No prizes section found")
+            return []
+            
+        # Find all prize headings
+        prize_headings = prizes_section.find_all(['h4', 'h3', 'h2'])
+        for heading in prize_headings:
+            track_info = {}
+            track_name = heading.text.strip()
+            
+            # Clean up the track name
+            clean_name = re.sub(r'\s*\([^)]*\)', '', track_name)  # Remove parentheses
+            clean_name = re.sub(r'\$[\d,]+', '', clean_name)  # Remove dollar amounts
+            clean_name = clean_name.strip()
+            
+            if clean_name and not any(t['name'].lower() == clean_name.lower() for t in tracks_data['tracks']):
+                track_info['name'] = clean_name
+                track_info['original_text'] = track_name
+                
+                # Try to extract prize amount
+                prize_match = re.search(r'\$(\d[\d,]*)', track_name)
+                if prize_match:
+                    prize_amount = int(prize_match.group(1).replace(',', ''))
+                    track_info['prize_amount'] = prize_amount
+                
+                tracks_data['tracks'].append(track_info)
+        
+        # Save tracks to JSON file
+        os.makedirs('ai/scraper/data', exist_ok=True)
+        with open('ai/scraper/data/tracks.json', 'w', encoding='utf-8') as f:
+            json.dump(tracks_data, f, indent=2)
+            
+        print(f"Saved {len(tracks_data['tracks'])} tracks to tracks.json")
+        return tracks_data['tracks']
+        
+    except Exception as e:
+        print(f"Error getting hackathon tracks: {str(e)}")
+        return []
+
+def find_matching_tracks(description, tracks, threshold=80):
+    """Use fuzzy matching to find which tracks a project applied to"""
+    track_matches = []
+    
+    # Split description into paragraphs/sentences
+    sections = re.split(r'[.\n]', description)
+    
+    for track in tracks:
+        track_name = track['name']
+        match_info = {
+            'track_name': track_name,
+            'confidence': 0,
+            'matched_text': None
+        }
+        
+        # Check each section for mentions of the track
+        for section in sections:
+            section = section.strip()
+            if not section:
+                continue
+                
+            # Try different fuzzy matching approaches
+            ratio = fuzz.partial_ratio(track_name.lower(), section.lower())
+            token_ratio = fuzz.token_sort_ratio(track_name.lower(), section.lower())
+            
+            max_ratio = max(ratio, token_ratio)
+            
+            if max_ratio > match_info['confidence']:
+                match_info['confidence'] = max_ratio
+                match_info['matched_text'] = section
+        
+        if match_info['confidence'] >= threshold:
+            track_matches.append(match_info)
+                
+    return track_matches
+
+def parse_project_page(url, tracks):
     """Parse individual project page and return project details"""
     # Clean up URL to ensure it's properly formatted
     if url.startswith('https://devpost.comhttps'):
@@ -29,11 +124,14 @@ def parse_project_page(url):
         if title:
             project_details['title'] = title.text.strip()
             
-        # Get detailed description
+        # Get detailed description and find tracks
         description_div = soup.find('div', {'id': 'app-details'})
         if description_div:
             description_text = description_div.get_text(separator='\n', strip=True)
             project_details['full_description'] = description_text
+            
+            # Find matching tracks with confidence scores
+            project_details['track_matches'] = find_matching_tracks(description_text, tracks)
             
         # Get built with technologies
         built_with = soup.find('div', id='built-with')
@@ -98,7 +196,14 @@ def parse_project_page(url):
         print(f"Error processing {url}: {str(e)}")
         return None
 
-def parse_projects(html_path, max_workers=8):
+def parse_projects(html_path, hackathon_url, max_workers=8):
+    """Parse all projects with track detection"""
+    # First get and save the hackathon tracks
+    print("Fetching hackathon tracks...")
+    tracks = get_and_save_tracks(hackathon_url)
+    if not tracks:
+        print("Warning: No tracks found, proceeding without track matching")
+    
     # Read the HTML file
     with open(html_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -165,7 +270,7 @@ def parse_projects(html_path, max_workers=8):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future to project mapping
         future_to_project = {
-            executor.submit(parse_project_page, url): project 
+            executor.submit(parse_project_page, url, tracks): project 
             for url, project in project_urls
         }
         
@@ -189,5 +294,6 @@ def parse_projects(html_path, max_workers=8):
     return projects
 
 if __name__ == "__main__":
-    projects = parse_projects('ai/scraper/data/devpost_page.html')
+    hackathon_url = "https://brainrot-jia-seed-hackathon.devpost.com/"
+    projects = parse_projects('ai/scraper/data/devpost_page.html', hackathon_url)
     print(f"Successfully parsed {len(projects)} projects and saved to final.json") 
