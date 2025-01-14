@@ -1,0 +1,1680 @@
+[
+  {
+    "name": "TalkTuahTaxer",
+    "tagline": "fanum taxing all the way - just with a little more help :)",
+    "url": "https://devpost.com/software/talktuahtaxer",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/162/409/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Kien Quoc Ngo",
+        "profile_url": "https://devpost.com/quoccodes4lyf",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJwwzLqQ263JMc1IH1gEqoveMc8t2A8Oi7VkQxgAM3tR7r_wn8L=s96-c?type=square"
+      },
+      {
+        "name": "Thi Nguyen",
+        "profile_url": "https://devpost.com/tamthah",
+        "avatar_url": "https://avatars.githubusercontent.com/u/168005804?type=square&v=4"
+      },
+      {
+        "name": "Atharv Mhatre",
+        "profile_url": "https://devpost.com/mhatreatharv94",
+        "avatar_url": "https://www.gravatar.com/avatar/a5fae835a01ad2c55a390e84c6861407?d=https%3A%2F%2Fd2dmyh35ffsxbl.cloudfront.net%2Fassets%2Fdefaults%2Fno-avatar-25.png&s=25"
+      },
+      {
+        "name": "Ahmed Abid",
+        "profile_url": "https://devpost.com/smartahmadabid",
+        "avatar_url": "https://media.licdn.com/dms/image/v2/D4D03AQGroYtcm1ElZQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718280632044?e=1738195200&t=S9Ly2dsQ8RqrOppYITcTxfUuN5eW1zJ5cTXrcK0P2oI&type=square&v=beta"
+      }
+    ],
+    "likes": 70,
+    "comments": 9,
+    "title": "TalkTuahTaxer",
+    "technologies": [
+      "css",
+      "elevenlabs",
+      "fastapi",
+      "html",
+      "javascript",
+      "openai",
+      "pearai",
+      "python",
+      "react",
+      "typescript"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/KNQuoc/TalkTuahTaxer"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/quoccodes4lyf",
+        "bio": "I did the most skibidi work"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mhatreatharv94",
+        "bio": "First ever Hackathon, worked on backend and integration skibidi. (idk if I am using it right :P)"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/smartahmadabid"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/tamthah"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                 best overall yay :3 ($100 + snack boxes and random swag)",
+          "Winner\n                Bill Zhang's x Retell Best Conversational AI Prize ($300)",
+          "Winner\n                ouck tuah spit on that faang ($100)",
+          "Winner\n                jade\u2019s holding space for the defying gravity lyrics after falling out of a coconut tree ($100)",
+          "Winner\n                (TPIA) this project is awesome",
+          "Winner\n                top 5 community votes prizes (SURPRISE GIFTS)"
+        ]
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "MediaDash",
+    "tagline": "You know the content you like! But social media feeds distract you with other stuff. Instead of infini-scrolling, see all your entertainment in one place! MediaDash respects your time.",
+    "url": "https://devpost.com/software/mediadash",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/165/157/datas/medium.PNG",
+    "team_members": [
+      {
+        "name": "Emily Kang",
+        "profile_url": "https://devpost.com/Emily-Kang77",
+        "avatar_url": "https://avatars.githubusercontent.com/u/109045956?type=square&v=4"
+      },
+      {
+        "name": "Shaurya B",
+        "profile_url": "https://devpost.com/ssbdragonfly",
+        "avatar_url": "https://avatars.githubusercontent.com/u/87233614?type=square&v=4"
+      },
+      {
+        "name": "Aaron Phan",
+        "profile_url": "https://devpost.com/aa-phan",
+        "avatar_url": "https://avatars.githubusercontent.com/u/121308935?type=square&v=4"
+      },
+      {
+        "name": "Genie Kang",
+        "profile_url": "https://devpost.com/geniekang04",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJ9yU45JeGVZkhyq6uMP2783ArNAeqPqdj2aFI81oR6J0GVvg=s96-c?type=square"
+      }
+    ],
+    "likes": 15,
+    "comments": 1,
+    "title": "MediaDash",
+    "technologies": [
+      "gemini",
+      "langchain",
+      "nextjs",
+      "react",
+      "supabase",
+      "typescript"
+    ],
+    "links": [
+      {
+        "text": "brainrot-media-dash.vercel.app",
+        "url": "https://brainrot-media-dash.vercel.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/Emily-Kang77/Brainrot-MediaDash"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/ssbdragonfly",
+        "bio": "backend, publicist"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/aa-phan",
+        "bio": "Handled backend logic development and AI integration."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/geniekang04",
+        "bio": "I worked as the designer on the team, designing the overall app and its structure for the front & backend to create via code. I also did some minor aspects of branding, such as creating a logo and selecting a brand color with the team."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/AmulGaurav",
+        "bio": "I worked on the front-end."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/Emily-Kang77",
+        "bio": "I came up with the idea so I did some project management, and a lot of frontend."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/ksuresh3141",
+        "bio": "AI, Langchain Tooling and backend."
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                skibidi ai swag (sponsored by Taskformer) ($15)",
+          "Winner\n                the headstarter ai/ml prize ($500)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Chill People",
+    "tagline": "Chill People is a relaxed blog app where individuals connect, share stories, and communicate in a stress-free space, perfect for those who enjoy authentic conversations and easygoing interactions.",
+    "url": "https://devpost.com/software/chill-l3wcev",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/163/230/datas/medium.jpg",
+    "team_members": [
+      {
+        "name": "Abraham Ochelle",
+        "profile_url": "https://devpost.com/abrahamochelle2022",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLUunZLIemKtXW-XTNyUQn05nBjqPh_xLx6TMANXS9ogoHFBQ=s96-c?type=square"
+      },
+      {
+        "name": "Uzoma Okey-Anyanwu",
+        "profile_url": "https://devpost.com/uzomaokeyanyanwu2023",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLyrYIbKJR9mr-8o6OqtitzPx6ObRTaY27EmG5d-iKbLexWIQ=s96-c?type=square"
+      },
+      {
+        "name": "Tammy Bestman",
+        "profile_url": "https://devpost.com/bestmantammy4",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJ5kX0u8MG5b3X4sNr4g-iCK4SHa9HjZ2VaoTaeq_pa3x1odQ=s96-c?type=square"
+      },
+      {
+        "name": "Moradeyo Adetosoye",
+        "profile_url": "https://devpost.com/radeyo509",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocKt2UWt9LtjXXtuX-Uz2qrRciQc7WKsjY41aGgE0kAnLZuS3w=s96-c?type=square"
+      }
+    ],
+    "likes": 70,
+    "comments": 9,
+    "title": "Chill People",
+    "technologies": [
+      "css",
+      "flask",
+      "html",
+      "python",
+      "sqlalchemy",
+      "sqlite"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/Ochelle-Abraham/chillpeople"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/uzomaokeyanyanwu2023"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/abrahamochelle2022"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/radeyo509"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/bestmantammy4"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                most likely meme startup ($50 + snack boxes and random swag)",
+          "Winner\n                i\u2019m just a chill guy sponsored by Build City ($200)",
+          "Winner\n                (TPIA) this project is awesome",
+          "Winner\n                top 5 community votes prizes (SURPRISE GIFTS)"
+        ]
+      },
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Degen Purity Test",
+    "tagline": "You took the rice purity test before, but this one is for people who don't touch grass. Goblins unite.",
+    "url": "https://devpost.com/software/degen-purity-test",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/162/878/datas/medium.gif",
+    "team_members": [
+      {
+        "name": "Leo Lee",
+        "profile_url": "https://devpost.com/leolee901115",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocKmz_hIu786cBpZv0wwvpjl_OWifef_XQIstvXWzNFRjWMTyA=s96-c?type=square"
+      },
+      {
+        "name": "Simon Kwong",
+        "profile_url": "https://devpost.com/sikwong2",
+        "avatar_url": "https://avatars.githubusercontent.com/u/89122143?type=square&v=4"
+      },
+      {
+        "name": "Daphne Cheng",
+        "profile_url": "https://devpost.com/dcheng11",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJC3FGHXIIIlTzct7PA1XdjFsnBfssOx97kzU1sDXs=s96-c?type=square"
+      },
+      {
+        "name": "Vincent Tan",
+        "profile_url": "https://devpost.com/vincentwtan",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLjSFkc2h7HQraV7aC-cr200_ISYQBVeMbRwYvW-PzP_PHKuA=s96-c?type=square"
+      }
+    ],
+    "likes": 15,
+    "comments": 1,
+    "title": "Degen Purity Test",
+    "technologies": [
+      "express.js",
+      "mui",
+      "node.js",
+      "react"
+    ],
+    "links": [
+      {
+        "text": "brnrot-ai.vercel.app",
+        "url": "https://brnrot-ai.vercel.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/THL-Leo/brnrot.ai"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/dcheng11",
+        "bio": "I provided emotional support"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/keenehh",
+        "bio": "I am a brainrotted person who spends too much time on tiktok and plays too much league of legends. Contributed to most of the brainrotted questions."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/leolee901115",
+        "bio": "Sang Thick of It unironically throughout the Hackathon. Worked on frontend and backend"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/sikwong2",
+        "bio": "I worked on the backend and some of the frontend"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/vincentwtan"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                (WBUOT) would blow up on tiktok ($50 + snack boxes and random swag)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Simuchat",
+    "tagline": "Chat with AI charactersAn immersive chat-based RPG with 36 AI characters and 12 game modes. Solve mysteries, survive challenges, and shape relationships through dynamic, choice-driven conversations.",
+    "url": "https://devpost.com/software/ai-chat-game",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/609/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Kevin Ding",
+        "profile_url": "https://devpost.com/phanturne",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/165/600/datas/small.jpg"
+      },
+      {
+        "name": "Praveen Ganapathy",
+        "profile_url": "https://devpost.com/PraveenGanapathy",
+        "avatar_url": "https://avatars.githubusercontent.com/u/48132510?type=square&v=4"
+      },
+      {
+        "name": "Daniella Uche-Oji",
+        "profile_url": "https://devpost.com/Threedee",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJnd8jSBmONUV4IZ9fvVXE74F2Gu7gOO3DA7TvPIjjTY0pyTu7l=s96-c?type=square"
+      },
+      {
+        "name": "Sohini Das",
+        "profile_url": "https://devpost.com/sohini1728",
+        "avatar_url": "https://avatars.githubusercontent.com/u/74432797?type=square&v=4"
+      }
+    ],
+    "likes": 9,
+    "comments": 2,
+    "title": "Simuchat",
+    "technologies": [
+      "ai",
+      "chatgpt",
+      "next.js"
+    ],
+    "links": [
+      {
+        "text": "ai-chat-game-swart.vercel.app",
+        "url": "https://ai-chat-game-swart.vercel.app"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/phanturne/ai-chat-game"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/sohini1728"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/Threedee"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/phanturne"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/PraveenGanapathy"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/angelding1698"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                (LAKOG) lowkey actually kind of good ($50 + a snack)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "BRAINROT LinkedIn Post Generator",
+    "tagline": "BRAINROT LinkedIn Post Generator to Piss of people on LinkedIn",
+    "url": "https://devpost.com/software/linkedin-post-generator-vp8y56",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/161/258/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Muhammad Zidan Fatonie",
+        "profile_url": "https://devpost.com/mzf11125",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/002/477/563/datas/small.png"
+      },
+      {
+        "name": "Dunkle_Vogel Putra",
+        "profile_url": "https://devpost.com/W-ptra",
+        "avatar_url": "https://avatars.githubusercontent.com/u/113691474?type=square&v=4"
+      }
+    ],
+    "likes": 24,
+    "comments": 4,
+    "title": "BRAINROT LinkedIn Post Generator",
+    "technologies": [
+      "cohere-ai",
+      "javascript",
+      "next.js",
+      "node.js",
+      "tailwind"
+    ],
+    "links": [
+      {
+        "text": "brainrot-linkedin-post-generator.vercel.app",
+        "url": "https://brainrot-linkedin-post-generator.vercel.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/mzf11125/brainrot-linkedin-post-generator"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mzf11125",
+        "bio": "Code and deploy to vercel"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/W-ptra",
+        "bio": "Creating brainrot glossary, adding cohere api, make optimization on api call to cohere by replacing cohere-ai sdk with regular fetch for better performance and creating demo video."
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                (WPPOIL) would piss people off on linkedin ($25)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "JUST A CHILL SOOT CASE",
+    "tagline": "Just a chill guy  !!!",
+    "url": "https://devpost.com/software/just-a-cjill-soot-case",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/163/662/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Samriddhi Makasare",
+        "profile_url": "https://devpost.com/samriddhi-makasare",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/033/321/datas/small.jpeg"
+      }
+    ],
+    "likes": 2,
+    "comments": 0,
+    "title": "JUST A CHILL SOOT CASE",
+    "technologies": [
+      "unity"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/samriddhimakasare25/ChillGame"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/samriddhi-makasare",
+        "bio": "I'm Just a Girl"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i like my soot case ($15)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Fanum Diddler - Horse Tax",
+    "tagline": "Yo, you ever seen a horse snatch a glizzy and yeet like baby gronk? In this game, it\u2019s all about chomping correct snacks with a sigma grindset and dodging the Fanum Hay Tax while keeping that rizz.",
+    "url": "https://devpost.com/software/fanum-diddler-horse-tax",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/165/377/datas/medium.png",
+    "team_members": [
+      {
+        "name": "William Zeng",
+        "profile_url": "https://devpost.com/willzeng274",
+        "avatar_url": "https://avatars.githubusercontent.com/u/61915438?type=square&v=4"
+      },
+      {
+        "name": "Bye-Dreams",
+        "profile_url": "https://devpost.com/Bye-Dreams",
+        "avatar_url": "https://avatars.githubusercontent.com/u/164548943?type=square&v=4"
+      },
+      {
+        "name": "Matias Rivas",
+        "profile_url": "https://devpost.com/hiatus770",
+        "avatar_url": "https://avatars.githubusercontent.com/u/77402029?type=square&v=4"
+      },
+      {
+        "name": "Habib Rahman",
+        "profile_url": "https://devpost.com/lhlrahman",
+        "avatar_url": "https://avatars.githubusercontent.com/u/136003890?type=square&v=4"
+      }
+    ],
+    "likes": 53,
+    "comments": 8,
+    "title": "Fanum Diddler - Horse Tax",
+    "technologies": [
+      "framer-motion",
+      "react",
+      "react-three-fiber",
+      "shadcn",
+      "three.js",
+      "vite"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/willzeng274/fanum-diddler-horse-tax"
+      },
+      {
+        "text": "fanum-diddler-horse-tax.vercel.app",
+        "url": "https://fanum-diddler-horse-tax.vercel.app/"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/hiatus770",
+        "bio": "Those who know"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/willzeng274",
+        "bio": "created the first W rizz moment at Waterloo University"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/lhlrahman"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/Bye-Dreams"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                worst project ($5)",
+          "Winner\n                (TPIA) this project is awesome",
+          "Winner\n                top 5 community votes prizes (SURPRISE GIFTS)"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "brain cell deleter",
+    "tagline": "will literally force the brain cells out of your brain. i speak from experience. i had to touch grass while testing this.",
+    "url": "https://devpost.com/software/brain-cell-deleter",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/165/206/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Lowell Monis",
+        "profile_url": "https://devpost.com/lowell-monis",
+        "avatar_url": "https://avatars.githubusercontent.com/u/144663190?type=square&v=4"
+      }
+    ],
+    "likes": 4,
+    "comments": 0,
+    "title": "brain cell deleter",
+    "technologies": [
+      "html",
+      "javascript"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/lowell-monis/brain-cell-deleter"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/lowell-monis"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                most iq points lost ($5)",
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "cvrve clone",
+    "tagline": "Tired of searching for jobs across multiple platforms? We bring them all to you in one place!",
+    "url": "https://devpost.com/software/cvrve-clone",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/557/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Sahil Panjwani",
+        "profile_url": "https://devpost.com/sahilpanjwani195",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocK4pMmkU0BZifLcmbCoeuOUD_fANs0-KGxkx8QmWF7DBlztzw=s96-c?type=square"
+      },
+      {
+        "name": "Mohit Kukreja",
+        "profile_url": "https://devpost.com/mohitkukreja463",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJHbFB5qm26OsXdKq0hLcTfBU8dRKHTGqamv9OjJjryLe1xfl4i=s96-c?type=square"
+      }
+    ],
+    "likes": 32,
+    "comments": 17,
+    "title": "cvrve clone",
+    "technologies": [
+      "react",
+      "tailwindcss"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/MoHiTKuKrEjA11/brainrot"
+      },
+      {
+        "text": "brainrot-xi.vercel.app",
+        "url": "https://brainrot-xi.vercel.app/"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/sahilpanjwani195"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mohitkukreja463"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                most cvrvey website ($50)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Undress.Me",
+    "tagline": "Undress.me is an AI powered fashion tool utilising advanced image recognition to ensure your outfit is Chic enough for Gen Z to ensure maximum aura!",
+    "url": "https://devpost.com/software/undress-me",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/166/196/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Evie EvieDotGym",
+        "profile_url": "https://devpost.com/eviedotexe",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLIioJPikDQEZFU13Z4vWMBSKbcMgCdKfD-Q7BeBCukzAG1Sg=s96-c?type=square"
+      }
+    ],
+    "likes": 45,
+    "comments": 7,
+    "title": "Undress.Me",
+    "technologies": [
+      "davinci",
+      "figma",
+      "javascript",
+      "next"
+    ],
+    "links": [
+      {
+        "text": "www.figma.com",
+        "url": "https://www.figma.com/proto/fM2oS0bqnLw7aX8QQ0ca4Z/Undress.Me?node-id=0-1&t=Y0vc3TReM9Gd3WUg-1"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/eviedotexe",
+        "bio": "I actually didn't do any of this, its just mystically spawned due to the pure concentrated aura i emit."
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                nontechnical/no code meme track",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "satoru gojo's backshots clicker",
+    "tagline": "anime hoomans, you have seen cookie clicker, you have seen funny brainrot jjk ahh shi... but have you seen gojo backshots clicker...",
+    "url": "https://devpost.com/software/gojo-backshots-clicker",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/308/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Jasmine Horrach",
+        "profile_url": "https://devpost.com/jashor14",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocI5skdHS7z0MGJw4NPPHFc8Sl1EZ_gzRAaTqmhZN8PDk7Fgpw=s96-c?type=square"
+      },
+      {
+        "name": "Jack Cheng",
+        "profile_url": "https://devpost.com/jackhcheng",
+        "avatar_url": "https://www.gravatar.com/avatar/40e10868abd93c075c3b0aaf41126977?d=https%3A%2F%2Fd2dmyh35ffsxbl.cloudfront.net%2Fassets%2Fdefaults%2Fno-avatar-25.png&s=25"
+      }
+    ],
+    "likes": 12,
+    "comments": 1,
+    "title": "satoru gojo's backshots clicker",
+    "technologies": [
+      "balls",
+      "figma",
+      "hotgojo",
+      "react",
+      "skibibi",
+      "thukuna's",
+      "tooth"
+    ],
+    "links": [
+      {
+        "text": "jhcheng-01.github.io",
+        "url": "https://jhcheng-01.github.io/gojoapp/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/jhcheng-01/gojoapp"
+      },
+      {
+        "text": "www.instagram.com",
+        "url": "https://www.instagram.com/reel/DDDp2AzPxAw/?igsh=MXRqb2hkeXh1OHppag=="
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/jashor14",
+        "bio": "thukuna's last tooth"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/jackhcheng",
+        "bio": "throughout heaven and earth i alone am the brainrotted one"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                best \"come with me to my hackathon\" vlog",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "I Understand It Now",
+    "tagline": "You understand it now",
+    "url": "https://devpost.com/software/i-understand-it-now",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/164/612/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Muhammad Hunain Khurram",
+        "profile_url": "https://devpost.com/muhammad-khurram752",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/002/697/347/datas/small.JPEG"
+      },
+      {
+        "name": "Rohita Konjeti",
+        "profile_url": "https://devpost.com/mailtorohitak",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocIaWDkxjIbjg01lyz1YlxZt-waZBi7wnUg3tYsGZuczxA=s96-c?type=square"
+      },
+      {
+        "name": "Mariah Gardner",
+        "profile_url": "https://devpost.com/mxgardner",
+        "avatar_url": "https://avatars.githubusercontent.com/u/102692298?type=square&v=4"
+      },
+      {
+        "name": "Kevin Farokhrouz",
+        "profile_url": "https://devpost.com/KevinRouz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/106635866?type=square&v=4"
+      }
+    ],
+    "likes": 12,
+    "comments": 2,
+    "title": "I Understand It Now",
+    "technologies": [
+      "css",
+      "elevenlabs",
+      "html",
+      "javascript",
+      "next.js",
+      "openai",
+      "pdf-parser",
+      "typescript"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/MuhammadHunainKhurram/BrainRotHackathon"
+      },
+      {
+        "text": "brain-rot-hackathon-six.vercel.app",
+        "url": "http://brain-rot-hackathon-six.vercel.app"
+      },
+      {
+        "text": "www.instagram.com",
+        "url": "https://www.instagram.com/reel/DDDTykURLN9/"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/KevinRouz",
+        "bio": "i literally spent my 20th birthday working on a brainrot website."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/muhammad-khurram752"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mailtorohitak"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mxgardner"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                best \"come with me to my hackathon\" vlog",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Thalemo",
+    "tagline": "Thalemo : Care made smarter for kids with blood disorders.",
+    "url": "https://devpost.com/software/thalemo",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/161/940/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Maroof Sultana C  K",
+        "profile_url": "https://devpost.com/maroof786m7",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/162/482/datas/small.jpeg"
+      }
+    ],
+    "likes": 21,
+    "comments": 4,
+    "title": "Thalemo",
+    "technologies": [
+      "data",
+      "pearai",
+      "react",
+      "tailwind"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/maroof313-7/Thalemo"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/maroof786m7",
+        "bio": "I did it all solo.... \n entry to PearAI : \n- Pear AI prize  given randomly to any submission built using PearAI\n- PearAI prize  given to randomly to any social media post tagging PearAI\n-PearAI prize given to social media post tagging PearAI with most\nengagement\n- PearAI prize given to nang\u2019s favorite project made using PearAI\nentry to  best \"come with me to my hackathon\" vlog (3)\nentry to  best overall yay :3 \nentry to i laughed. (new hackers prize) ( I have been to only 2 hackathons and this is my 3rd )\n entry to Wakaba Prize fast\nentry to (IJAG) I\u2019m Just A Girl\nentry to best morgan young build your brand linkedin post \nentry to UI/UX most kawaii \nentry to  (LAKOG) lowkey actually kind of good"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                best \"come with me to my hackathon\" vlog",
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                best morgan young build your brand linkedin post ($50)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "We R Cooked",
+    "tagline": "https://www.wercooked.com/ Apply to internships, Dodge the brain rot, and Climb the leaderboard. A realistic depiction of the current job market. You are Cooked anywayss ahh",
+    "url": "https://devpost.com/software/we-r-cooked",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/790/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Mario Trevino",
+        "profile_url": "https://devpost.com/mario-a-trevinojr",
+        "avatar_url": "https://lh3.googleusercontent.com/a/AEdFTp4KYcW1fnxAW_aLnKSxIRJAm5YV_bfrjD04QV7h=s96-c?type=square"
+      },
+      {
+        "name": "Heidy  Gallardo",
+        "profile_url": "https://devpost.com/heidygallardo",
+        "avatar_url": "https://avatars.githubusercontent.com/u/110559475?type=square&v=4"
+      },
+      {
+        "name": "Yuliana Jasso",
+        "profile_url": "https://devpost.com/yulijasso",
+        "avatar_url": "https://avatars.githubusercontent.com/u/127902278?type=square&v=4"
+      },
+      {
+        "name": "Gabe Cespedes",
+        "profile_url": "https://devpost.com/gabe-cespedes11",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJVnQaG0ikU_B5MFOjZMu2bnwwsKuFAYbuLufGb-k7WOuVxfEeb=s96-c?type=square"
+      }
+    ],
+    "likes": 16,
+    "comments": 4,
+    "title": "We R Cooked",
+    "technologies": [
+      "chakraui",
+      "clerk",
+      "elevenlabs",
+      "firebase",
+      "javascript",
+      "nextjs"
+    ],
+    "links": [
+      {
+        "text": "www.wercooked.com",
+        "url": "https://www.wercooked.com/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/mariotrejr/brainrot-hackathon"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mario-a-trevinojr",
+        "bio": "Prompt Engineer, I was really nice to chatgpt. Integrated Clerk and Firebase into the project and made the leaderboard and landing page. Bruh we really cooked huh"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/heidygallardo",
+        "bio": "Fetched USA SWE Internship data and displayed in beautiful brainrotty UI, poetic ik right?"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/yulijasso",
+        "bio": "I integrated the Don Pollo incoming call simulation using ElevenLabs ai conversation and the google trex game replica.  (oops, i basically created chaos.)\noh and let's not forget i also integrated the chill guy song in our homepage, because we are just some chill devs, ya know? :)"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/gabe-cespedes11"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                Memenome Best Don Pollo-themed hack ($1000)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Dripify ( Lego X Gucci )",
+    "tagline": "Connecting dreams, one brick at a time. Create the wildest fashion collabs you never knew you needed!",
+    "url": "https://devpost.com/software/dripify",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/158/007/datas/medium.jpg",
+    "team_members": [
+      {
+        "name": "Ritik Pal",
+        "profile_url": "https://devpost.com/ritikpal098",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJN-8HuICkkxS8HLaSpZ96bpP0TFYz4kng_O_EYGYZeKqnOItwL=s96-c?type=square"
+      }
+    ],
+    "likes": 86,
+    "comments": 17,
+    "title": "Dripify ( Lego X Gucci )",
+    "technologies": [
+      "express.js",
+      "huggingface",
+      "javascript",
+      "mongodb",
+      "mongoose",
+      "node.js",
+      "react",
+      "restapi"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/RitikPal98/dripify"
+      },
+      {
+        "text": "dripify.onrender.com",
+        "url": "https://dripify.onrender.com/"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/ritikpal098"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                my drip >;D ($100)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Fashionista",
+    "tagline": "We\u2019ve seen worse, but not by much.",
+    "url": "https://devpost.com/software/fashionista-917cay",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/162/634/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Hannah Rauch",
+        "profile_url": "https://devpost.com/hrauch3404",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocKVNt64GHKFPr6BxA12X_DA01pwzc8dmzC8jlD-DkVOJVvQ_HM=s96-c?type=square"
+      },
+      {
+        "name": "Tanmay Shingavi",
+        "profile_url": "https://devpost.com/tanmaysplan",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLJouzV2RW6tZ2x69YllqemNxKS1R48KRl7z_HhIzxf4qFMMQ=s96-c?type=square"
+      },
+      {
+        "name": "Ranit Mukherjee",
+        "profile_url": "https://devpost.com/RanitMukherjee",
+        "avatar_url": "https://avatars.githubusercontent.com/u/49058364?type=square&v=4"
+      }
+    ],
+    "likes": 9,
+    "comments": 0,
+    "title": "Fashionista",
+    "technologies": [
+      "gemini",
+      "pearai",
+      "python",
+      "streamlit"
+    ],
+    "links": [
+      {
+        "text": "fashionistas.streamlit.app",
+        "url": "https://fashionistas.streamlit.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/decodingafterlife/brainrot_fashion_roast"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/RanitMukherjee"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/hrauch3404"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/tanmaysplan"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                 (IJAG) I\u2019m Just A Girl ($100 for two teams)",
+          "Winner\n                the most cutesy pink project (a pink duck is the prize) (5 winners)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Oopsie Daisy",
+    "tagline": "Oopsie Daisy: Absurd excuses at the push of a button\u2014because \"the squirrels made me do it\" is totally legit.",
+    "url": "https://devpost.com/software/oopsie-daisy",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/163/705/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Destiny Knoop",
+        "profile_url": "https://devpost.com/nicolesims98",
+        "avatar_url": "https://media.licdn.com/dms/image/v2/D5603AQFU1jgA-ixubQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1728573293243?e=1736985600&t=Uy6OyVIe2tk8pT_irEQmAJI21kJLOk4bE0O_BFyPYeo&type=square&v=beta"
+      },
+      {
+        "name": "Aiman Fariz",
+        "profile_url": "https://devpost.com/AimanFariz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/99475959?type=square&v=4"
+      }
+    ],
+    "likes": 23,
+    "comments": 2,
+    "title": "Oopsie Daisy",
+    "technologies": [
+      "css",
+      "flask",
+      "flask-cors",
+      "github",
+      "javascript",
+      "json",
+      "pearai",
+      "postman",
+      "python",
+      "react",
+      "render",
+      "restful-api",
+      "tailwind",
+      "vercel"
+    ],
+    "links": [
+      {
+        "text": "oopsiedaisy.vercel.app",
+        "url": "https://oopsiedaisy.vercel.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/AimanFariz/oopsie_daisy"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/Nicsims98/Oopsie_Daisy-"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/AimanFariz",
+        "bio": "I used React and Tailwind for the UI"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/nicolesims98",
+        "bio": "I contributed to Oopsie Daisy by designing and building the backend API using Flask, ensuring seamless integration with the frontend through robust endpoints and CORS configuration. I also curated the humorous excuses and organized them into relatable categories, balancing technical functionality with creative input. Additionally, I tested and debugged the API to ensure reliability while collaborating closely with the team to align the backend with our shared vision"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                 (IJAG) I\u2019m Just A Girl ($100 for two teams)",
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Brainrot extension",
+    "tagline": "This extension allows the user to collect brainrot points. These points are then used to install various brainrot-related effects into their browsing experience!",
+    "url": "https://devpost.com/software/brainrot-extension",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/165/437/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Zayd Khan",
+        "profile_url": "https://devpost.com/khanzayd11",
+        "avatar_url": "https://lh3.googleusercontent.com/a-/AOh14Gjicl7yGBi8x-5rH_mapydkm4YmNwZ9IL7K2X9d=s96-c?type=square"
+      },
+      {
+        "name": "Mily Mendez",
+        "profile_url": "https://devpost.com/mi55a",
+        "avatar_url": "https://avatars.githubusercontent.com/u/94654589?type=square&v=4"
+      }
+    ],
+    "likes": 8,
+    "comments": 0,
+    "title": "Brainrot extension",
+    "technologies": [
+      "chrome",
+      "css",
+      "google-storage",
+      "html",
+      "javascript"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/zkhan04/brainrot"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/khanzayd11",
+        "bio": "Zayd - I worked on the backend of the extension using chrome's local storage and a background script. I also created the shop, which pops up when the user presses the extension icon on their toolbar. To communicate between the content script, shop and background script, I set up multiple messaging ports."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/mi55a",
+        "bio": "Mily - I worked on frontend, testing out the browser's effects and how the user interacts with them. I gathered the effects and created event listeners that go with them. I created the effect that replaces words with random brainrot, dealing with text nodes."
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Ready to Play (Venue Booking Finder)",
+    "tagline": "Venue finder application, used to help you find the perfect location for any occasion. Whether a holiday, weekend, handout with friends. From esports venues to stadiums, Ready-To-Play has your back",
+    "url": "https://devpost.com/software/venue-booker",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/903/datas/medium.png",
+    "team_members": [
+      {
+        "name": "georgetsai2028 tsai",
+        "profile_url": "https://devpost.com/georgetsai2028",
+        "avatar_url": "https://avatars.githubusercontent.com/u/115137756?type=square&v=4"
+      },
+      {
+        "name": "Omm Devgoswami",
+        "profile_url": "https://devpost.com/OmmDevgoswami",
+        "avatar_url": "https://avatars.githubusercontent.com/u/127383096?type=square&v=4"
+      },
+      {
+        "name": "Ewaoluwa Edun",
+        "profile_url": "https://devpost.com/ewa-edun",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/165/247/datas/small.png"
+      },
+      {
+        "name": "Annanya Devi",
+        "profile_url": "https://devpost.com/annanyadevi18",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocI75NzBw685xOvoWw1xjmkFl6L1FN9mOqWSozsrLwG25V9PF69V=s96-c?type=square"
+      }
+    ],
+    "likes": 17,
+    "comments": 3,
+    "title": "Ready to Play (Venue Booking Finder)",
+    "technologies": [
+      "css",
+      "google-maps",
+      "html",
+      "javascript",
+      "python",
+      "react"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/OmmDevgoswami/Ready-to-Play-BrainrotEdi"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/OmmDevgoswami",
+        "bio": "I worked on the UI and for the smooth implementation of the Frontend and Backend."
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/deepjyoti478",
+        "bio": "I laid the groundwork for this idea by designing its basic foundation and led the team in structuring its development"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/ewa-edun",
+        "bio": "I worked on the About page and was my first time using React.js"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/annanyadevi18",
+        "bio": "I've worked on home page ,brain rot page and the mini games in it"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/georgetsai2028",
+        "bio": "I worked on the Venue Finder page and booking/details page. This is my first hackathon and first time using react!!!"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/ogunrewo2004",
+        "bio": "I worked on the Team Cards page showing the name of all the team mates"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "MyDog8it",
+    "tagline": "Fetching Your Excuses, \ud83e\udd10 No Leash Attached \ud83e\udd2b",
+    "url": "https://devpost.com/software/mydog8it",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/165/123/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Kaushik Tumu",
+        "profile_url": "https://devpost.com/kaushiknag72",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/058/170/datas/small.jpg"
+      },
+      {
+        "name": "Riya Jaykar",
+        "profile_url": "https://devpost.com/riyajaykar",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/165/686/datas/small.jpeg"
+      },
+      {
+        "name": "Harish Gopal",
+        "profile_url": "https://devpost.com/harishwishes17",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/165/117/datas/small.jpeg"
+      },
+      {
+        "name": "Prajval Jagtap",
+        "profile_url": "https://devpost.com/jagtaprajwal2016",
+        "avatar_url": "https://media.licdn.com/dms/image/v2/D4E03AQFtwUhFRahlqA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1728668334785?e=1738195200&t=btxO0Vy-TvTmY5o39mw3qsW1ye_tHs1mmR51S0PipvU&type=square&v=beta"
+      }
+    ],
+    "likes": 13,
+    "comments": 0,
+    "title": "MyDog8it",
+    "technologies": [
+      "css",
+      "groq",
+      "netlify",
+      "next.js",
+      "react",
+      "tailwind",
+      "tesseract",
+      "typescript"
+    ],
+    "links": [
+      {
+        "text": "resonant-tartufo-926d34.netlify.app",
+        "url": "https://resonant-tartufo-926d34.netlify.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/404kaushik/myDog8iT"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/kaushiknag72"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/riyajaykar"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/harishwishes17"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/jagtaprajwal2016"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "My Skibidi Girlfriend Simulator",
+    "tagline": "My Skibidi Girlfriend Simulator is an interactive experience where you brainrot with a CS major virtual girlfriend. Have conversations and meet the love of your life, now with #kawaii music <3",
+    "url": "https://devpost.com/software/skibidi-yamdjw",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/164/137/datas/medium.jpg",
+    "team_members": [
+      {
+        "name": "Grace Wei",
+        "profile_url": "https://devpost.com/GraceW03",
+        "avatar_url": "https://avatars.githubusercontent.com/u/117541421?type=square&v=4"
+      },
+      {
+        "name": "grace jin",
+        "profile_url": "https://devpost.com/gjin3234",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJ8D7OUan4-gnvGs5LyQcVQocMwsdOcZdqXgY7hnbr3x8aCGGVq=s96-c?type=square"
+      }
+    ],
+    "likes": 4,
+    "comments": 2,
+    "title": "My Skibidi Girlfriend Simulator",
+    "technologies": [
+      "css",
+      "express.js",
+      "google-cloud",
+      "html",
+      "javascript",
+      "node.js",
+      "openai",
+      "python"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/gracejinsotrue/AI-GIRLFRIEN"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/GraceW03",
+        "bio": "I worked on the front-end, and set up the integration so that the user can communicate with the mamacita girlfren"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/gjin3234",
+        "bio": "I set up the google cloud and OpenAI api calls and did the art/animated the mamacita girlfrien"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "Traject",
+    "tagline": "A all-in-one platform to find opportunities.",
+    "url": "https://devpost.com/software/traject",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/003/161/413/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Arjun Sharda",
+        "profile_url": "https://devpost.com/arjunsharda",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocL5Gy6Qk0OCMWcrj36jfdk8szbcLdK5s8P_bCn711Kx6WDrEA=s96-c?type=square"
+      }
+    ],
+    "likes": 11,
+    "comments": 8,
+    "title": "Traject",
+    "technologies": [
+      "next.js",
+      "react",
+      "tailwindcss",
+      "vercel"
+    ],
+    "links": [
+      {
+        "text": "traject.vercel.app",
+        "url": "https://traject.vercel.app/"
+      },
+      {
+        "text": "github.com",
+        "url": "https://github.com/ArjunSharda/Traject"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/arjunsharda"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                wakaba prize ($340 value, this includes $50 cash)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {},
+      {}
+    ]
+  },
+  {
+    "name": "SurFocuSkibidi",
+    "tagline": "4 brainrots during thanksgiving coding playing chilling skibidiing",
+    "url": "https://devpost.com/software/surfocuskibidi",
+    "thumbnail": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/162/400/datas/medium.png",
+    "team_members": [
+      {
+        "name": "Tam Dang",
+        "profile_url": "https://devpost.com/dahomita",
+        "avatar_url": "https://avatars.githubusercontent.com/u/139360620?type=square&v=4"
+      },
+      {
+        "name": "Van Khanh Dang",
+        "profile_url": "https://devpost.com/arianne-dangvankhanh",
+        "avatar_url": "//d112y698adiu2z.cloudfront.net/photos/production/user_photos/003/055/139/datas/small.jpg"
+      },
+      {
+        "name": "11CA1 - 14 - \u0110\u1eb7ng Ph\u00fa V\u0129nh Khang Dang",
+        "profile_url": "https://devpost.com/khangdang0199",
+        "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJmmdpWsXsCxgj-L1Uxc5XFwtA17en0nNPh3XbWvL5KidgSNY4=s96-c?type=square"
+      },
+      {
+        "name": "Ho Quynh Giang",
+        "profile_url": "https://devpost.com/Shepe1304",
+        "avatar_url": "https://avatars.githubusercontent.com/u/118598508?type=square&v=4"
+      }
+    ],
+    "likes": 7,
+    "comments": 0,
+    "title": "SurFocuSkibidi",
+    "technologies": [
+      "css",
+      "html",
+      "javascript",
+      "react"
+    ],
+    "links": [
+      {
+        "text": "github.com",
+        "url": "https://github.com/Shepe1304/SurFocuSkibidi"
+      },
+      {
+        "text": "surfocuskibidi.netlify.app",
+        "url": "https://surfocuskibidi.netlify.app/"
+      },
+      {
+        "text": "www.linkedin.com",
+        "url": "https://www.linkedin.com/posts/dahomita_brainblorps-hackathon-trypearai-activity-7268862399439372289-jKml?utm_source=combined_share_message&utm_medium=member_desktop_web"
+      }
+    ],
+    "team_members_detailed": [
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/Shepe1304",
+        "bio": "HTML, CSS, JavaScript, ReactJS!"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/dahomita"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/arianne-dangvankhanh"
+      },
+      {
+        "name": "",
+        "profile_url": "https://devpost.com/khangdang0199"
+      }
+    ],
+    "hackathon_submissions": [
+      {
+        "name": "",
+        "url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+        "prizes": [
+          "Winner\n                i laughed. (new hackers prize) (10 winning teams)",
+          "Winner\n                (TPIA) this project is awesome"
+        ]
+      },
+      {},
+      {}
+    ]
+  }
+]
