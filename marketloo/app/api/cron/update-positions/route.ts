@@ -11,7 +11,7 @@ interface PositionWithOutcome {
 
 export async function GET(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Get all users with positions
     const { data: users, error: usersError } = await supabase

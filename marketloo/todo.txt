@@ -20,6 +20,7 @@
 - make landing page nicer ~ more detail on markets
 - real time functionality ~ activity feed
 - AI summaries for markets
+- test positions functionality
 
 ###
 - show market volume on main page
