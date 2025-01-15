@@ -49,14 +49,15 @@ BEGIN
     SELECT 
         market_id,
         outcome_id,
-        price,
-        date_trunc('hour', timestamp),
+        AVG(price),  -- Take average price for the hour
+        date_trunc('hour', timestamp),  -- Group by hour
         '1h'
     FROM recent_price_history
-    WHERE 
-        timestamp < NOW() - INTERVAL '1 hour'
-    AND
-        timestamp = date_trunc('hour', timestamp)
+    WHERE timestamp < NOW() - INTERVAL '1 hour'
+    GROUP BY 
+        market_id,
+        outcome_id,
+        date_trunc('hour', timestamp)
     ON CONFLICT (market_id, outcome_id, timestamp, interval_type) DO UPDATE
     SET price = EXCLUDED.price;
 END;

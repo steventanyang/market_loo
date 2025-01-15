@@ -4,6 +4,7 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 // import { Providers } from "./providers";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -39,8 +40,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {/* <Providers> */}
-            <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen">{children}</main>
           {/* </Providers> */}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
