@@ -3,7 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NavigationTabs() {
+interface NavigationTabsProps {
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
+}
+
+export default function NavigationTabs({
+  activeTab = "",
+  setActiveTab = () => {},
+}: NavigationTabsProps) {
   const pathname = usePathname();
 
   return (
