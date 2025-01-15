@@ -1,0 +1,701 @@
+[
+  {
+    "id": "065b2579-8bdf-4f54-81de-80b14496d40e",
+    "outcomes": [
+      {
+        "outcome_id": "d5a5c61e-485a-4959-83cf-597eacf8436f",
+        "name": "No",
+        "current_price": 0.48478873416399226,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "7c8c647b-f0aa-4a7d-ae72-9ad4534a5b42",
+        "name": "Yes",
+        "current_price": 0.5152112658360077,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "108caca3-81db-4ee2-b2dc-b177ca6ef255",
+    "outcomes": [
+      {
+        "outcome_id": "ee56df73-9d29-468e-9bae-473e0c1a07f2",
+        "name": "No",
+        "current_price": 0.5,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "1d101a54-0143-4c4f-a939-705d0cc2e572",
+        "name": "Yes",
+        "current_price": 0.5,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "256a963f-1a98-4a87-8854-5f5771290bb8",
+    "outcomes": [
+      {
+        "outcome_id": "4bc99830-5bb1-4eef-ae99-950a387296b5",
+        "name": "Yes",
+        "current_price": 0.5047723621018395,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "6ecef976-c1f0-4917-aae8-102712a8a46b",
+        "name": "No",
+        "current_price": 0.4952276378981605,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "2ba8c559-e7d7-4faa-b1b9-f525c36e2c08",
+    "outcomes": [
+      {
+        "outcome_id": "ef688b31-9b1e-447e-a583-2fb66465a375",
+        "name": "Yes",
+        "current_price": 0.5439032526067793,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "6a229c2f-b7c3-425e-a6e4-6c01dc6e77ee",
+        "name": "Yes",
+        "current_price": 0.5776433767978076,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "ea7b3e9b-3f73-4e4d-bc77-c3aaf5787e2b",
+        "name": "No",
+        "current_price": 0.42235662320219236,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "a07571a9-852f-4c27-b595-759b569ac2dc",
+        "name": "No",
+        "current_price": 0.4560967473932207,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "2fb3f75c-b12c-4b1c-aef1-8bc1e3d0f218",
+    "outcomes": [
+      {
+        "outcome_id": "7cc7ef8a-bffd-4740-81c8-0afce670b567",
+        "name": "mom3",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "6496da2a-7909-4c6f-9416-1efc2e9dec9a",
+        "name": "mom 1",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "7f9f8432-172b-4ac0-8f20-57bedcbcb590",
+        "name": "mom2",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "3aff982a-7c8f-48ef-9efe-cef6e9a4fe98",
+    "outcomes": [
+      {
+        "outcome_id": "e55846c3-93f1-4920-81bf-b03a803ee852",
+        "name": "Yes",
+        "current_price": 0.5060377371671295,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "cf106760-0924-4676-be28-e6330bacbcd9",
+        "name": "No",
+        "current_price": 0.4939622628328705,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "3b75af3f-7a64-4a8b-bc75-a48dd1235f98",
+    "outcomes": [
+      {
+        "outcome_id": "83943cd9-ccc1-4d4e-a895-22f3ed63fbe6",
+        "name": "No",
+        "current_price": 0.49493000086419203,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "978db183-3270-43f9-a699-7d4c185d06c0",
+        "name": "Yes",
+        "current_price": 0.505069999135808,
+        "is_winner": true
+      }
+    ]
+  },
+  {
+    "id": "4f83a136-5a61-43b7-9684-792ea4fee404",
+    "outcomes": [
+      {
+        "outcome_id": "6bff0736-65c8-49db-ad1a-e9805f3090ed",
+        "name": "Yes",
+        "current_price": 0.5,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "6ca334e7-8f5f-4602-a386-6ab18e93b1d3",
+        "name": "No",
+        "current_price": 0.5,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "571bf167-d41a-495e-89e8-14ca5b3680aa",
+    "outcomes": [
+      {
+        "outcome_id": "c7179884-03ff-4103-bb97-8bf6cf074260",
+        "name": "Yes",
+        "current_price": 0.5055232873341506,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "fb33dd49-3d02-48dd-9379-4c06aab2cbcc",
+        "name": "No",
+        "current_price": 0.49447671266584936,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "5732a08e-b637-42fe-b027-df3b6ca60808",
+    "outcomes": [
+      {
+        "outcome_id": "179a06de-09ae-4cd5-ab45-64f1645e881d",
+        "name": "Yes",
+        "current_price": 0.3333333333333333,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "7a2f23d4-b7c9-4912-90cb-c855fde81e58",
+        "name": "Yes",
+        "current_price": 0.3333333333333333,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "5d0a15e3-77ae-43ae-bb58-c428f3bba344",
+        "name": "No",
+        "current_price": 0.6666666666666667,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "e76cfd93-5807-4946-8fa5-5410d118d35c",
+        "name": "Yes",
+        "current_price": 0.3333333333333333,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "f06505db-067d-4114-b456-7dd2b59d1663",
+        "name": "No",
+        "current_price": 0.6666666666666667,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "3a78dda4-191e-4e20-a8c5-a6ba4697e42a",
+        "name": "No",
+        "current_price": 0.6666666666666667,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "6229e057-0d05-43cc-97c5-d74725a7f1b8",
+    "outcomes": [
+      {
+        "outcome_id": "376c8d54-af43-4771-a27c-d42b8fd50e2a",
+        "name": "Yes",
+        "current_price": 0.5016971247909823,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "f18111ef-6108-45ce-ac9c-268741b6d72e",
+        "name": "No",
+        "current_price": 0.4983028752090177,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "71e12e5d-0a4c-45bc-81c5-34e7539d4aca",
+    "outcomes": [
+      {
+        "outcome_id": "d36a8ec8-f43b-4e21-b263-0bd5b2ceb8f3",
+        "name": "Yes",
+        "current_price": 0.5,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "10e4f411-5135-4fc5-aa64-d056310f225d",
+        "name": "No",
+        "current_price": 0.5,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "765c7733-7c72-447d-ac16-8f54a53d4573",
+    "outcomes": [
+      {
+        "outcome_id": "1be85b64-eb85-4886-8772-8cd0b2c14a0f",
+        "name": "No",
+        "current_price": 0.6849758629307814,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "81469969-ad28-46f6-896b-12c67d221bae",
+        "name": "Yes",
+        "current_price": 0.35650901001903684,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "7201887c-6227-4cd6-afca-6d916b83b7f9",
+        "name": "Yes",
+        "current_price": 0.31502413706921867,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "f5a7162f-81e6-4731-af8b-bc9a8dba385e",
+        "name": "No",
+        "current_price": 0.6434909899809631,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "3e8edd7a-9f50-47f1-b995-75dbec3aa496",
+        "name": "No",
+        "current_price": 0.67,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "2cb3ce59-c8b5-4d83-a874-b90ab2edac05",
+        "name": "Yes",
+        "current_price": 0.33,
+        "is_winner": true
+      }
+    ]
+  },
+  {
+    "id": "79408d81-5cea-4200-aac1-d5949433c22f",
+    "outcomes": [
+      {
+        "outcome_id": "b1ab8a8e-6676-44fb-befd-64ed62a8601f",
+        "name": "Yes",
+        "current_price": 0.5072782376409095,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "63e529b2-9ca4-4f26-9648-13b21da74d2c",
+        "name": "No",
+        "current_price": 0.4927217623590905,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "7ec6e5d1-0368-4f49-b838-8931ac7b9a01",
+    "outcomes": [
+      {
+        "outcome_id": "40505b3a-da01-4250-9443-1520dd73b77e",
+        "name": "Yes",
+        "current_price": 0.5061410405813067,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "154e58a7-ef2d-4968-a990-49f7df067aba",
+        "name": "No",
+        "current_price": 0.4938589594186933,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "8958a6d6-ccb2-4872-8a66-92aa4ba14888",
+    "outcomes": [
+      {
+        "outcome_id": "a0fc4e53-144c-4a2f-9297-123784cf61ef",
+        "name": "No",
+        "current_price": 0.27040884847362434,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "6f5f73bd-41a2-42f0-8fc5-bce837f81579",
+        "name": "Yes",
+        "current_price": 0.7295911515263757,
+        "is_winner": true
+      }
+    ]
+  },
+  {
+    "id": "8c513913-9332-4f09-a251-1b743a16ae82",
+    "outcomes": [
+      {
+        "outcome_id": "61115d05-f199-4123-b77a-5d32c5535421",
+        "name": "No",
+        "current_price": 0.432115509470956,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "e15a9ff7-8102-41b8-930a-352bbb810b31",
+        "name": "Yes",
+        "current_price": 0.567884490529044,
+        "is_winner": true
+      }
+    ]
+  },
+  {
+    "id": "96a147dc-dc8b-4057-a245-72d2de769ef6",
+    "outcomes": [
+      {
+        "outcome_id": "030b4b94-43bb-4815-9a08-9df696ecc075",
+        "name": "Warriors",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "70b3e048-e89b-45b2-9a69-8593902721ec",
+        "name": "Celtics",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "6da026b6-6a92-4a63-823a-88d1e240b397",
+        "name": "Cavs",
+        "current_price": 0.3333333333333333,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "9fa30499-090c-499b-910a-9ef5c6863090",
+    "outcomes": [
+      {
+        "outcome_id": "1e0b7e1c-afbb-4e5e-9d7d-9b9238d018f6",
+        "name": "Yes",
+        "current_price": 0.5060001553564478,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "8e31ba62-277a-43e9-b298-93ade53a6272",
+        "name": "No",
+        "current_price": 0.4939998446435522,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "a8b62dbe-b6a1-4c84-afe2-e9e8c9578f2f",
+    "outcomes": [
+      {
+        "outcome_id": "238273f8-11d3-4aba-9257-51c68283629d",
+        "name": "Yes",
+        "current_price": 0.5,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "b7ec21e2-3e2f-45d1-a030-87724c2c4847",
+        "name": "No",
+        "current_price": 0.5,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "ce05e666-e88a-476f-bac6-3cbef42fe785",
+    "outcomes": [
+      {
+        "outcome_id": "545d9802-7d74-407f-8c0d-41d6e35d5cac",
+        "name": "Yes",
+        "current_price": 0.5065032935070742,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "9a95ab38-0bcd-42ec-b839-ea053dadfb4d",
+        "name": "No",
+        "current_price": 0.49349670649292576,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "d7fa6679-040f-406e-911d-2cc6d60de24d",
+    "outcomes": [
+      {
+        "outcome_id": "30a209d7-b364-46b8-ad18-f67e56c1d349",
+        "name": "No",
+        "current_price": 0.4878292985325625,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "8d3b6f4e-7a1b-402b-adc4-f6d17cb2b93d",
+        "name": "Yes",
+        "current_price": 0.5121707014674375,
+        "is_winner": true
+      }
+    ]
+  },
+  {
+    "id": "e41345bc-12fe-4d11-af03-5121db3215cf",
+    "outcomes": [
+      {
+        "outcome_id": "1ced6b6f-aab2-45d4-b58f-314cdbc1458f",
+        "name": "No",
+        "current_price": 0.8731604315571633,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "4725a9d2-0d6e-4e60-b077-97bd9515019d",
+        "name": "Yes",
+        "current_price": 0.14285714285714285,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "48c8a87e-4963-451e-a12e-5200fa3e6ba9",
+        "name": "Yes",
+        "current_price": 0.12683956844283667,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "5a548adf-311c-4cd1-ade0-cd270aa15f07",
+        "name": "No",
+        "current_price": 0.8571428571428572,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "17564c03-45b6-484d-9b4e-0264f15e0739",
+        "name": "Yes",
+        "current_price": 0.09530753859360468,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "86196ff0-d4c0-4a33-8790-34387abe1761",
+        "name": "No",
+        "current_price": 0.9046924614063954,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "f9fdde6a-078f-41f1-875e-f21972b0d7d4",
+        "name": "No",
+        "current_price": 0.8300135864323872,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "e3320805-7113-457d-8df0-ade10901bf8c",
+        "name": "Yes",
+        "current_price": 0.1699864135676128,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "0565709e-49dd-4a67-bd78-25cfce9b97df",
+        "name": "No",
+        "current_price": 0.8663134477796467,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "2309d329-6f47-44f6-bab5-76d98de4e8d0",
+        "name": "Yes",
+        "current_price": 0.1336865522203533,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "c7494fb9-bdd2-4004-bedc-e38316903563",
+        "name": "Yes",
+        "current_price": 0.1237511241851033,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "219ede97-2348-493d-bfd2-5b29f9bb0bc1",
+        "name": "No",
+        "current_price": 0.8762488758148967,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "5197d615-48d2-4d26-9627-61088ad07d1c",
+        "name": "No",
+        "current_price": 0.8936144863729312,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "2923567c-50ea-463b-b6c6-b4723268630a",
+        "name": "Yes",
+        "current_price": 0.10638551362706883,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "e97f98c0-a54d-483b-bd65-99d93d56c2ff",
+    "outcomes": [
+      {
+        "outcome_id": "1387c8be-2d72-49a4-b947-753abdd2c94b",
+        "name": "No",
+        "current_price": 0.8,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "7ff7527f-4687-4339-b757-fd269e59c87a",
+        "name": "No",
+        "current_price": 0.8178519535100848,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "519889bc-66d4-4d3c-aaf3-89807932d80b",
+        "name": "Yes",
+        "current_price": 0.18214804648991523,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "3a679d3c-7453-47fe-b7c0-826848ec7c22",
+        "name": "Yes",
+        "current_price": 0.20298337705963446,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "a5fc4f14-e49e-4c43-8a2a-aaf6eceb7295",
+        "name": "No",
+        "current_price": 0.7970166229403656,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "11619776-e575-4fa4-b325-733995678481",
+        "name": "Yes",
+        "current_price": 0.20412078198542843,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "25c86775-d8b5-4692-8212-751c0726460a",
+        "name": "No",
+        "current_price": 0.7958792180145715,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "8adab666-079d-4a9a-b227-14e7aa37fbf4",
+        "name": "No",
+        "current_price": 0.8025754072264052,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "5e792406-b38a-4962-a866-cb3c1e594f7b",
+        "name": "Yes",
+        "current_price": 0.1974245927735948,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "f0f9fb5a-5079-40d0-bcbf-e946ef6e3def",
+        "name": "Yes",
+        "current_price": 0.2,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "f747fe6a-6e29-43f0-8d41-574e07f269bc",
+    "outcomes": [
+      {
+        "outcome_id": "38a9b1b2-9ba8-4a7c-b1b3-bf0f652c9da1",
+        "name": "Yes",
+        "current_price": 0.327398726115636,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "baca3016-00d0-4e9a-b8c2-aa7a522499ae",
+        "name": "Yes",
+        "current_price": 0.7070425994892955,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "34f20930-727f-4270-a46c-c0a8df3e18fd",
+        "name": "No",
+        "current_price": 0.6582648334216757,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "79444179-3237-421c-ac33-b99420070ffc",
+        "name": "No",
+        "current_price": 0.6726012738843641,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "0a596ef1-e682-4b3a-b146-035810aa0b0b",
+        "name": "Yes",
+        "current_price": 0.34173516657832426,
+        "is_winner": null
+      },
+      {
+        "outcome_id": "2e209d72-7762-42b1-9fa5-f269b0dace6a",
+        "name": "No",
+        "current_price": 0.2929574005107045,
+        "is_winner": null
+      }
+    ]
+  },
+  {
+    "id": "f86946a3-7859-4134-bf70-d4ee89c89fdd",
+    "outcomes": [
+      {
+        "outcome_id": "22453f36-97c2-467d-bdd8-28a852ad4f6a",
+        "name": "No",
+        "current_price": 0.5009447077892862,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "db27b787-e33f-4b5a-ad60-5c851ff4aab5",
+        "name": "Yes",
+        "current_price": 0.49905529221071376,
+        "is_winner": false
+      }
+    ]
+  },
+  {
+    "id": "ffc7a415-4425-4f02-8378-b9b37ecfbf47",
+    "outcomes": [
+      {
+        "outcome_id": "336e06f9-2d2f-4f27-be15-dd777deb7d32",
+        "name": "Yes",
+        "current_price": 0.29903573932900485,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "ce502c16-4a43-4068-ad98-b6c78c0f149e",
+        "name": "Yes",
+        "current_price": 0.29694567038363673,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "84edab4b-4507-47b0-bb5e-582cffc2a497",
+        "name": "No",
+        "current_price": 0.7009642606709952,
+        "is_winner": true
+      },
+      {
+        "outcome_id": "3040ae21-c0c6-430e-adc0-e046dd7f035e",
+        "name": "Yes",
+        "current_price": 0.4132888760578985,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "a1f88ca4-7ea3-45d8-b3c8-0670e52ad97d",
+        "name": "No",
+        "current_price": 0.5867111239421015,
+        "is_winner": false
+      },
+      {
+        "outcome_id": "7ea1e813-4b22-4e29-91ef-3f510469999e",
+        "name": "No",
+        "current_price": 0.7030543296163633,
+        "is_winner": false
+      }
+    ]
+  }
+]

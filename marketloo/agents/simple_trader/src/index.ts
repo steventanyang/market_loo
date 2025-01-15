@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { createClient } from "@supabase/supabase-js";
 import { placeOrder } from "../../common/utils";
+import markets from "../markets.json";
 
 class SimpleTraderAgent {
   private supabase;
@@ -7,8 +10,8 @@ class SimpleTraderAgent {
 
   constructor() {
     this.supabase = createClient(
-      "https://qrqxgmpbqnppfqbwjqky.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFycXhnbXBicW5wcGZxYndqcWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk2NzE3ODUsImV4cCI6MjAyNTI0Nzc4NX0.qG5kLERX6jMVVEyeKOKu1mLvJGa1R1-YL6y4w6oXgpE"
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
   }
 
@@ -20,7 +23,7 @@ class SimpleTraderAgent {
         {
           method: "POST",
           headers: {
-            "x-agent-key": "qXTkEprZJyyopIL3JzlZ19GNWlwGyKKz95+KVEPofro=",
+            "x-agent-key": process.env.AGENT_CREATION_KEY!,
             "Content-Type": "application/json",
           },
         }
@@ -40,23 +43,26 @@ class SimpleTraderAgent {
     }
   }
 
-  async getRandomMarket() {
-    const { data: markets, error } = await this.supabase
-      .from("markets")
-      .select("id, options(yes_outcome_id)")
-      .eq("status", "open")
-      .limit(1)
-      .single();
+  getRandomMarketAndOutcome() {
+    // Get random market
+    const market = markets[Math.floor(Math.random() * markets.length)];
 
-    if (error) throw error;
+    // Get random outcome from that market
+    const outcome =
+      market.outcomes[Math.floor(Math.random() * market.outcomes.length)];
+
     return {
-      marketId: markets.id,
-      outcomeId: markets.options[0].yes_outcome_id,
+      marketId: market.id,
+      outcomeId: outcome.outcome_id,
     };
   }
 
   async placeTrade() {
     try {
+      const { marketId, outcomeId } = this.getRandomMarketAndOutcome();
+      const isbuying = Math.random() > 0.5; // 50% chance to buy or sell
+      const amount = Math.floor(Math.random() * 50) + 10; // Random amount between 10-60
+
       const response = await fetch("https://market-loo.vercel.app/api/orders", {
         method: "POST",
         headers: {
@@ -64,16 +70,17 @@ class SimpleTraderAgent {
           Authorization: `Bearer ${this.session.access_token}`,
         },
         body: JSON.stringify({
-          market_id: "f747fe6a-6e29-43f0-8d41-574e07f269bc",
-          outcome_id: "baca3016-00d0-4e9a-b8c2-aa7a522499ae",
-          amount: 100,
-          type: "buying",
+          market_id: marketId,
+          outcome_id: outcomeId,
+          amount: amount,
+          type: isbuying ? "buying" : "selling",
         }),
       });
 
       const data = await response.json();
-      console.log(data);
-      console.log("Order placed successfully");
+      console.log(
+        `${isbuying ? "Bought" : "Sold"} ${amount} tokens in market ${marketId}`
+      );
     } catch (error) {
       console.error("Error placing trade:", error);
     }
@@ -82,13 +89,31 @@ class SimpleTraderAgent {
   async start() {
     await this.initialize();
 
-    // Place trades every 20 seconds
+    // First trade: Buy 100 of random market/outcome
+    try {
+      const { marketId, outcomeId } = this.getRandomMarketAndOutcome();
+      await fetch("https://market-loo.vercel.app/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.session.access_token}`,
+        },
+        body: JSON.stringify({
+          market_id: marketId,
+          outcome_id: outcomeId,
+          amount: 100,
+          type: "buying",
+        }),
+      });
+      console.log(`Initial buy of 100 tokens in market ${marketId}`);
+    } catch (error) {
+      console.error("Error placing initial trade:", error);
+    }
+
+    // Random trades every 10 seconds
     setInterval(() => {
       this.placeTrade();
-    }, 20000);
-
-    // Place first trade immediately
-    this.placeTrade();
+    }, 10000);
   }
 }
 

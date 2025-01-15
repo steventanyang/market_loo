@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const { error: dbError } = await supabase.from("users").insert({
       id: authData.user!.id,
       username,
-      balance_of_poo: 1000,
+      balance_of_poo: 1000000,
     });
 
     if (dbError) throw dbError;
