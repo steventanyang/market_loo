@@ -81,7 +81,7 @@ export default function LandingActivityFeed() {
         {activities.map((activity) => (
           <div
             key={activity.id}
-            className="p-3 flex items-center justify-between"
+            className="p-3 flex items-center justify-between animate-slideIn"
           >
             <div className="flex items-center gap-2">
               <span

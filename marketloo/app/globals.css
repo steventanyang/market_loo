@@ -124,11 +124,11 @@
 @keyframes slideIn {
   0% {
     opacity: 0;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
   }
   20% {
     opacity: 1;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
   }
   100% {
     opacity: 1;
@@ -136,8 +136,8 @@
   }
 }
 
-.animate-new-item {
-  animation: slideIn 3s ease-out forwards;
+.animate-slideIn {
+  animation: slideIn 2s ease-out forwards;
 }
 
 /* Add this for new items being added */

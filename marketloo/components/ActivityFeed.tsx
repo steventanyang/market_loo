@@ -237,7 +237,10 @@ export default React.memo(function ActivityFeed() {
 
       <div className="divide-y divide-gray-700">
         {activities.map((activity) => (
-          <div key={activity.id} className="p-6 flex items-start gap-3">
+          <div
+            key={activity.id}
+            className="p-6 flex items-start gap-3 animate-slideIn"
+          >
             <div className="flex-grow">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
