@@ -72,7 +72,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon }: StatCardProps) {
   return (
-    <div className="bg-[#262B33] rounded-lg p-6">
+    <div className="bg-[#1e2128] rounded-lg p-6">
       <div className="flex items-center gap-3 mb-4">
         {icon}
         <h3 className="text-gray-400 font-medium">{title}</h3>

@@ -77,7 +77,7 @@ export default async function MarketPage(props: MarketPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#1C2127] text-white">
+    <div className="min-h-screen bg-[#161920] text-white">
       <TopBar />
 
       <div className="max-w-7xl mx-auto p-6">
@@ -105,7 +105,7 @@ export default async function MarketPage(props: MarketPageProps) {
 
           <div>
             {market.status === "resolved" ? (
-              <div className="bg-[#2C3038] rounded-lg p-6">
+              <div className="bg-[#252931] rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <CheckCircle2 className="w-6 h-6 text-green-400" />
                   <h3 className="text-xl font-semibold">Market Resolved</h3>
@@ -113,7 +113,7 @@ export default async function MarketPage(props: MarketPageProps) {
                 <p className="text-gray-400 mb-4">
                   This market has been resolved with the following outcome:
                 </p>
-                <div className="bg-[#1C2127] rounded-lg p-4">
+                <div className="bg-[#161920] rounded-lg p-4">
                   <span className="text-green-400 font-medium">
                     {market.outcome}
                   </span>

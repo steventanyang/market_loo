@@ -8,9 +8,13 @@ import MarketIcon from "@/components/MarketIcon";
 
 // Move the PercentageBar and YesNoButtons components from protected/page.tsx here
 const PercentageBar = ({ percentage }: { percentage: number }) => (
-  <div className="flex flex-col items-center">
-    <span className="text-white font-bold mb-1">{percentage.toFixed(0)}%</span>
-    <div className="w-24 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+  <div className="w-full">
+    <div className="flex justify-center items-center mb-2">
+      <span className="text-white font-bold text-lg">
+        {percentage.toFixed(0)}%
+      </span>
+    </div>
+    <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-4">
       <div
         className="h-full bg-green-500 rounded-full"
         style={{ width: `${percentage}%` }}
@@ -108,40 +112,37 @@ export default function TradeContent() {
 
           return (
             <Link href={`/market/${market.id}`} key={market.id}>
-              <div className="bg-[#2C3038] rounded-lg overflow-hidden border border-gray-700 hover:border-gray-600 transition cursor-pointer h-[200px]">
+              <div className="bg-texture hover-card rounded-lg overflow-hidden border border-gray-700/50 hover:border-gray-500 transition cursor-pointer h-[240px]">
                 {/* Market Header */}
                 <div className="p-4 flex items-start gap-4">
                   <MarketIcon />
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start gap-4">
-                      <h3 className="text-lg font-semibold mb-1 truncate">
-                        {market.title}
-                      </h3>
-                      {isBinary && (
-                        <PercentageBar percentage={yesPrice * 100} />
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-400 mb-3">
-                      Ends {new Date(market.closes_at).toLocaleDateString()}
-                    </div>
+                    <h3 className="text-lg font-semibold mb-1">
+                      {market.title}
+                    </h3>
                   </div>
                 </div>
 
                 {/* Market Options */}
-                <div className="px-4 pb-4 h-[calc(100%-100px)] flex flex-col">
+                <div className="px-4 pb-4 h-[calc(100%-76px)] flex flex-col">
                   {isBinary ? (
-                    <div className="flex flex-col justify-end h-full">
-                      <YesNoButtons
-                        yesPrice={market.options[0].yes_outcome.current_price}
-                        noPrice={market.options[0].no_outcome.current_price}
-                      />
+                    <div className="flex flex-col h-full">
+                      <div className="flex-grow flex items-center">
+                        <PercentageBar percentage={yesPrice * 100} />
+                      </div>
+                      <div className="mb-4">
+                        <YesNoButtons
+                          yesPrice={market.options[0].yes_outcome.current_price}
+                          noPrice={market.options[0].no_outcome.current_price}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2 overflow-y-auto hide-scrollbar">
                       {market.options.map((option) => (
                         <div
                           key={option.id}
-                          className="flex items-center justify-between py-2 px-3 bg-[#1C2127] rounded-lg"
+                          className="flex items-center justify-between py-2 px-3 bg-[#161920]/80 rounded-lg"
                         >
                           <span className="text-sm font-medium min-w-[100px] mr-4">
                             {option.name}
@@ -162,7 +163,7 @@ export default function TradeContent() {
       </div>
 
       <div className="flex justify-center mt-8">
-        <button className="px-6 py-3 bg-[#2C3038] hover:bg-[#363B44] rounded-lg transition">
+        <button className="px-6 py-3 bg-texture hover-card rounded-lg border border-gray-700/50 hover:border-gray-500 text-gray-400 hover:text-white transition-all">
           Show More Markets
         </button>
       </div>

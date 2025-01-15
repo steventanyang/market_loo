@@ -43,6 +43,9 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
   const [outcomes, setOutcomes] = useState<Outcome[]>([]);
   const [userBalance, setUserBalance] = useState<number | null>(null);
   const [positions, setPositions] = useState<Position[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
 
   const supabase = createClient();
   const isBinaryMarket = options.length === 1;
@@ -135,6 +138,12 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
         throw new Error(data.error || "Failed to place order");
       }
 
+      // Show confirmation in button
+      setOrderConfirmed(true);
+      setTimeout(() => {
+        setOrderConfirmed(false);
+      }, 2000);
+
       // After successful trade, fetch fresh data
       await fetchData();
     } catch (err: any) {
@@ -197,9 +206,9 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                   "aspect-square px-3 py-2 text-lg font-semibold rounded-lg transition",
                   selectedOutcome?.id === options[0].yes_outcome_id
                     ? activeTab === "buy"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                      ? "bg-green-500/40 text-green-300 border-2 border-green-500/70"
+                      : "bg-red-500/40 text-red-300 border-2 border-red-500/70"
+                    : "bg-[#1a1e2a] text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500"
                 )}
               >
                 Yes
@@ -216,9 +225,9 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                   "aspect-square px-3 py-2 text-lg font-semibold rounded-lg transition",
                   selectedOutcome?.id === options[0].no_outcome_id
                     ? activeTab === "buy"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                      ? "bg-green-500/40 text-green-300 border-2 border-green-500/70"
+                      : "bg-red-500/40 text-red-300 border-2 border-red-500/70"
+                    : "bg-[#1a1e2a] text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500"
                 )}
               >
                 No
@@ -241,7 +250,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
       {/* Selection and Position info in smaller boxes below */}
       {selectedOutcome ? (
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-2.5 bg-[#1C2127] rounded-lg">
+          <div className="p-2.5 bg-[#1a1e2a] rounded-lg border border-gray-600">
             <div className="text-sm text-gray-400">Selected</div>
             <div className="text-base font-semibold text-white">
               {selectedOutcome.name}
@@ -251,7 +260,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
             </div>
           </div>
 
-          <div className="p-2.5 bg-[#1C2127] rounded-lg">
+          <div className="p-2.5 bg-[#1a1e2a] rounded-lg border border-gray-600">
             <div className="text-sm text-gray-400">Your Position</div>
             <div className="text-base font-semibold text-white">
               {getPositionAmount(selectedOutcome.id)} Shares
@@ -259,7 +268,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           </div>
         </div>
       ) : (
-        <div className="p-2.5 bg-[#1C2127] rounded-lg text-center">
+        <div className="p-2.5 bg-[#1a1e2a] rounded-lg border border-gray-600 text-center">
           <div className="text-gray-400">Select an option to start trading</div>
         </div>
       )}
@@ -287,9 +296,9 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                   "px-3 py-2 text-base font-semibold rounded-lg transition",
                   selectedOutcome?.id === option.yes_outcome_id
                     ? activeTab === "buy"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                      ? "bg-green-500/40 text-green-300 border-2 border-green-500/70"
+                      : "bg-red-500/40 text-red-300 border-2 border-red-500/70"
+                    : "bg-[#1a1e2a] text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500"
                 )}
               >
                 Yes
@@ -307,9 +316,9 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                   "px-3 py-2 text-base font-semibold rounded-lg transition",
                   selectedOutcome?.id === option.no_outcome_id
                     ? activeTab === "buy"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                      ? "bg-green-500/40 text-green-300 border-2 border-green-500/70"
+                      : "bg-red-500/40 text-red-300 border-2 border-red-500/70"
+                    : "bg-[#1a1e2a] text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500"
                 )}
               >
                 No
@@ -330,7 +339,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
 
         {selectedOutcome ? (
           <div>
-            <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
+            <div className="mb-4 p-3 bg-[#1a1e2a] rounded-lg border border-gray-600">
               <div className="text-base font-semibold text-white mb-2">
                 {selectedOutcome.optionName} - {selectedOutcome.name}
               </div>
@@ -340,7 +349,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
             </div>
 
             {/* Current Position Section */}
-            <div className="p-3 bg-[#1C2127] rounded-lg">
+            <div className="p-3 bg-[#1a1e2a] rounded-lg border border-gray-600">
               <div className="text-sm text-gray-400 mb-2">Your Position</div>
               <div className="text-lg font-semibold text-white">
                 {selectedOutcome ? getPositionAmount(selectedOutcome.id) : 0}{" "}
@@ -383,7 +392,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
   }, [marketId]);
 
   return (
-    <div className="bg-[#2C3038] rounded-lg overflow-hidden">
+    <div className="bg-texture hover-card rounded-lg overflow-hidden relative">
       {/* Trading Tabs */}
       <div className="flex border-b border-gray-700">
         <button
@@ -391,8 +400,8 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           className={cn(
             "flex-1 px-4 py-3 text-sm font-medium transition",
             activeTab === "buy"
-              ? "text-green-400 border-b-2 border-green-400"
-              : "text-gray-400 hover:text-white"
+              ? "text-green-400 border-b-2 border-green-400 bg-green-400/5"
+              : "text-gray-400 hover:text-white hover:bg-white/5"
           )}
         >
           Buy
@@ -402,8 +411,8 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           className={cn(
             "flex-1 px-4 py-3 text-sm font-medium transition",
             activeTab === "sell"
-              ? "text-red-400 border-b-2 border-red-400"
-              : "text-gray-400 hover:text-white"
+              ? "text-red-400 border-b-2 border-red-400 bg-red-400/5"
+              : "text-gray-400 hover:text-white hover:bg-white/5"
           )}
         >
           Sell
@@ -440,7 +449,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setAmount(String(Math.max(0, Number(amount) - 1)))}
-              className="p-2 bg-[#1C2127] rounded-lg hover:bg-[#363B44] transition"
+              className="p-2 bg-[#1a1e2a] rounded-lg hover:bg-[#232838] border border-gray-600 hover:border-gray-500 transition"
             >
               -
             </button>
@@ -448,12 +457,12 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="flex-1 bg-[#1C2127] border border-gray-700 rounded-lg px-3 py-2 text-center"
+              className="flex-1 bg-[#1a1e2a] border border-gray-600 hover:border-gray-500 rounded-lg px-3 py-2 text-center"
               min="1"
             />
             <button
               onClick={() => setAmount(String(Number(amount) + 1))}
-              className="p-2 bg-[#1C2127] rounded-lg hover:bg-[#363B44] transition"
+              className="p-2 bg-[#1a1e2a] rounded-lg hover:bg-[#232838] border border-gray-600 hover:border-gray-500 transition"
             >
               +
             </button>
@@ -462,7 +471,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
 
         {/* Order Details */}
         {selectedOutcome && amount && (
-          <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
+          <div className="mb-4 p-3 bg-[#1a1e2a] rounded-lg border border-gray-600">
             {activeTab === "buy" ? (
               <>
                 <div className="flex justify-between text-sm mb-1">
@@ -509,14 +518,37 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           onClick={handleTrade}
           disabled={!selectedOutcome || loading}
           className={cn(
-            "w-full py-3 px-4 rounded-lg font-medium transition",
-            activeTab === "buy"
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-red-500 hover:bg-red-600 text-white",
+            "w-full py-3 px-4 rounded-lg font-medium transition-all duration-200",
+            orderConfirmed
+              ? "bg-green-500/30 text-green-300 border-2 border-green-500/70"
+              : activeTab === "buy"
+                ? "bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/50"
+                : "bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/50",
             (!selectedOutcome || loading) && "opacity-50 cursor-not-allowed"
           )}
         >
-          {loading ? "Processing..." : "Place Order"}
+          {loading ? (
+            "Processing..."
+          ) : orderConfirmed ? (
+            <div className="flex items-center justify-center gap-2 animate-fade-in">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Order Confirmed
+            </div>
+          ) : (
+            "Place Order"
+          )}
         </button>
       </div>
     </div>

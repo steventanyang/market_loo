@@ -86,6 +86,39 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .bg-texture {
+    background: linear-gradient(
+      125deg,
+      #1c1f28 0%,
+      #232838 20%,
+      #1f2432 40%,
+      #232838 60%,
+      #1c1f28 100%
+    );
+    background-size: 200% 200%;
+    transition: all 0.3s ease;
+  }
+
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+
+  .hover-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .hover-card:hover .bg-texture {
+    background: linear-gradient(
+      125deg,
+      #20242e 0%,
+      #282e40 20%,
+      #242937 40%,
+      #282e40 60%,
+      #20242e 100%
+    );
+    animation: gradientShift 3s ease infinite;
+  }
 }
 
 @keyframes slideIn {
@@ -120,4 +153,16 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

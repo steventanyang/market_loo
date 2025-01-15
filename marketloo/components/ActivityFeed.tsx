@@ -230,25 +230,14 @@ export default React.memo(function ActivityFeed() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 bg-[#2C3038] rounded-lg border border-gray-700">
+    <div className="max-w-2xl mx-auto mt-12 bg-texture hover-card rounded-lg border border-gray-700">
       <div className="flex justify-between items-center p-4 border-b border-gray-700">
         <h2 className="text-lg font-semibold">Recent Activity</h2>
-        <button className="text-sm text-gray-400 hover:text-white">
-          See all
-        </button>
       </div>
 
       <div className="divide-y divide-gray-700">
         {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="p-6 flex items-start gap-3 animate-new-item"
-          >
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
-              <div
-                className={`w-full h-full bg-gradient-to-br ${getGradientForUser(activity.user_id)}`}
-              />
-            </div>
+          <div key={activity.id} className="p-6 flex items-start gap-3">
             <div className="flex-grow">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
@@ -266,10 +255,10 @@ export default React.memo(function ActivityFeed() {
                       {activity.type === "buying" ? "bought" : "sold"}
                     </span>{" "}
                     {outcomes[activity.outcome_id]?.name || "Loading..."} at{" "}
-                    {activity.price.toFixed(2)}
+                    {Math.round(activity.price * 100)}¢
                   </span>
                   <span className="text-gray-400">
-                    💩 {activity.amount.toFixed(2)}
+                    (💩 {activity.amount.toFixed(2)})
                   </span>
                 </div>
                 <div className="text-sm text-gray-400">

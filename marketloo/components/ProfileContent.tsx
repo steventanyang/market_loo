@@ -173,7 +173,7 @@ export default function ProfileContent() {
       </div>
 
       {/* Large Balance Box */}
-      <div className="bg-[#262B33] rounded-lg p-6 mb-6">
+      <div className="bg-[#1e2128] rounded-lg p-6 mb-6">
         <div className="flex items-center gap-3 mb-4">
           <svg
             className="w-5 h-5 text-yellow-400"
@@ -205,7 +205,7 @@ export default function ProfileContent() {
 
       <div className="grid grid-cols-2 gap-6 mt-8">
         {/* Recent Activity */}
-        <div className="bg-[#2C3038] rounded-lg border border-gray-700">
+        <div className="bg-texture hover-card rounded-lg border border-gray-700">
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold">Recent Activity</h2>
           </div>
@@ -246,7 +246,7 @@ export default function ProfileContent() {
         </div>
 
         {/* Current Positions */}
-        <div className="bg-[#2C3038] rounded-lg border border-gray-700">
+        <div className="bg-texture hover-card rounded-lg border border-gray-700">
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold">Current Positions</h2>
           </div>

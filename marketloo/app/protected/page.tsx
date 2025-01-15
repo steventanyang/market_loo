@@ -24,7 +24,7 @@ export default function ProtectedPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1C2127] text-white">
+    <div className="min-h-screen bg-[#161920] text-white">
       <TopBar />
       <NavigationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="max-w-7xl mx-auto p-6">{renderContent()}</div>
