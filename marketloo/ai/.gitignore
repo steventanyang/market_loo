@@ -1,1 +1,5 @@
 .venv
+scraper/ai/scraper/data/hackathon_page.html
+scraper/ai/scraper/data/devpost_page.html
+scraper/ai/scraper/data/project_page.html
+scraper/ai/scraper/data/raw_html
