@@ -3,8 +3,8 @@ import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InfoIcon } from "lucide-react";
 import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -80,7 +80,15 @@ export default async function Signup(props: {
         <FormMessage message={searchParams} />
       </form>
 
-      <SmtpMessage />
+      <div className="bg-muted/50 px-5 py-3 border rounded-md flex gap-4 mb-4">
+        <InfoIcon size={16} className="mt-0.5" />
+        <div>
+          <small className="text-sm text-secondary-foreground">
+            After signing up, you'll receive a confirmation email. Please note
+            that it may take a minute to arrive.
+          </small>
+        </div>
+      </div>
     </>
   );
 }
