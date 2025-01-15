@@ -266,10 +266,10 @@ export default React.memo(function ActivityFeed() {
                       {activity.type === "buying" ? "bought" : "sold"}
                     </span>{" "}
                     {outcomes[activity.outcome_id]?.name || "Loading..."} at{" "}
-                    {Math.round(activity.price * 100)}¢
+                    {activity.price.toFixed(2)}
                   </span>
                   <span className="text-gray-400">
-                    (${activity.amount.toFixed(2)})
+                    💩 {activity.amount.toFixed(2)}
                   </span>
                 </div>
                 <div className="text-sm text-gray-400">

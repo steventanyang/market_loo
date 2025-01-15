@@ -6,6 +6,43 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+async function updateUserPositionValue(supabase: any, userId: string) {
+  // Get all user's positions with amounts > 0
+  const { data: positions, error: positionsError } = await supabase
+    .from("positions")
+    .select(
+      `
+      amount,
+      outcome_id,
+      outcomes!inner (
+        current_price
+      )
+    `
+    )
+    .eq("user_id", userId)
+    .gt("amount", 0);
+
+  if (positionsError) throw positionsError;
+
+  // Calculate total value of all positions
+  const totalValue = positions.reduce(
+    (sum: number, position: PositionWithOutcome) => {
+      return sum + position.amount * position.outcomes.current_price;
+    },
+    0
+  );
+
+  // Update user's positions value
+  const { error: updateError } = await supabase
+    .from("users")
+    .update({ positions: totalValue })
+    .eq("id", userId);
+
+  if (updateError) throw updateError;
+
+  return totalValue;
+}
+
 export async function POST(request: Request) {
   try {
     // Get the authorization header from the request
@@ -169,23 +206,7 @@ export async function POST(request: Request) {
       if (deletePositionsError) throw deletePositionsError;
 
       // Update positions count after deletion
-      const { data: remainingPositions, error: remainingPositionsError } =
-        await supabase
-          .from("positions")
-          .select("id")
-          .eq("user_id", user_id)
-          .gt("amount", 0);
-
-      if (remainingPositionsError) throw remainingPositionsError;
-
-      const { error: updatePositionsError } = await supabase
-        .from("users")
-        .update({
-          positions: remainingPositions.length,
-        })
-        .eq("id", user_id);
-
-      if (updatePositionsError) throw updatePositionsError;
+      await updateUserPositionValue(supabase, user_id);
     }
 
     // 3. Mark market as resolved with the winning outcome name

@@ -35,6 +35,7 @@ interface UserData {
   balance_of_poo: number;
   profit: number;
   trade_volume: number;
+  positions: number;
 }
 
 interface Trade {
@@ -96,25 +97,27 @@ export default function ProfileContent() {
         // Fetch recent orders
         const { data: ordersData } = await supabase
           .from("orders")
-          .select(`
+          .select(
+            `
             *,
             markets(title),
             outcomes(name)
-          `)
-          .eq('user_id', user.id)
-          .neq('status', 'cancelled')
-          .order('created_at', { ascending: false })
-          .limit(8);
+          `
+          )
+          .eq("user_id", user.id)
+          .neq("status", "cancelled")
+          .order("created_at", { ascending: false })
+          .limit(10);
 
         if (ordersData) {
-          const formattedTrades = ordersData.map(order => ({
+          const formattedTrades = ordersData.map((order) => ({
             id: order.id,
             type: order.type,
             amount: order.amount,
             price: order.price,
             created_at: order.created_at,
             market_title: order.markets.title,
-            outcome_name: order.outcomes.name
+            outcome_name: order.outcomes.name,
           }));
           setTrades(formattedTrades);
         }
@@ -122,21 +125,23 @@ export default function ProfileContent() {
         // Fetch positions
         const { data: positionsData } = await supabase
           .from("positions")
-          .select(`
+          .select(
+            `
             *,
             markets(title),
             outcomes(name, current_price)
-          `)
-          .eq('user_id', user.id)
-          .gt('amount', 0);
+          `
+          )
+          .eq("user_id", user.id)
+          .gt("amount", 0);
 
         if (positionsData) {
-          const formattedPositions = positionsData.map(position => ({
+          const formattedPositions = positionsData.map((position) => ({
             id: position.id,
             amount: position.amount,
             market_title: position.markets.title,
             outcome_name: position.outcomes.name,
-            current_price: position.outcomes.current_price
+            current_price: position.outcomes.current_price,
           }));
           setPositions(formattedPositions);
         }
@@ -154,8 +159,10 @@ export default function ProfileContent() {
         <div className="w-24 h-24 rounded-full bg-gray-700 overflow-hidden">
           <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800" />
         </div>
-        <div>
-          <h2 className="text-2xl font-bold">{userData.username || "User"}</h2>
+        <div className="flex-grow">
+          <h2 className="text-2xl font-bold mb-2">
+            {userData.username || "User"}
+          </h2>
           <p className="text-gray-400">
             Joined{" "}
             {userData.created_at
@@ -165,8 +172,33 @@ export default function ProfileContent() {
         </div>
       </div>
 
+      {/* Large Balance Box */}
+      <div className="bg-[#262B33] rounded-lg p-6 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <svg
+            className="w-5 h-5 text-yellow-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <h3 className="text-gray-400 font-medium">Balance</h3>
+        </div>
+        <p className="text-2xl font-bold">
+          💩{" "}
+          {userData.balance_of_poo.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </p>
+      </div>
+
       <ProfileStats
-        positionsValue={userData.balance_of_poo || 0}
+        positionsValue={userData.positions || 0}
         profitLoss={userData.profit || 0}
         volumeTraded={userData.trade_volume || 0}
       />
@@ -177,7 +209,7 @@ export default function ProfileContent() {
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold">Recent Activity</h2>
           </div>
-          <div className="divide-y divide-gray-700">
+          <div className="divide-y divide-gray-700 max-h-[500px] overflow-y-auto scrollbar-hide">
             {trades.map((trade) => (
               <div key={trade.id} className="p-6 flex items-start gap-3">
                 <div className="flex-grow">
@@ -185,14 +217,24 @@ export default function ProfileContent() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm">
                         <span className="font-medium">{userData.username}</span>{" "}
-                        <span className={trade.type === "buying" ? "text-green-400" : "text-red-400"}>
+                        <span
+                          className={
+                            trade.type === "buying"
+                              ? "text-green-400"
+                              : "text-red-400"
+                          }
+                        >
                           {trade.type === "buying" ? "bought" : "sold"}
                         </span>{" "}
                         {trade.outcome_name} at {Math.round(trade.price * 100)}¢
                       </span>
-                      <span className="text-gray-400">(${trade.amount.toFixed(2)})</span>
+                      <span className="text-gray-400">
+                        (💩 {trade.amount.toFixed(2)})
+                      </span>
                     </div>
-                    <div className="text-sm text-gray-400">{trade.market_title}</div>
+                    <div className="text-sm text-gray-400">
+                      {trade.market_title}
+                    </div>
                   </div>
                 </div>
                 <span className="text-sm text-gray-400 flex-shrink-0">
@@ -208,21 +250,27 @@ export default function ProfileContent() {
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold">Current Positions</h2>
           </div>
-          <div className="divide-y divide-gray-700">
+          <div className="divide-y divide-gray-700 max-h-[500px] overflow-y-auto scrollbar-hide">
             {positions.map((position) => (
               <div key={position.id} className="p-6 flex items-start gap-3">
                 <div className="flex-grow">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                       <span className="text-sm">
-                        <span className="font-medium">{position.amount}</span> shares of{" "}
-                        <span className="font-medium">{position.outcome_name}</span>
+                        <span className="font-medium">{position.amount}</span>{" "}
+                        shares of{" "}
+                        <span className="font-medium">
+                          {position.outcome_name}
+                        </span>
                       </span>
                       <span className="text-gray-400">
-                        (${(position.amount * position.current_price).toFixed(2)})
+                        (💩{" "}
+                        {(position.amount * position.current_price).toFixed(2)})
                       </span>
                     </div>
-                    <div className="text-sm text-gray-400">{position.market_title}</div>
+                    <div className="text-sm text-gray-400">
+                      {position.market_title}
+                    </div>
                   </div>
                 </div>
                 <span className="text-sm text-gray-400 flex-shrink-0">

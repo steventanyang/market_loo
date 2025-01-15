@@ -177,89 +177,92 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
   };
 
   const renderBinaryInterface = () => (
-    <div className="grid grid-cols-[1fr,1fr] gap-4">
-      <div className="grid grid-cols-2 gap-2">
-        {options[0] && (
-          <>
-            <button
-              onClick={() =>
-                setSelectedOutcome({
-                  id: options[0].yes_outcome_id,
-                  price: Number((options[0] as any).yes_outcome.current_price),
-                  name: "Yes",
-                })
-              }
-              className={cn(
-                "px-3 py-2 text-base font-semibold rounded-lg transition",
-                selectedOutcome?.id === options[0].yes_outcome_id
-                  ? activeTab === "buy"
-                    ? "bg-green-500/20 text-green-400"
-                    : "bg-red-500/20 text-red-400"
-                  : "bg-[#1C2127] text-gray-400 hover:text-white"
-              )}
-            >
-              Yes
-            </button>
-            <button
-              onClick={() =>
-                setSelectedOutcome({
-                  id: options[0].no_outcome_id,
-                  price: Number((options[0] as any).no_outcome.current_price),
-                  name: "No",
-                })
-              }
-              className={cn(
-                "px-3 py-2 text-base font-semibold rounded-lg transition",
-                selectedOutcome?.id === options[0].no_outcome_id
-                  ? activeTab === "buy"
-                    ? "bg-green-500/20 text-green-400"
-                    : "bg-red-500/20 text-red-400"
-                  : "bg-[#1C2127] text-gray-400 hover:text-white"
-              )}
-            >
-              No
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Right column - balance and positions */}
-      <div>
-        <div className="mb-6">
-          <div className="text-gray-400 text-sm mb-1">Balance</div>
-          <div className="text-2xl font-bold text-white">
-            {userBalance?.toFixed(2)} POO
-          </div>
+    <div>
+      <div className="flex justify-between mb-6">
+        {/* Larger Yes/No buttons */}
+        <div className="grid grid-cols-2 gap-4 w-[300px]">
+          {options[0] && (
+            <>
+              <button
+                onClick={() =>
+                  setSelectedOutcome({
+                    id: options[0].yes_outcome_id,
+                    price: Number(
+                      (options[0] as any).yes_outcome.current_price
+                    ),
+                    name: "Yes",
+                  })
+                }
+                className={cn(
+                  "aspect-square px-3 py-2 text-lg font-semibold rounded-lg transition",
+                  selectedOutcome?.id === options[0].yes_outcome_id
+                    ? activeTab === "buy"
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                )}
+              >
+                Yes
+              </button>
+              <button
+                onClick={() =>
+                  setSelectedOutcome({
+                    id: options[0].no_outcome_id,
+                    price: Number((options[0] as any).no_outcome.current_price),
+                    name: "No",
+                  })
+                }
+                className={cn(
+                  "aspect-square px-3 py-2 text-lg font-semibold rounded-lg transition",
+                  selectedOutcome?.id === options[0].no_outcome_id
+                    ? activeTab === "buy"
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                    : "bg-[#1C2127] text-gray-400 hover:text-white"
+                )}
+              >
+                No
+              </button>
+            </>
+          )}
         </div>
 
-        {selectedOutcome ? (
-          <div>
-            <div className="mb-4 p-3 bg-[#1C2127] rounded-lg">
-              <div className="text-base font-semibold text-white mb-2">
-                Selected: {selectedOutcome.name}
-              </div>
-              <div className="text-base font-medium text-gray-400">
-                Price: {Number(selectedOutcome.price).toFixed(2)}
-              </div>
-            </div>
-
-            {/* Current Position Section */}
-            <div className="p-3 bg-[#1C2127] rounded-lg">
-              <div className="text-sm text-gray-400 mb-2">Your Position</div>
-              <div className="text-lg font-semibold text-white">
-                {selectedOutcome ? getPositionAmount(selectedOutcome.id) : 0}{" "}
-                Shares
-              </div>
+        {/* Enhanced balance and price display */}
+        <div className="text-right">
+          <div className="mb-2">
+            <div className="text-gray-400 text-sm">Balance</div>
+            <div className="text-3xl font-bold text-white">
+              💩 {userBalance?.toFixed(2)}
             </div>
           </div>
-        ) : (
-          <div className="text-center text-gray-400 mt-8">
-            <div className="text-lg font-medium">
-              Select an option to start trading
-            </div>
-          </div>
-        )}
+        </div>
       </div>
+
+      {/* Selection and Position info in smaller boxes below */}
+      {selectedOutcome ? (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-2.5 bg-[#1C2127] rounded-lg">
+            <div className="text-sm text-gray-400">Selected</div>
+            <div className="text-base font-semibold text-white">
+              {selectedOutcome.name}
+            </div>
+            <div className="text-sm text-gray-400">
+              Price: {Number(selectedOutcome.price).toFixed(10)}
+            </div>
+          </div>
+
+          <div className="p-2.5 bg-[#1C2127] rounded-lg">
+            <div className="text-sm text-gray-400">Your Position</div>
+            <div className="text-base font-semibold text-white">
+              {getPositionAmount(selectedOutcome.id)} Shares
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="p-2.5 bg-[#1C2127] rounded-lg text-center">
+          <div className="text-gray-400">Select an option to start trading</div>
+        </div>
+      )}
     </div>
   );
 
@@ -321,7 +324,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
         <div className="mb-6">
           <div className="text-gray-400 text-sm mb-1">Balance</div>
           <div className="text-2xl font-bold text-white">
-            {userBalance?.toFixed(2)} POO
+            💩 {userBalance?.toFixed(2)}
           </div>
         </div>
 
@@ -430,7 +433,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
             <span className="text-sm text-gray-400">Amount</span>
             {userBalance !== null && (
               <span className="text-sm text-gray-400">
-                Balance: {userBalance} POO
+                Balance: 💩 {userBalance}
               </span>
             )}
           </div>
@@ -465,13 +468,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">Cost</span>
                   <span className="text-red-400">
-                    {calculateOrderDetails()?.cost} POO
+                    💩 {calculateOrderDetails()?.cost}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Potential return</span>
                   <span className="text-green-400">
-                    {calculateOrderDetails()?.totalReturn} POO (
+                    💩 {calculateOrderDetails()?.totalReturn} (
                     {calculateOrderDetails()?.percentageGain}%)
                   </span>
                 </div>
@@ -481,13 +484,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">Proceeds</span>
                   <span className="text-green-400">
-                    {calculateOrderDetails()?.proceeds} POO
+                    💩 {calculateOrderDetails()?.proceeds}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Maximum loss</span>
                   <span className="text-red-400">
-                    {calculateOrderDetails()?.maxLoss} POO (
+                    💩 {calculateOrderDetails()?.maxLoss} (
                     {calculateOrderDetails()?.percentageLoss}%)
                   </span>
                 </div>

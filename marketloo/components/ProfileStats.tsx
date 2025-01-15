@@ -4,12 +4,16 @@ interface ProfileStatsProps {
   volumeTraded: number;
 }
 
-export default function ProfileStats({ positionsValue, profitLoss, volumeTraded }: ProfileStatsProps) {
+export default function ProfileStats({
+  positionsValue,
+  profitLoss,
+  volumeTraded,
+}: ProfileStatsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <StatCard
-        title="Positions value"
-        value={`$${positionsValue.toLocaleString(undefined, {
+        title="Position value"
+        value={`💩 ${positionsValue.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}
@@ -25,7 +29,7 @@ export default function ProfileStats({ positionsValue, profitLoss, volumeTraded 
       />
       <StatCard
         title="Profit/loss"
-        value={`$${profitLoss.toLocaleString(undefined, {
+        value={`💩 ${profitLoss.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}
@@ -42,7 +46,7 @@ export default function ProfileStats({ positionsValue, profitLoss, volumeTraded 
       />
       <StatCard
         title="Volume traded"
-        value={`$${volumeTraded.toLocaleString(undefined, {
+        value={`💩 ${volumeTraded.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}
@@ -76,4 +80,4 @@ function StatCard({ title, value, icon }: StatCardProps) {
       <p className="text-2xl font-bold">{value}</p>
     </div>
   );
-} 
+}

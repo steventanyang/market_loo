@@ -12,7 +12,7 @@ interface VolumeLeader {
 interface ProfitLeader {
   id: string;
   username: string;
-  balance_of_poo: number;
+  profit: number;
 }
 
 interface PositionLeader {
@@ -38,8 +38,8 @@ export default function LeaderboardContent() {
 
       const { data: profitData } = await supabase
         .from("users")
-        .select("id, username, balance_of_poo")
-        .order("balance_of_poo", { ascending: false })
+        .select("id, username, profit")
+        .order("profit", { ascending: false })
         .limit(10);
 
       const { data: positionData } = await supabase
@@ -79,7 +79,11 @@ export default function LeaderboardContent() {
                 <span>{leader.username}</span>
               </div>
               <span className="text-gray-400">
-                ${leader.trade_volume.toLocaleString()}
+                💩{" "}
+                {leader.trade_volume.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
           ))}
@@ -108,7 +112,11 @@ export default function LeaderboardContent() {
                 <span>{leader.username}</span>
               </div>
               <span className="text-gray-400">
-                ${leader.balance_of_poo.toLocaleString()}
+                💩{" "}
+                {leader.profit.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
           ))}
@@ -135,7 +143,13 @@ export default function LeaderboardContent() {
                 <span className="w-6 text-gray-400">{index + 1}</span>
                 <span>{leader.username}</span>
               </div>
-              <span className="text-gray-400">{leader.positions}</span>
+              <span className="text-gray-400">
+                💩{" "}
+                {leader.positions.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
           ))}
         </div>
