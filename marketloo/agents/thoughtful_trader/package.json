@@ -10,6 +10,7 @@
     "dependencies": {
         "@supabase/supabase-js": "^2.39.7",
         "dotenv": "^16.4.7",
+        "openai": "^4.78.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
     }

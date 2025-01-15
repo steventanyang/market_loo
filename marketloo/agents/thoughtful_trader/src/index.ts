@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { createClient } from "@supabase/supabase-js";
 import markets from "../markets.json";
+import OpenAI from "openai";
 
 interface MarketOutcome {
   marketId: string;
@@ -7,17 +10,22 @@ interface MarketOutcome {
   marketTitle: string;
 }
 
-class SimpleTraderAgent {
+class ThoughtfulTraderAgent {
   private supabase;
   private session: any = null;
   private positions: { [key: string]: number } = {}; // Track positions by outcome_id
   private currentMarketIndex = 0; // Track current market position
+  private openai: OpenAI;
 
   constructor() {
     this.supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
+
+    this.openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
   }
 
   async initialize() {
@@ -75,23 +83,53 @@ class SimpleTraderAgent {
     };
   }
 
+  async evaluateMarket(market: any, outcome: any): Promise<boolean> {
+    try {
+      const prompt = `Given this prediction market:
+Title: "${market.title}"
+Outcome: "${outcome.name}" (current price: ${outcome.current_price})
+
+Should I buy this outcome? Consider:
+1. The likelihood of this outcome
+2. The current price vs potential value
+3. Market sentiment and logic
+
+Reply with ONLY "yes" or "no".`;
+
+      const response = await this.openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+      });
+
+      const decision = response.choices[0].message?.content
+        ?.toLowerCase()
+        .trim();
+      return decision === "yes";
+    } catch (error) {
+      console.error("Error evaluating market:", error);
+      return false;
+    }
+  }
+
   async placeTrade() {
     try {
       const { marketId, outcomeId, marketTitle } =
         this.getNextMarketAndOutcome();
-      const isbuying = Math.random() > 0.5;
-      const amount = Math.floor(Math.random() * 50) + 10;
+      const market = markets.find((m) => m.id === marketId);
+      const outcome = market?.outcomes.find((o) => o.outcome_id === outcomeId);
 
-      // If selling, check position
-      if (!isbuying) {
-        const currentPosition = this.positions[outcomeId] || 0;
-        if (currentPosition < amount) {
-          console.log(
-            `Skipping sell: Insufficient position (have ${currentPosition}, want to sell ${amount})`
-          );
-          return;
-        }
+      if (!market || !outcome) return;
+
+      const shouldBuy = await this.evaluateMarket(market, outcome);
+      if (!shouldBuy) {
+        console.log(
+          `Skipping market: "${marketTitle}" - AI suggests not to buy\n`
+        );
+        return;
       }
+
+      const amount = Math.floor(Math.random() * 50) + 10;
 
       const response = await fetch("https://market-loo.vercel.app/api/orders", {
         method: "POST",
@@ -103,18 +141,14 @@ class SimpleTraderAgent {
           market_id: marketId,
           outcome_id: outcomeId,
           amount: amount,
-          type: isbuying ? "buying" : "selling",
+          type: "buying",
         }),
       });
 
       if (response.ok) {
-        if (isbuying) {
-          this.positions[outcomeId] = (this.positions[outcomeId] || 0) + amount;
-        } else {
-          this.positions[outcomeId] = (this.positions[outcomeId] || 0) - amount;
-        }
+        this.positions[outcomeId] = (this.positions[outcomeId] || 0) + amount;
         console.log(`Market: "${marketTitle}"`);
-        console.log(`${isbuying ? "Bought" : "Sold"} ${amount} tokens`);
+        console.log(`Bought ${amount} tokens`);
         console.log(`New position for outcome: ${this.positions[outcomeId]}\n`);
       }
     } catch (error) {
@@ -159,5 +193,5 @@ class SimpleTraderAgent {
 }
 
 // Start the agent
-const agent = new SimpleTraderAgent();
+const agent = new ThoughtfulTraderAgent();
 agent.start().catch(console.error);
