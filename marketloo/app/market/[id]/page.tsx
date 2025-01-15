@@ -5,7 +5,8 @@ import MarketChart from "@/components/MarketChart";
 import MarketSummary from "@/components/MarketSummary";
 import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 type MarketParams = Promise<{
   id: string;
@@ -84,6 +85,12 @@ export default async function MarketPage(props: MarketPageProps) {
       <div className="max-w-7xl mx-auto p-6">
         {/* Market Header */}
         <div className="flex items-center gap-4 mb-8">
+          <Link
+            href="/protected"
+            className="bg-texture hover-card p-2 rounded-lg border border-gray-700/50 hover:border-gray-500 text-gray-400 hover:text-white transition-all"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Link>
           <MarketIcon />
           <div>
             <h1 className="text-2xl font-bold">{market.title}</h1>
