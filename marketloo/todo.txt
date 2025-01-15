@@ -15,14 +15,16 @@
 - after market is resolved the market should disappear -- done
 - backend bugs for placing orders -- done
 - overall frontend performance
-- get started ui - morteza
-- sign in pages ui - morteza
-
+- get started ui -- done
+- sign in pages ui -- morteza
+- test maintenance function for graphs -- steven 
+- finalize ui -- steven richie morteza
+- add recent activities + positions on profile page -- morteza
+- make real markets
 
 #### 
-- make landing page nicer ~ more detail on markets
-- real time functionality ~ activity feed
-- AI summaries for markets
+- make landing page nicer ~ more detail on markets -- done
+- real time functionality ~ activity feed -- done
 - test positions functionality
 
 ###
@@ -32,5 +34,4 @@
 
 ##
 - when people sign up they can use their user as a sign up code. for every 3 signups they get 10000 POO
-
-#
+- AI summaries for markets -- 
