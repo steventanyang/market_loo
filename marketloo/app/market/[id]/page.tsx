@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import TopBar from "@/components/TopBar";
-import Image from "next/image";
+import MarketIcon from "@/components/MarketIcon";
 import MarketChart from "@/components/MarketChart";
 import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
@@ -83,14 +83,7 @@ export default async function MarketPage(props: MarketPageProps) {
       <div className="max-w-7xl mx-auto p-6">
         {/* Market Header */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 bg-[#2C3038] rounded-lg flex items-center justify-center">
-            <Image
-              src="/nfl-logo.png"
-              alt="Market icon"
-              width={32}
-              height={32}
-            />
-          </div>
+          <MarketIcon />
           <div>
             <h1 className="text-2xl font-bold">{market.title}</h1>
             <div className="flex items-center gap-4 text-sm text-gray-400">

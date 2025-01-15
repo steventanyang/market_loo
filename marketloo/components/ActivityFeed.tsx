@@ -17,6 +17,20 @@ interface ActivityItem {
 function formatTimeAgo(dateStr: string) {
   const date = new Date(dateStr);
   const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+
+  // Convert to hours if more than 60 minutes
+  if (seconds >= 3600) {
+    const hours = Math.round(seconds / 3600);
+    return `${hours}h ago`;
+  }
+  
+  // Convert to minutes if more than 60 seconds
+  if (seconds >= 60) {
+    const minutes = Math.floor(seconds / 60);
+    return `${minutes}m ago`;
+  }
+  
+  // Otherwise show seconds
   return `${seconds}s ago`;
 }
 
