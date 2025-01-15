@@ -23,13 +23,18 @@ interface PricePoint {
   price: number;
 }
 
+interface TimeSeriesData {
+  recent: PricePoint[];
+  sixHour: PricePoint[];
+  twelveHour: PricePoint[];
+  daily: PricePoint[];
+  weekly: PricePoint[];
+  all: PricePoint[];
+}
+
 interface ChartProps {
   data: {
-    [outcomeId: string]: {
-      recent: PricePoint[];
-      hourly: PricePoint[];
-      sixHour: PricePoint[];
-    };
+    [outcomeId: string]: TimeSeriesData;
   };
   outcomes: Outcome[];
 }
@@ -41,7 +46,7 @@ const TIME_RANGES = [
   { label: "1D", value: "1D", dataKey: "daily" },
   { label: "1W", value: "1W", dataKey: "weekly" },
   { label: "ALL", value: "ALL", dataKey: "all" },
-];
+] as const;
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#0088fe"];
 
@@ -73,7 +78,7 @@ const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
         </p>
         {payload.map((entry: any) => (
           <div
-            key={entry.name}
+            key={entry.dataKey}
             className="flex items-center gap-2 text-gray-900"
           >
             <div
@@ -91,36 +96,66 @@ const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
 };
 
 export default function MarketChart({ data, outcomes }: ChartProps) {
-  const [selectedRange, setSelectedRange] = useState("1H");
+  const [selectedRange, setSelectedRange] = useState<string>("1H");
 
   // Prepare chart data
   const chartData = useMemo(() => {
     const timeRange =
       TIME_RANGES.find((r) => r.value === selectedRange)?.dataKey || "recent";
 
-    // Get all timestamps from all outcomes
+    // Get all unique timestamps and sort them
     const timestamps = new Set<string>();
-    Object.values(data).forEach((outcomeData) => {
-      outcomeData[timeRange].forEach((point) => {
+    Object.values(data).forEach((outcomeData: TimeSeriesData) => {
+      outcomeData[timeRange]?.forEach((point) => {
         timestamps.add(point.timestamp.toISOString());
       });
     });
 
-    // Create combined data points
-    return Array.from(timestamps)
-      .sort()
-      .map((timestamp) => {
-        const point: any = { timestamp };
-        outcomes.forEach((outcome) => {
-          const pricePoint = data[outcome.outcome_id][timeRange].find(
+    const sortedTimestamps = Array.from(timestamps).sort();
+
+    // Create a data point for each timestamp
+    const points = sortedTimestamps.map((timestamp) => {
+      // Start with the timestamp
+      const point: { [key: string]: any } = { timestamp };
+
+      // For each timestamp, get all outcome prices at that exact moment
+      outcomes.forEach((outcome) => {
+        const outcomeData = data[outcome.outcome_id];
+        if (outcomeData?.[timeRange]) {
+          const pricePoint = outcomeData[timeRange].find(
             (p) => p.timestamp.toISOString() === timestamp
           );
-          if (pricePoint) {
-            point[outcome.outcome_id] = pricePoint.price;
-          }
-        });
-        return point;
+          // If we have a price for this outcome at this timestamp, add it
+          point[`price_${outcome.outcome_id}`] = pricePoint?.price ?? null;
+        }
       });
+
+      return point;
+    });
+
+    // Ensure we have a continuous line by interpolating missing points
+    const interpolatedPoints = points.map((point, index, array) => {
+      const result = { ...point };
+
+      // For each outcome
+      outcomes.forEach((outcome) => {
+        const key = `price_${outcome.outcome_id}`;
+
+        // If this point has no value but we have values before and after,
+        // interpolate the value
+        if (result[key] === null && index > 0 && index < array.length - 1) {
+          const prev = array[index - 1][key];
+          const next = array[index + 1][key];
+          if (prev !== null && next !== null) {
+            result[key] = (prev + next) / 2;
+          }
+        }
+      });
+
+      return result;
+    });
+
+    return interpolatedPoints;
   }, [data, outcomes, selectedRange]);
 
   return (
@@ -138,6 +173,7 @@ export default function MarketChart({ data, outcomes }: ChartProps) {
               tickFormatter={(value) => formatTimestamp(value, selectedRange)}
               stroke="#6B7280"
               tick={{ fill: "#6B7280" }}
+              minTickGap={30}
             />
             <YAxis
               domain={[0, 100]}
@@ -155,11 +191,13 @@ export default function MarketChart({ data, outcomes }: ChartProps) {
               <Line
                 key={outcome.outcome_id}
                 type="monotone"
-                dataKey={outcome.outcome_id}
+                dataKey={`price_${outcome.outcome_id}`}
                 name={outcome.name}
                 stroke={COLORS[index % COLORS.length]}
                 dot={false}
                 strokeWidth={2}
+                isAnimationActive={false}
+                connectNulls
               />
             ))}
           </LineChart>
