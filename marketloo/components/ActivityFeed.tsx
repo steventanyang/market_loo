@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { createClient } from "@/utils/supabase/client";
 import React from "react";
+import Image from "next/image";
 
-// Simplified types
 interface ActivityItem {
   id: string;
   type: "buying" | "selling";
@@ -12,43 +12,153 @@ interface ActivityItem {
   price: number;
   created_at: string;
   user_id: string;
+  market_id: string;
+  outcome_id: string;
+}
+
+interface UserData {
+  id: string;
+  username: string;
+}
+
+interface MarketData {
+  id: string;
+  title: string;
+}
+
+interface OutcomeData {
+  outcome_id: string;
+  name: string;
 }
 
 function formatTimeAgo(dateStr: string) {
   const date = new Date(dateStr);
   const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
 
-  // Convert to hours if more than 60 minutes
   if (seconds >= 3600) {
     const hours = Math.round(seconds / 3600);
     return `${hours}h ago`;
   }
 
-  // Convert to minutes if more than 60 seconds
   if (seconds >= 60) {
     const minutes = Math.floor(seconds / 60);
     return `${minutes}m ago`;
   }
 
-  // Otherwise show seconds
   return `${seconds}s ago`;
 }
 
-// const MARKET_MAKER_ID = process.env.NEXT_PUBLIC_MARKET_MAKER_ID;
+function getGradientForUser(userId: string) {
+  const colors = [
+    "from-blue-600 to-blue-800",
+    "from-purple-600 to-purple-800",
+    "from-green-600 to-green-800",
+    "from-red-600 to-red-800",
+    "from-yellow-600 to-yellow-800",
+    "from-pink-600 to-pink-800",
+    "from-indigo-600 to-indigo-800",
+  ];
+  // Use the last character of the userId as a consistent index
+  const index = parseInt(userId.slice(-1), 16) % colors.length;
+  return colors[index];
+}
+
 const MARKET_MAKER_ID = process.env.NEXT_PUBLIC_MARKET_MAKER_ID;
+
+const AnimatedActivity = ({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) => <div className={`animate-slideIn ${className}`}>{children}</div>;
 
 export default React.memo(function ActivityFeed() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
+  const [users, setUsers] = useState<Record<string, UserData>>({});
+  const [markets, setMarkets] = useState<Record<string, MarketData>>({});
+  const [outcomes, setOutcomes] = useState<Record<string, OutcomeData>>({});
+
+  const fetchUserData = async (userIds: string[]) => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("users")
+      .select("id, username")
+      .in("id", userIds);
+
+    if (error) {
+      console.error("Error fetching users:", error);
+      return;
+    }
+
+    const userMap = data.reduce(
+      (acc, user) => {
+        acc[user.id] = user;
+        return acc;
+      },
+      {} as Record<string, UserData>
+    );
+
+    setUsers((prev) => ({ ...prev, ...userMap }));
+  };
+
+  const fetchMarketData = async (marketIds: string[]) => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("markets")
+      .select("id, title")
+      .in("id", marketIds);
+
+    if (error) {
+      console.error("Error fetching markets:", error);
+      return;
+    }
+
+    const marketMap = data.reduce(
+      (acc, market) => {
+        acc[market.id] = market;
+        return acc;
+      },
+      {} as Record<string, MarketData>
+    );
+
+    setMarkets((prev) => ({ ...prev, ...marketMap }));
+  };
+
+  const fetchOutcomeData = async (outcomeIds: string[]) => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("outcomes")
+      .select("outcome_id, name")
+      .in("outcome_id", outcomeIds);
+
+    if (error) {
+      console.error("Error fetching outcomes:", error);
+      return;
+    }
+
+    const outcomeMap = data.reduce(
+      (acc, outcome) => {
+        acc[outcome.outcome_id] = outcome;
+        return acc;
+      },
+      {} as Record<string, OutcomeData>
+    );
+
+    setOutcomes((prev) => ({ ...prev, ...outcomeMap }));
+  };
 
   useEffect(() => {
-    let isSubscribed = true; // Add this flag to prevent updates after unmount
+    let isSubscribed = true;
     const supabase = createClient();
 
     const fetchActivities = async () => {
       try {
         const { data, error } = await supabase
           .from("orders")
-          .select("id, type, amount, price, created_at, user_id")
+          .select(
+            "id, type, amount, price, created_at, user_id, market_id, outcome_id"
+          )
           .order("created_at", { ascending: false })
           .limit(20);
 
@@ -59,16 +169,31 @@ export default React.memo(function ActivityFeed() {
             (order) => order.user_id !== MARKET_MAKER_ID
           );
           setActivities(filtered.slice(0, 10));
+
+          // Fetch user, market, and outcome data
+          const userIds = Array.from(
+            new Set(filtered.map((item) => item.user_id))
+          );
+          const marketIds = Array.from(
+            new Set(filtered.map((item) => item.market_id))
+          );
+          const outcomeIds = Array.from(
+            new Set(filtered.map((item) => item.outcome_id))
+          );
+
+          await Promise.all([
+            fetchUserData(userIds),
+            fetchMarketData(marketIds),
+            fetchOutcomeData(outcomeIds),
+          ]);
         }
       } catch (e) {
         console.error("Error fetching activities:", e);
       }
     };
 
-    // Initial fetch
     fetchActivities();
 
-    // Set up subscription
     const subscription = supabase
       .channel("orders")
       .on(
@@ -78,46 +203,83 @@ export default React.memo(function ActivityFeed() {
           schema: "public",
           table: "orders",
         },
-        (payload) => {
+        async (payload) => {
           const newOrder = payload.new as ActivityItem;
           if (newOrder.user_id !== MARKET_MAKER_ID && isSubscribed) {
             setActivities((prev) => [newOrder, ...prev.slice(0, 9)]);
+
+            // Fetch new user, market, and outcome data if needed
+            if (!users[newOrder.user_id]) {
+              await fetchUserData([newOrder.user_id]);
+            }
+            if (!markets[newOrder.market_id]) {
+              await fetchMarketData([newOrder.market_id]);
+            }
+            if (!outcomes[newOrder.outcome_id]) {
+              await fetchOutcomeData([newOrder.outcome_id]);
+            }
           }
         }
       )
       .subscribe();
 
-    // Cleanup function
     return () => {
       isSubscribed = false;
       subscription.unsubscribe();
     };
-  }, []); // Empty dependency array
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto mt-12 bg-[#2C3038] rounded-lg border border-gray-700">
       <div className="flex justify-between items-center p-4 border-b border-gray-700">
         <h2 className="text-lg font-semibold">Recent Activity</h2>
+        <button className="text-sm text-gray-400 hover:text-white">
+          See all
+        </button>
       </div>
 
       <div className="divide-y divide-gray-700">
         {activities.map((activity) => (
-          <div key={activity.id} className="p-4">
-            <div className="flex items-center gap-1 text-sm">
-              <span className="text-gray-400">
-                {activity.type === "buying" ? "Buy" : "Sell"}
-              </span>
-              <span className="font-medium">{activity.price}¢</span>
-              <span className="text-gray-400">
-                (${activity.amount.toFixed(2)})
-              </span>
-              <span className="text-xs text-gray-500 ml-2">
-                {formatTimeAgo(activity.created_at)}
-              </span>
-              <span className="text-xs text-gray-400 ml-auto">
-                by {activity.user_id.slice(0, 8)}...
-              </span>
+          <div
+            key={activity.id}
+            className="p-6 flex items-start gap-3 animate-new-item"
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
+              <div
+                className={`w-full h-full bg-gradient-to-br ${getGradientForUser(activity.user_id)}`}
+              />
             </div>
+            <div className="flex-grow">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">
+                    <span className="font-medium">
+                      {users[activity.user_id]?.username || "User"}
+                    </span>{" "}
+                    <span
+                      className={
+                        activity.type === "buying"
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {activity.type === "buying" ? "bought" : "sold"}
+                    </span>{" "}
+                    {outcomes[activity.outcome_id]?.name || "Loading..."} at{" "}
+                    {Math.round(activity.price * 100)}¢
+                  </span>
+                  <span className="text-gray-400">
+                    (${activity.amount.toFixed(2)})
+                  </span>
+                </div>
+                <div className="text-sm text-gray-400">
+                  {markets[activity.market_id]?.title || "Loading..."}
+                </div>
+              </div>
+            </div>
+            <span className="text-sm text-gray-400 flex-shrink-0">
+              {formatTimeAgo(activity.created_at)}
+            </span>
           </div>
         ))}
       </div>
