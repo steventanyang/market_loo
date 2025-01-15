@@ -13,7 +13,10 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
         <p className="text-sm text-gray-400">
           Don't have an account?{" "}
-          <Link className="text-blue-400 hover:text-blue-300" href="/sign-up">
+          <Link
+            className="text-gray-300 hover:text-white transition-colors"
+            href="/sign-up"
+          >
             Sign up
           </Link>
         </p>
@@ -26,7 +29,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
             name="email"
             placeholder="you@example.com"
             required
-            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+            className="bg-[#161920]/80 border-gray-700/50 hover:border-gray-600 focus:border-gray-500 transition-colors"
           />
         </div>
 
@@ -34,7 +37,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
           <div className="flex justify-between items-center">
             <Label htmlFor="password">Password</Label>
             <Link
-              className="text-xs text-gray-400 hover:text-gray-300"
+              className="text-xs text-gray-400 hover:text-white transition-colors"
               href="/forgot-password"
             >
               Forgot Password?
@@ -45,14 +48,14 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
             name="password"
             placeholder="Your password"
             required
-            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+            className="bg-[#161920]/80 border-gray-700/50 hover:border-gray-600 focus:border-gray-500 transition-colors"
           />
         </div>
 
         <SubmitButton
           pendingText="Signing In..."
           formAction={signInAction}
-          className="w-full bg-white hover:bg-gray-100 text-black font-medium"
+          className="w-full bg-texture hover-card text-white font-medium border border-gray-700/50 hover:border-gray-500 transition-all"
         >
           Sign in
         </SubmitButton>

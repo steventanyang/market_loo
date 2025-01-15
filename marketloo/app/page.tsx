@@ -65,9 +65,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#1C2127] text-white">
+    <main className="min-h-screen bg-[#1c1f28] text-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-blue-900/50 to-transparent pt-20 pb-32">
+      <div className="bg-texture pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-5xl font-bold mb-6 text-center">MarketLoo</h1>
           <p className="text-xl text-gray-300 text-center max-w-2xl mx-auto mb-12">
@@ -76,7 +76,7 @@ export default function Home() {
           <div className="flex justify-center">
             <Link
               href="/sign-in"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors text-lg"
+              className="bg-texture hover-card text-white font-medium py-3 px-8 rounded-lg transition-all border border-gray-700/50 hover:border-gray-500"
             >
               Start Trading
             </Link>
@@ -88,7 +88,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 -mt-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Markets Preview */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2">
             <h2 className="text-2xl font-semibold mb-6">Popular Markets</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {markets.map((market) => {
@@ -100,7 +100,7 @@ export default function Home() {
                 return (
                   <div
                     key={market.id}
-                    className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-gray-600 transition cursor-pointer h-[200px]"
+                    className="bg-texture hover-card rounded-lg overflow-hidden border border-gray-700/50 hover:border-gray-500 transition cursor-pointer h-[200px]"
                   >
                     <div className="p-4">
                       <div className="flex justify-between items-start gap-4">
@@ -149,33 +149,36 @@ export default function Home() {
                           </div>
                         </div>
                       ) : (
-                        <div className="flex flex-col gap-2 overflow-y-auto hide-scrollbar">
-                          {market.options.map((option) => (
-                            <div
-                              key={option.id}
-                              className="flex items-center justify-between py-2 px-3 bg-[#1C2127] rounded-lg"
-                            >
-                              <span className="text-sm font-medium min-w-[100px] mr-4">
-                                {option.name}
-                              </span>
-                              <div className="grid grid-cols-2 gap-2 w-full max-w-[200px]">
-                                <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
-                                  Yes{" "}
-                                  {(
-                                    option.yes_outcome.current_price * 100
-                                  ).toFixed(0)}
-                                  %
-                                </button>
-                                <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
-                                  No{" "}
-                                  {(
-                                    option.no_outcome.current_price * 100
-                                  ).toFixed(0)}
-                                  %
-                                </button>
+                        <div className="relative h-full">
+                          <div className="flex flex-col gap-2 overflow-y-auto hide-scrollbar h-full pb-4">
+                            {market.options.map((option) => (
+                              <div
+                                key={option.id}
+                                className="flex items-center justify-between py-2 px-3 bg-[#161920]/80 rounded-lg"
+                              >
+                                <span className="text-sm font-medium min-w-[100px] mr-4">
+                                  {option.name}
+                                </span>
+                                <div className="grid grid-cols-2 gap-2 w-full max-w-[200px]">
+                                  <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
+                                    Yes{" "}
+                                    {(
+                                      option.yes_outcome.current_price * 100
+                                    ).toFixed(0)}
+                                    %
+                                  </button>
+                                  <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
+                                    No{" "}
+                                    {(
+                                      option.no_outcome.current_price * 100
+                                    ).toFixed(0)}
+                                    %
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#1c1f28] via-[#1c1f28]/80 to-transparent pointer-events-none"></div>
                         </div>
                       )}
                     </div>
@@ -194,33 +197,33 @@ export default function Home() {
 
         {/* Features Section */}
         <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="bg-[#2C3038] p-8 rounded-lg">
-            <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-              {/* Icon */}
+          {[
+            {
+              title: "Virtual Trading",
+              description:
+                "Practice trading with virtual currency in a risk-free environment",
+            },
+            {
+              title: "Real-Time Updates",
+              description: "See market movements and trades as they happen",
+            },
+            {
+              title: "Compete & Learn",
+              description:
+                "Track your performance and compete with other traders",
+            },
+          ].map((feature) => (
+            <div
+              key={feature.title}
+              className="bg-texture hover-card rounded-lg overflow-hidden border border-gray-700/50 hover:border-gray-500 p-8"
+            >
+              <div className="w-12 h-12 bg-[#363B44] rounded-lg flex items-center justify-center mx-auto mb-4">
+                {/* Icon */}
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-400">{feature.description}</p>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Virtual Trading</h3>
-            <p className="text-gray-400">
-              Practice trading with virtual currency in a risk-free environment
-            </p>
-          </div>
-          <div className="bg-[#2C3038] p-8 rounded-lg">
-            <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-              {/* Icon */}
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Real-Time Updates</h3>
-            <p className="text-gray-400">
-              See market movements and trades as they happen
-            </p>
-          </div>
-          <div className="bg-[#2C3038] p-8 rounded-lg">
-            <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-              {/* Icon */}
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Compete & Learn</h3>
-            <p className="text-gray-400">
-              Track your performance and compete with other traders
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </main>

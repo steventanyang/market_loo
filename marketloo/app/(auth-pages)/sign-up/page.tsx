@@ -27,7 +27,10 @@ export default async function Signup(props: {
         </h1>
         <p className="text-sm text-gray-400">
           Already have an account?{" "}
-          <Link className="text-blue-400 hover:text-blue-300" href="/sign-in">
+          <Link
+            className="text-gray-300 hover:text-white transition-colors"
+            href="/sign-in"
+          >
             Sign in
           </Link>
         </p>
@@ -40,7 +43,7 @@ export default async function Signup(props: {
             name="username"
             placeholder="cooltrader123"
             required
-            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+            className="bg-[#161920]/80 border-gray-700/50 hover:border-gray-600 focus:border-gray-500 transition-colors"
           />
         </div>
 
@@ -50,7 +53,7 @@ export default async function Signup(props: {
             name="email"
             placeholder="you@example.com"
             required
-            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+            className="bg-[#161920]/80 border-gray-700/50 hover:border-gray-600 focus:border-gray-500 transition-colors"
           />
         </div>
 
@@ -62,14 +65,14 @@ export default async function Signup(props: {
             placeholder="Your password"
             minLength={6}
             required
-            className="bg-[#1C2127] border-gray-700 focus:border-blue-500"
+            className="bg-[#161920]/80 border-gray-700/50 hover:border-gray-600 focus:border-gray-500 transition-colors"
           />
         </div>
 
         <SubmitButton
           formAction={signUpAction}
           pendingText="Signing up..."
-          className="w-full bg-white hover:bg-gray-100 text-black font-medium"
+          className="w-full bg-texture hover-card text-white font-medium border border-gray-700/50 hover:border-gray-500 transition-all"
         >
           Sign up
         </SubmitButton>

@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import TopBar from "@/components/TopBar";
 import MarketIcon from "@/components/MarketIcon";
 import MarketChart from "@/components/MarketChart";
+import MarketSummary from "@/components/MarketSummary";
 import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
@@ -99,8 +100,9 @@ export default async function MarketPage(props: MarketPageProps) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
+          <div className="space-y-8">
             <MarketChart marketId={id} outcomes={market.outcomes} />
+            <MarketSummary marketId={id} />
           </div>
 
           <div>
