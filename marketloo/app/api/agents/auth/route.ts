@@ -6,6 +6,7 @@ export async function POST(req: Request) {
   try {
     // Verify agent creation key
     const authHeader = req.headers.get("x-agent-key");
+    const { username } = await req.json();
     const agentCreationKey = process.env.AGENT_CREATION_KEY;
 
     if (!agentCreationKey) {
@@ -20,9 +21,6 @@ export async function POST(req: Request) {
     }
 
     const supabase = await createClient();
-
-    // Generate unique credentials using a disposable email domain
-    const username = `agent_${nanoid(4)}`;
     const password = nanoid(16);
     const email = `${username}@10minutemail.com`; // Using disposable email domain
 
