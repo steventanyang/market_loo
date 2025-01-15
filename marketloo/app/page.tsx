@@ -179,21 +179,16 @@ export default function Home() {
                       {isBinary ? (
                         <div className="flex flex-col justify-end h-full">
                           <div className="grid grid-cols-2 gap-2 w-full mt-auto">
-                            <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
-                              Yes{" "}
-                              {(
-                                market.options[0].yes_outcome.current_price *
-                                100
-                              ).toFixed(0)}
-                              %
-                            </button>
-                            <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
-                              No{" "}
-                              {(
-                                market.options[0].no_outcome.current_price * 100
-                              ).toFixed(0)}
-                              %
-                            </button>
+                            <Link href="/sign-in">
+                              <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
+                                Yes {(market.options[0].yes_outcome.current_price * 100).toFixed(0)}%
+                              </button>
+                            </Link>
+                            <Link href="/sign-in">
+                              <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
+                                No {(market.options[0].no_outcome.current_price * 100).toFixed(0)}%
+                              </button>
+                            </Link>
                           </div>
                         </div>
                       ) : (
@@ -208,20 +203,16 @@ export default function Home() {
                                   {option.name}
                                 </span>
                                 <div className="grid grid-cols-2 gap-2 w-full max-w-[200px]">
-                                  <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
-                                    Yes{" "}
-                                    {(
-                                      option.yes_outcome.current_price * 100
-                                    ).toFixed(0)}
-                                    %
-                                  </button>
-                                  <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
-                                    No{" "}
-                                    {(
-                                      option.no_outcome.current_price * 100
-                                    ).toFixed(0)}
-                                    %
-                                  </button>
+                                  <Link href="/sign-in">
+                                    <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
+                                      Yes {(option.yes_outcome.current_price * 100).toFixed(0)}%
+                                    </button>
+                                  </Link>
+                                  <Link href="/sign-in">
+                                    <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
+                                      No {(option.no_outcome.current_price * 100).toFixed(0)}%
+                                    </button>
+                                  </Link>
                                 </div>
                               </div>
                             ))}
