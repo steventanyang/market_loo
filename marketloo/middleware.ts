@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -41,7 +41,7 @@ export async function middleware(req: NextRequest) {
     // If no session, redirect to sign in
     if (!session) {
       const redirectUrl = new URL("/sign-in", req.url);
-      redirectUrl.searchParams.set("redirect_to", req.url.pathname);
+      redirectUrl.searchParams.set("redirect_to", new URL(req.url).pathname);
       return NextResponse.redirect(redirectUrl);
     }
 
