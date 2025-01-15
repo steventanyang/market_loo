@@ -117,7 +117,7 @@ export default function TradeContent() {
                 <div className="p-4 flex items-start gap-4">
                   <MarketIcon />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold mb-1">
+                    <h3 className="text-lg font-semibold mb-1 min-h-[3.5rem]">
                       {market.title}
                     </h3>
                   </div>
@@ -138,21 +138,24 @@ export default function TradeContent() {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-2 overflow-y-auto hide-scrollbar">
-                      {market.options.map((option) => (
-                        <div
-                          key={option.id}
-                          className="flex items-center justify-between py-2 px-3 bg-[#161920]/80 rounded-lg"
-                        >
-                          <span className="text-sm font-medium min-w-[100px] mr-4">
-                            {option.name}
-                          </span>
-                          <YesNoButtons
-                            yesPrice={option.yes_outcome.current_price}
-                            noPrice={option.no_outcome.current_price}
-                          />
-                        </div>
-                      ))}
+                    <div className="relative h-full">
+                      <div className="flex flex-col gap-2 overflow-y-auto hide-scrollbar h-full pb-4">
+                        {market.options.map((option) => (
+                          <div
+                            key={option.id}
+                            className="flex items-center justify-between py-2 px-3 bg-[#161920]/80 rounded-lg"
+                          >
+                            <span className="text-sm font-medium min-w-[100px] mr-4">
+                              {option.name}
+                            </span>
+                            <YesNoButtons
+                              yesPrice={option.yes_outcome.current_price}
+                              noPrice={option.no_outcome.current_price}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#1c1f28] via-[#1c1f28]/80 to-transparent pointer-events-none"></div>
                     </div>
                   )}
                 </div>
