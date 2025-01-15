@@ -23,13 +23,13 @@ function formatTimeAgo(dateStr: string) {
     const hours = Math.round(seconds / 3600);
     return `${hours}h ago`;
   }
-  
+
   // Convert to minutes if more than 60 seconds
   if (seconds >= 60) {
     const minutes = Math.floor(seconds / 60);
     return `${minutes}m ago`;
   }
-  
+
   // Otherwise show seconds
   return `${seconds}s ago`;
 }

@@ -13,8 +13,11 @@
 - frontend / backend for leaderboard -- done
 - admin page for market creation / reset user / unresolve market -- done
 - after market is resolved the market should disappear -- done
-- backend bugs for placing orders
+- backend bugs for placing orders -- done
 - overall frontend performance
+- get started ui - morteza
+- sign in pages ui - morteza
+
 
 #### 
 - make landing page nicer ~ more detail on markets
