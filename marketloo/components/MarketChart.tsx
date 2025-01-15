@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -8,66 +8,80 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import { format } from "date-fns";
 
-interface DataPoint {
-  timestamp: string;
-  [key: string]: any;
+interface Outcome {
+  outcome_id: string;
+  name: string;
+  current_price: number;
+}
+
+interface PricePoint {
+  timestamp: Date;
+  price: number;
 }
 
 interface ChartProps {
   data: {
-    [key: string]: DataPoint[];
+    [outcomeId: string]: {
+      recent: PricePoint[];
+      hourly: PricePoint[];
+      sixHour: PricePoint[];
+    };
   };
-  lines: {
-    key: string;
-    color: string;
-    name: string;
-  }[];
+  outcomes: Outcome[];
 }
 
 const TIME_RANGES = [
-  { label: "1H", value: "1H" },
-  { label: "6H", value: "6H" },
-  { label: "1D", value: "1D" },
-  { label: "1W", value: "1W" },
-  { label: "1M", value: "1M" },
-  { label: "ALL", value: "ALL" },
+  { label: "1H", value: "1H", dataKey: "recent" },
+  { label: "6H", value: "6H", dataKey: "sixHour" },
+  { label: "12H", value: "12H", dataKey: "twelveHour" },
+  { label: "1D", value: "1D", dataKey: "daily" },
+  { label: "1W", value: "1W", dataKey: "weekly" },
+  { label: "ALL", value: "ALL", dataKey: "all" },
 ];
 
-const CustomTooltip = ({ active, payload, label, timeRange }: any) => {
-  if (active && payload && payload.length) {
-    const getTimeFormat = (range: string) => {
-      switch (range) {
-        case "1H":
-        case "6H":
-        case "1D":
-          return "MMM d, yyyy HH:mm";
-        case "1W":
-        case "1M":
-          return "MMM d, yyyy";
-        case "ALL":
-          return "MMM yyyy";
-        default:
-          return "MMM d, yyyy";
-      }
-    };
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#0088fe"];
 
+const formatTimestamp = (timestamp: string, selectedRange: string) => {
+  const date = new Date(timestamp);
+  switch (selectedRange) {
+    case "1H":
+      return format(date, "HH:mm");
+    case "6H":
+    case "12H":
+      return format(date, "HH:mm");
+    case "1D":
+      return format(date, "HH:mm");
+    case "1W":
+      return format(date, "MMM d HH:mm");
+    case "ALL":
+      return format(date, "MMM d");
+    default:
+      return format(date, "MMM d");
+  }
+};
+
+const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
+  if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1C2127] border border-gray-700 rounded-lg p-3 shadow-lg">
-        <p className="text-gray-400 text-sm mb-2">
-          {format(new Date(label), getTimeFormat(timeRange))}
+      <div className="bg-white rounded-lg shadow-lg p-3">
+        <p className="text-gray-500 text-sm mb-2">
+          {formatTimestamp(label, selectedRange)}
         </p>
         {payload.map((entry: any) => (
-          <div key={entry.name} className="flex items-center gap-2">
+          <div
+            key={entry.name}
+            className="flex items-center gap-2 text-gray-900"
+          >
             <div
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-white">
-              {entry.name}: {entry.value.toFixed(1)}%
-            </span>
+            <span className="font-medium">{entry.name}</span>
+            <span>{entry.value.toFixed(1)}%</span>
           </div>
         ))}
       </div>
@@ -76,36 +90,44 @@ const CustomTooltip = ({ active, payload, label, timeRange }: any) => {
   return null;
 };
 
-export default function MarketChart({ data, lines }: ChartProps) {
-  const [selectedRange, setSelectedRange] = useState("ALL");
+export default function MarketChart({ data, outcomes }: ChartProps) {
+  const [selectedRange, setSelectedRange] = useState("1H");
 
-  const getTimeFormatter = (range: string) => {
-    switch (range) {
-      case "1H":
-        return (value: string) => format(new Date(value), "HH:mm");
-      case "6H":
-        return (value: string) => format(new Date(value), "HH:mm");
-      case "1D":
-        return (value: string) => format(new Date(value), "HH:mm");
-      case "1W":
-        return (value: string) => format(new Date(value), "MMM d HH:mm");
-      case "1M":
-        return (value: string) => format(new Date(value), "MMM d");
-      case "ALL":
-        return (value: string) => format(new Date(value), "MMM yyyy");
-      default:
-        return (value: string) => format(new Date(value), "MMM d");
-    }
-  };
+  // Prepare chart data
+  const chartData = useMemo(() => {
+    const timeRange =
+      TIME_RANGES.find((r) => r.value === selectedRange)?.dataKey || "recent";
+
+    // Get all timestamps from all outcomes
+    const timestamps = new Set<string>();
+    Object.values(data).forEach((outcomeData) => {
+      outcomeData[timeRange].forEach((point) => {
+        timestamps.add(point.timestamp.toISOString());
+      });
+    });
+
+    // Create combined data points
+    return Array.from(timestamps)
+      .sort()
+      .map((timestamp) => {
+        const point: any = { timestamp };
+        outcomes.forEach((outcome) => {
+          const pricePoint = data[outcome.outcome_id][timeRange].find(
+            (p) => p.timestamp.toISOString() === timestamp
+          );
+          if (pricePoint) {
+            point[outcome.outcome_id] = pricePoint.price;
+          }
+        });
+        return point;
+      });
+  }, [data, outcomes, selectedRange]);
 
   return (
     <div className="w-full space-y-4">
       <div className="h-[400px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data[selectedRange]}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
+          <LineChart data={chartData}>
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
@@ -113,40 +135,37 @@ export default function MarketChart({ data, lines }: ChartProps) {
             />
             <XAxis
               dataKey="timestamp"
-              tickFormatter={getTimeFormatter(selectedRange)}
+              tickFormatter={(value) => formatTimestamp(value, selectedRange)}
               stroke="#6B7280"
               tick={{ fill: "#6B7280" }}
-              axisLine={{ stroke: "#2C3038" }}
-              minTickGap={30}
             />
             <YAxis
+              domain={[0, 100]}
               tickFormatter={(value) => `${value}%`}
               stroke="#6B7280"
               tick={{ fill: "#6B7280" }}
-              axisLine={{ stroke: "#2C3038" }}
-              domain={[0, 35]}
             />
             <Tooltip
-              content={<CustomTooltip timeRange={selectedRange} />}
-              isAnimationActive={false}
+              content={<CustomTooltip selectedRange={selectedRange} />}
+              cursor={{ stroke: "#4B5563" }}
+              wrapperStyle={{ outline: "none" }}
             />
-            {lines.map((line) => (
+            <Legend />
+            {outcomes.map((outcome, index) => (
               <Line
-                key={line.key}
+                key={outcome.outcome_id}
                 type="monotone"
-                dataKey={line.key}
-                stroke={line.color}
-                name={line.name}
+                dataKey={outcome.outcome_id}
+                name={outcome.name}
+                stroke={COLORS[index % COLORS.length]}
                 dot={false}
                 strokeWidth={2}
-                isAnimationActive={false}
               />
             ))}
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Time Range Selector */}
       <div className="flex justify-center gap-2">
         {TIME_RANGES.map((range) => (
           <button

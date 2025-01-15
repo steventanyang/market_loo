@@ -5,6 +5,7 @@ import MarketChart from "@/components/MarketChart";
 import { TradingInterface } from "@/components/MarketTrading";
 import { redirect } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
+import { generateMockPriceData } from "@/utils/mockData";
 
 type MarketParams = Promise<{
   id: string;
@@ -76,6 +77,15 @@ export default async function MarketPage(props: MarketPageProps) {
     return <div>Error loading positions</div>;
   }
 
+  // Generate mock price data for each outcome
+  const mockData = market.outcomes.reduce((acc: any, outcome: any) => {
+    const priceHistory = generateMockPriceData(outcome.current_price);
+    return {
+      ...acc,
+      [outcome.outcome_id]: priceHistory,
+    };
+  }, {});
+
   return (
     <div className="min-h-screen bg-[#1C2127] text-white">
       <TopBar />
@@ -107,7 +117,7 @@ export default async function MarketPage(props: MarketPageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <MarketChart data={{ "1H": [] }} lines={[]} />
+            <MarketChart data={mockData} outcomes={market.outcomes} />
           </div>
 
           <div>
