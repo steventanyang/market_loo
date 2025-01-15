@@ -15,7 +15,23 @@ export async function GET() {
     console.log("Price history cron job started:", new Date().toISOString());
     const supabase = await createClient();
 
-    // Updated query to use proper join syntax
+    // First, get active market IDs
+    const { data: activeMarkets } = await supabase
+      .from("markets")
+      .select("id")
+      .eq("status", "active");
+
+    const marketIds = activeMarkets?.map((m) => m.id) || [];
+
+    if (marketIds.length === 0) {
+      console.log("No active markets found");
+      return NextResponse.json(
+        { message: "No active markets found" },
+        { status: 200 }
+      );
+    }
+
+    // Then get outcomes for those markets
     const { data: outcomes, error: outcomesError } = (await supabase
       .from("outcomes")
       .select(
@@ -25,13 +41,8 @@ export async function GET() {
         current_price
       `
       )
-      .eq("markets.status", "active")
-      .neq("current_price", null)
-      .filter(
-        "market_id",
-        "in",
-        supabase.from("markets").select("id").eq("status", "active")
-      )) as { data: Outcome[] | null; error: any };
+      .in("market_id", marketIds)
+      .neq("current_price", null)) as { data: Outcome[] | null; error: any };
 
     if (outcomesError) {
       console.error("Error fetching outcomes:", outcomesError);
