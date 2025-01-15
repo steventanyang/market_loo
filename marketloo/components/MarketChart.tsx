@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { format } from "date-fns";
+import { createClient } from "@/utils/supabase/client";
 
 interface Outcome {
   outcome_id: string;
@@ -23,7 +24,7 @@ interface PricePoint {
   price: number;
 }
 
-interface TimeSeriesData {
+interface PriceHistory {
   recent: PricePoint[];
   sixHour: PricePoint[];
   twelveHour: PricePoint[];
@@ -33,9 +34,7 @@ interface TimeSeriesData {
 }
 
 interface ChartProps {
-  data: {
-    [outcomeId: string]: TimeSeriesData;
-  };
+  marketId: string;
   outcomes: Outcome[];
 }
 
@@ -95,8 +94,84 @@ const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
   return null;
 };
 
-export default function MarketChart({ data, outcomes }: ChartProps) {
+export default function MarketChart({ marketId, outcomes }: ChartProps) {
   const [selectedRange, setSelectedRange] = useState<string>("1H");
+  const [priceHistory, setPriceHistory] = useState<{
+    [outcomeId: string]: PriceHistory;
+  }>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch price history data
+  useEffect(() => {
+    async function fetchPriceHistory() {
+      const supabase = createClient();
+      const now = new Date();
+
+      // Define time ranges for queries
+      const timeRanges = {
+        recent: now.getTime() - 60 * 60 * 1000, // 1 hour ago
+        sixHour: now.getTime() - 6 * 60 * 60 * 1000,
+        twelveHour: now.getTime() - 12 * 60 * 60 * 1000,
+        daily: now.getTime() - 24 * 60 * 60 * 1000,
+        weekly: now.getTime() - 7 * 24 * 60 * 60 * 1000,
+        all: now.getTime() - 30 * 24 * 60 * 60 * 1000,
+      };
+
+      const historyData: { [outcomeId: string]: PriceHistory } = {};
+
+      for (const outcome of outcomes) {
+        // Get recent high-resolution data (5-min intervals for last hour)
+        const { data: recentData } = await supabase
+          .from("recent_price_history")
+          .select("price, timestamp")
+          .eq("market_id", marketId)
+          .eq("outcome_id", outcome.outcome_id)
+          .gte("timestamp", new Date(timeRanges.recent).toISOString())
+          .order("timestamp", { ascending: true });
+
+        // Get archived hourly data
+        const { data: hourlyData } = await supabase
+          .from("archived_price_history")
+          .select("price, timestamp")
+          .eq("market_id", marketId)
+          .eq("outcome_id", outcome.outcome_id)
+          .eq("interval_type", "1h")
+          .gte("timestamp", new Date(timeRanges.weekly).toISOString())
+          .order("timestamp", { ascending: true });
+
+        // Get archived 6-hour data
+        const { data: sixHourData } = await supabase
+          .from("archived_price_history")
+          .select("price, timestamp")
+          .eq("market_id", marketId)
+          .eq("outcome_id", outcome.outcome_id)
+          .eq("interval_type", "6h")
+          .gte("timestamp", new Date(timeRanges.all).toISOString())
+          .order("timestamp", { ascending: true });
+
+        // Transform data into PricePoint format
+        const transformData = (data: any[]): PricePoint[] =>
+          (data || []).map((point) => ({
+            timestamp: new Date(point.timestamp),
+            price: point.price,
+          }));
+
+        historyData[outcome.outcome_id] = {
+          recent: transformData(recentData || []),
+          sixHour: transformData(hourlyData?.slice(0, 24) || []),
+          twelveHour: transformData(hourlyData?.slice(0, 48) || []),
+          daily: transformData(hourlyData?.slice(0, 24) || []),
+          weekly: transformData(hourlyData || []),
+          all: transformData(sixHourData || []),
+        };
+      }
+
+      setPriceHistory(historyData);
+      setIsLoading(false);
+    }
+
+    fetchPriceHistory();
+  }, [marketId, outcomes]);
 
   // Prepare chart data
   const chartData = useMemo(() => {
@@ -105,7 +180,7 @@ export default function MarketChart({ data, outcomes }: ChartProps) {
 
     // Get all unique timestamps and sort them
     const timestamps = new Set<string>();
-    Object.values(data).forEach((outcomeData: TimeSeriesData) => {
+    Object.values(priceHistory).forEach((outcomeData: PriceHistory) => {
       outcomeData[timeRange]?.forEach((point) => {
         timestamps.add(point.timestamp.toISOString());
       });
@@ -120,7 +195,7 @@ export default function MarketChart({ data, outcomes }: ChartProps) {
 
       // For each timestamp, get all outcome prices at that exact moment
       outcomes.forEach((outcome) => {
-        const outcomeData = data[outcome.outcome_id];
+        const outcomeData = priceHistory[outcome.outcome_id];
         if (outcomeData?.[timeRange]) {
           const pricePoint = outcomeData[timeRange].find(
             (p) => p.timestamp.toISOString() === timestamp
@@ -156,7 +231,15 @@ export default function MarketChart({ data, outcomes }: ChartProps) {
     });
 
     return interpolatedPoints;
-  }, [data, outcomes, selectedRange]);
+  }, [priceHistory, outcomes, selectedRange]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[400px] flex items-center justify-center">
+        <div className="text-gray-400">Loading price history...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-4">

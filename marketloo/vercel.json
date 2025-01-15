@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/price-history",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/price-maintenance",
+      "schedule": "0 * * * *"
+    }
+  ]
+}
