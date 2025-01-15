@@ -31,7 +31,10 @@ export default function TopBar() {
   return (
     <div className="flex items-center justify-between px-6 py-4 relative z-50">
       {/* Left side - Larger Marketloo text */}
-      <Link href="/" className="text-white text-3xl font-bold tracking-tight">
+      <Link
+        href="/protected"
+        className="text-white text-3xl font-bold tracking-tight"
+      >
         Marketloo
       </Link>
 
