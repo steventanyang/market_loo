@@ -1,0 +1,29 @@
+
+"We need to implement a dual-table time series database system for tracking market prices. The system needs to efficiently store price history data while keeping recent data high-resolution and older data at lower resolution to save space.
+
+Table 1: recent_price_history
+- Stores high-resolution 5-minute interval price snapshots
+- Only keeps most recent hour of data
+- Gets cleared/rotated every hour
+- Fields: id (uuid), market_id, outcome_id, price, timestamp
+
+Table 2: archived_price_history  
+- Stores lower-resolution historical data
+- For the last 24 hours: stores hourly snapshots
+- For older data: stores 6-hour interval snapshots
+- Fields: id (uuid), market_id, outcome_id, price, timestamp, interval_type ('1h' or '6h')
+
+We need:
+1. Logic to capture price snapshots every 5 minutes
+2. Hourly job to:
+   - Clear old 5-min data from recent_price_history
+   - Take latest price and store it in archived_price_history
+3. Daily job to:
+   - Consolidate hourly snapshots older than 24 hours into 6-hour snapshots
+
+For displaying graphs:
+- Last hour: Use 5-min resolution data from recent_price_history
+- Last 24 hours: Use hourly data from archived_price_history
+- Older data: Use 6-hour data, either interpolating between points or adding slight randomness for more natural-looking charts
+
+This system provides high resolution when needed (recent data) while keeping storage requirements manageable for historical data."
