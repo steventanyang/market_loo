@@ -97,8 +97,8 @@ export async function GET() {
         validOutcomes.map((outcome) => ({
           market_id: outcome.market_id,
           outcome_id: outcome.outcome_id,
-          price: outcome.current_price,
-          timestamp: new Date().toISOString(), // Explicitly set timestamp
+          price: (outcome.current_price ?? 0) * 100,
+          timestamp: new Date().toISOString(),
         }))
       );
 
