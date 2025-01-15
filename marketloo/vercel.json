@@ -6,10 +6,7 @@
     },
     {
       "path": "/api/cron/price-maintenance",
-      "schedule": "0 * * * *",
-      "headers": {
-        "authorization": "Bearer @CRON_SECRET_KEY"
-      }
+      "schedule": "0 * * * *"
     }
   ]
 }
