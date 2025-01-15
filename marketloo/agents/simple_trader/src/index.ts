@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { createClient } from "@supabase/supabase-js";
 import markets from "../markets.json";
 
@@ -24,6 +26,9 @@ class SimpleTraderAgent {
             "x-agent-key": process.env.AGENT_CREATION_KEY!,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            username: "simple_trader_" + Math.floor(Math.random() * 1000),
+          }),
         }
       );
 
