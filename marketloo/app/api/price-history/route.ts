@@ -15,18 +15,18 @@ export async function GET() {
     console.log("Price history cron job started:", new Date().toISOString());
     const supabase = await createClient();
 
-    // First, get active market IDs
-    const { data: activeMarkets } = await supabase
+    // First, get open market IDs
+    const { data: openMarkets } = await supabase
       .from("markets")
       .select("id")
-      .eq("status", "active");
+      .eq("status", "open");
 
-    const marketIds = activeMarkets?.map((m) => m.id) || [];
+    const marketIds = openMarkets?.map((m) => m.id) || [];
 
     if (marketIds.length === 0) {
-      console.log("No active markets found");
+      console.log("No open markets found");
       return NextResponse.json(
-        { message: "No active markets found" },
+        { message: "No open markets found" },
         { status: 200 }
       );
     }
