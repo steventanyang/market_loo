@@ -1,0 +1,256 @@
+{
+  "hackathon_url": "https://brainrot-jia-seed-hackathon.devpost.com/",
+  "tracks": [
+    {
+      "name": "best overall yay :3",
+      "original_text": "best overall yay :3 ($100 + snack boxes and random swag)",
+      "prize_amount": 100,
+      "description": "best ui, built well, funny, great demo, amazing. for the prize you get both the listed cash and all team members get shipped snack boxes of candy, chips, and swags."
+    },
+    {
+      "name": "the headstarter ai/ml prize",
+      "original_text": "the headstarter ai/ml prize ($500)",
+      "prize_amount": 500,
+      "description": "Best use of aisuite and langchain libraries to create your own open-source ai agents"
+    },
+    {
+      "name": "most likely meme startup",
+      "original_text": "most likely meme startup ($50 + snack boxes and random swag)",
+      "prize_amount": 50,
+      "description": "erm give me equity jkjkjk. this prize is for something that would actually be used by a lot of people. pls use the prize money to actually ship it out :> for the prize you get both the listed cash and all team members get shipped snack boxes of candy, chips, and swags."
+    },
+    {
+      "name": "would blow up on tiktok",
+      "original_text": "(WBUOT) would blow up on tiktok ($50 + snack boxes and random swag)",
+      "prize_amount": 50,
+      "description": "just an egregious demo that would blow up on tiktok. for the prize you get both the listed cash and all team members get shipped snack boxes of candy, chips, and swags."
+    },
+    {
+      "name": "lowkey actually kind of good",
+      "original_text": "(LAKOG) lowkey actually kind of good ($50 + a snack)",
+      "prize_amount": 50,
+      "description": "if your project is actually useful then u win this. modern tech stack preference for this. for the prize you get both the listed cash and all team members get shipped a snack"
+    },
+    {
+      "name": "would piss people off on linkedin",
+      "original_text": "(WPPOIL) would piss people off on linkedin ($25)",
+      "prize_amount": 25,
+      "description": "linkedin is a hellish landscape please make a project that would actually piss ppl on linkedin off"
+    },
+    {
+      "name": "i like my soot case",
+      "original_text": "i like my soot case ($15)",
+      "prize_amount": 15,
+      "description": "built an entire project based around that. it has to do with suitcases. meme link: https://youtu.be/_reb-l1goiA?si=w34STw59q-A5wSXP"
+    },
+    {
+      "name": "worst project",
+      "original_text": "worst project ($5)",
+      "prize_amount": 5,
+      "description": "i don't even know if u should be honored to get this. but yk, buy a coffee at the expense of your ego shattered"
+    },
+    {
+      "name": "most iq points lost",
+      "original_text": "most iq points lost ($5)",
+      "prize_amount": 5,
+      "description": "how am i still paying u after u dropped my iq"
+    },
+    {
+      "name": "most cvrvey website",
+      "original_text": "most cvrvey website ($50)",
+      "prize_amount": 50,
+      "description": "most cvrvey website. vansh B."
+    },
+    {
+      "name": "nontechnical/no code meme track",
+      "original_text": "nontechnical/no code meme track",
+      "description": "just submit a meme!! can be a video or a picture. I'm proud of u for getting into the hackathon environment and signing up <3 prize is swag :3"
+    },
+    {
+      "name": "best \"come with me to my hackathon\" vlog",
+      "original_text": "best \"come with me to my hackathon\" vlog\n                  (3)",
+      "description": "submit a link to your reel, tiktok, linkedin, or youtube video post about going to the hackathon!! this is a great place to start your personal brand! prize is a feature on profiles (80k developers) to boost your account!!"
+    },
+    {
+      "name": "Bill Zhang's x Retell Best Conversational AI Prize",
+      "original_text": "Bill Zhang's x Retell Best Conversational AI Prize ($300)",
+      "prize_amount": 300,
+      "description": "My homie bill is a crazy cracked hackathon winner, winning 32x hackathons, several of those prizes for conversational ai."
+    },
+    {
+      "name": "Memenome Best Don Pollo-themed hack",
+      "original_text": "Memenome Best Don Pollo-themed hack ($1000)",
+      "prize_amount": 1000,
+      "description": "a Don Pollo track brought to you by Memenome"
+    },
+    {
+      "name": "ouck tuah spit on that faang",
+      "original_text": "ouck tuah spit on that faang ($100)",
+      "prize_amount": 100,
+      "description": "track where u build a tool to help people get internships / spread info about them"
+    },
+    {
+      "name": "my drip >;D",
+      "original_text": "my drip >;D ($100)",
+      "prize_amount": 100,
+      "description": "fashion x brainrot prize. if u are passionate about fashion and also memes make a project about this thank you bye"
+    },
+    {
+      "name": "I\u2019m Just A Girl",
+      "original_text": "(IJAG) I\u2019m Just A Girl ($100 for two teams)\n                  (2)",
+      "prize_amount": 100,
+      "description": "This prize is for any interesting project made by a woman, especially if the woman is a first time hacker. Prize will be split equally among team members. At least one woman should be on the team. Priority for majority women."
+    },
+    {
+      "name": "i laughed.",
+      "original_text": "i laughed. (new hackers prize) (10 winning teams)\n                  (10)",
+      "description": "honorable mention prize. specifically for \"new hackers\". MAKE SURE TO SPECIFY in the description you've been to less than 5 hackathons."
+    },
+    {
+      "name": "most centered div",
+      "original_text": "most centered div ($75)",
+      "prize_amount": 75,
+      "description": "make a project about centering divs"
+    },
+    {
+      "name": "money money money",
+      "original_text": "money money money",
+      "description": "build a fintech x brainrot project"
+    },
+    {
+      "name": "i\u2019m just a chill guy sponsored by Build City",
+      "original_text": "i\u2019m just a chill guy sponsored by Build City ($200)",
+      "prize_amount": 200,
+      "description": "Theme is energy! also include a picture of chill guy somewhere in the project"
+    },
+    {
+      "name": "skibidi ai swag",
+      "original_text": "skibidi ai swag (sponsored by Taskformer) ($15)",
+      "prize_amount": 15,
+      "description": "best project about bugs and memes"
+    },
+    {
+      "name": "ciara cade best professional dev",
+      "original_text": "ciara cade best professional dev ($50)",
+      "prize_amount": 50,
+      "description": "make a project centered around professional development for computer science students, get creative"
+    },
+    {
+      "name": "best morgan young build your brand linkedin post",
+      "original_text": "best morgan young build your brand linkedin post ($50)",
+      "prize_amount": 50,
+      "description": "we\u2019re awarding the hackathon competitor who best documents their hackathon journey on linkedin\u201d make sure to add your post link in the submission and add hashtags #brainrothackathon #morganyoung"
+    },
+    {
+      "name": "codedex i wanna learn stuff prize",
+      "original_text": "codedex i wanna learn stuff prize ($1041 value )",
+      "prize_amount": 1041,
+      "description": "make an educational funny project!"
+    },
+    {
+      "name": "perly dahan cybersec track",
+      "original_text": "perly dahan cybersec track ($50 gift card)",
+      "prize_amount": 50,
+      "description": "Cybersec"
+    },
+    {
+      "name": "wakaba prize",
+      "original_text": "wakaba prize ($340 value, this includes $50 cash)",
+      "prize_amount": 340,
+      "description": "Build something funny but also beneficial to the community and technically impressive!"
+    },
+    {
+      "name": "PearAI prize",
+      "original_text": "PearAI (YC24) prize ($250)",
+      "prize_amount": 250,
+      "description": "given randomly to any submission built using PearAI\nhttps://trypear.ai/"
+    },
+    {
+      "name": "PearAI prize",
+      "original_text": "PearAI (YC24) prize ($150)",
+      "prize_amount": 150,
+      "description": "-PearAI prize $150 given to social media post tagging PearAI with most engagement"
+    },
+    {
+      "name": "PearAI prize",
+      "original_text": "PearAI (YC24) prize ($100)",
+      "prize_amount": 100,
+      "description": "-PearAI prize $100 given to randomly to any social media post tagging PearAI"
+    },
+    {
+      "name": "julia bock ATE prize",
+      "original_text": "julia bock ATE prize ($2)",
+      "prize_amount": 2,
+      "description": "julia bock chooses the project she likes the most and they get a granola bar. must include a png of a granola bar"
+    },
+    {
+      "name": "jade\u2019s holding space for the defying gravity lyrics after falling out of a coconut tree",
+      "original_text": "jade\u2019s holding space for the defying gravity lyrics after falling out of a coconut tree ($100)",
+      "prize_amount": 100,
+      "description": "we\u2019re awarding the hackathon competitor who makes the best video resume that they can post on LinkedIn to help them land a summer 2025 internship or full-time, entry level job. have fun, make it creative, make it intriguing, show off your accomplishments!"
+    },
+    {
+      "name": "UI/UX most kawaii",
+      "original_text": "UI/UX most kawaii ($100)",
+      "prize_amount": 100,
+      "description": "design the most kawaii app, product, fashion, or anything else you can imagine. no code required"
+    },
+    {
+      "name": "build a tool that distracts you when ur trying to be productive - kanika mohan",
+      "original_text": "build a tool that distracts you when ur trying to be productive - kanika mohan ($50)",
+      "prize_amount": 50,
+      "description": "design a project that ensures you never finish what you started, because why would you? chaos is the goal. promoting brainrot <3"
+    },
+    {
+      "name": "the most cutesy pink project",
+      "original_text": "the most cutesy pink project (a pink duck is the prize) (5 winners)\n                  (5)",
+      "description": "five of the cutest and most cutesy and most girly projects can get one of these"
+    },
+    {
+      "name": "maybe the real hackathon was the friends we made along the way",
+      "original_text": "maybe the real hackathon was the friends we made along the way",
+      "description": "heheh."
+    },
+    {
+      "name": "this project is awesome",
+      "original_text": "(TPIA) this project is awesome\n                  (135)",
+      "description": "this project was done within the hackathon and we really liked it :>>"
+    },
+    {
+      "name": "nosu post",
+      "original_text": "nosu post ($100)",
+      "prize_amount": 100,
+      "description": "u posted nosu and used it for ur ideas : >"
+    },
+    {
+      "name": "top 5 community votes prizes",
+      "original_text": "top 5 community votes prizes (SURPRISE GIFTS) \n                  (5)",
+      "description": "top five most voted prizes"
+    },
+    {
+      "name": "glazer",
+      "original_text": "glazer ($1000 in nosu credits for upcoming features, not counted toward prize pool)",
+      "prize_amount": 1000,
+      "description": "bruh"
+    },
+    {
+      "name": "memenome  mini prize",
+      "original_text": "memenome $100 mini prize",
+      "prize_amount": 100,
+      "description": "small winner memenome"
+    },
+    {
+      "name": "memenome  prize",
+      "original_text": "memenome $50 prize",
+      "prize_amount": 50,
+      "description": "small winner memenome"
+    },
+    {
+      "name": "memenome",
+      "original_text": "memenome $25",
+      "prize_amount": 25,
+      "description": "small winner memenome"
+    }
+  ],
+  "scraped_at": "2025-01-14 13:57:20"
+}
