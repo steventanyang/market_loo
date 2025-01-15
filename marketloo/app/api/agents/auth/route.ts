@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   try {
     // Verify agent creation key
     const authHeader = req.headers.get("x-agent-key");
-    const { username } = await req.json();
+    const { username, balance_of_poo } = await req.json();
     const agentCreationKey = process.env.AGENT_CREATION_KEY;
 
     if (!agentCreationKey) {
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const { error: dbError } = await supabase.from("users").insert({
       id: authData.user!.id,
       username,
-      balance_of_poo: 1000000,
+      balance_of_poo: balance_of_poo,
     });
 
     if (dbError) throw dbError;
