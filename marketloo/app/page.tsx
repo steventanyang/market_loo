@@ -181,12 +181,22 @@ export default function Home() {
                           <div className="grid grid-cols-2 gap-2 w-full mt-auto">
                             <Link href="/sign-in">
                               <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
-                                Yes {(market.options[0].yes_outcome.current_price * 100).toFixed(0)}%
+                                Yes{" "}
+                                {(
+                                  market.options[0].yes_outcome.current_price *
+                                  100
+                                ).toFixed(0)}
+                                %
                               </button>
                             </Link>
                             <Link href="/sign-in">
                               <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
-                                No {(market.options[0].no_outcome.current_price * 100).toFixed(0)}%
+                                No{" "}
+                                {(
+                                  market.options[0].no_outcome.current_price *
+                                  100
+                                ).toFixed(0)}
+                                %
                               </button>
                             </Link>
                           </div>
@@ -205,12 +215,20 @@ export default function Home() {
                                 <div className="grid grid-cols-2 gap-2 w-full max-w-[200px]">
                                   <Link href="/sign-in">
                                     <button className="w-full px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition">
-                                      Yes {(option.yes_outcome.current_price * 100).toFixed(0)}%
+                                      Yes{" "}
+                                      {(
+                                        option.yes_outcome.current_price * 100
+                                      ).toFixed(0)}
+                                      %
                                     </button>
                                   </Link>
                                   <Link href="/sign-in">
                                     <button className="w-full px-3 py-2 bg-red-600/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition">
-                                      No {(option.no_outcome.current_price * 100).toFixed(0)}%
+                                      No{" "}
+                                      {(
+                                        option.no_outcome.current_price * 100
+                                      ).toFixed(0)}
+                                      %
                                     </button>
                                   </Link>
                                 </div>

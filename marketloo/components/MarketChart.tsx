@@ -44,7 +44,6 @@ const TIME_RANGES = [
   { label: "12H", value: "12H", dataKey: "twelveHour" },
   { label: "1D", value: "1D", dataKey: "daily" },
   { label: "1W", value: "1W", dataKey: "weekly" },
-  { label: "ALL", value: "ALL", dataKey: "all" },
 ] as const;
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#0088fe"];
@@ -71,7 +70,8 @@ const formatTimestamp = (timestamp: string, selectedRange: string) => {
 const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="
+      <div
+        className="
         bg-gray-900/90 
         backdrop-blur-sm 
         rounded-lg 
@@ -82,12 +82,16 @@ const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
         transform 
         -translate-y-2
         z-50
-      ">
+      "
+      >
         <p className="text-gray-300 text-sm mb-2">
           {formatTimestamp(label, selectedRange)}
         </p>
         {payload.map((entry: any) => (
-          <div key={entry.dataKey} className="flex items-center gap-2 text-gray-100">
+          <div
+            key={entry.dataKey}
+            className="flex items-center gap-2 text-gray-100"
+          >
             <div
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: entry.color }}
