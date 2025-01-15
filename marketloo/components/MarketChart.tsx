@@ -71,15 +71,23 @@ const formatTimestamp = (timestamp: string, selectedRange: string) => {
 const CustomTooltip = ({ active, payload, label, selectedRange }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-3">
-        <p className="text-gray-500 text-sm mb-2">
+      <div className="
+        bg-gray-900/90 
+        backdrop-blur-sm 
+        rounded-lg 
+        shadow-[0_8px_16px_rgba(0,0,0,0.4)] 
+        border 
+        border-gray-700/50 
+        p-3 
+        transform 
+        -translate-y-2
+        z-50
+      ">
+        <p className="text-gray-300 text-sm mb-2">
           {formatTimestamp(label, selectedRange)}
         </p>
         {payload.map((entry: any) => (
-          <div
-            key={entry.dataKey}
-            className="flex items-center gap-2 text-gray-900"
-          >
+          <div key={entry.dataKey} className="flex items-center gap-2 text-gray-100">
             <div
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: entry.color }}

@@ -225,7 +225,7 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
                   "aspect-square px-3 py-2 text-lg font-semibold rounded-lg transition",
                   selectedOutcome?.id === options[0].no_outcome_id
                     ? activeTab === "buy"
-                      ? "bg-green-500/40 text-green-300 border-2 border-green-500/70"
+                      ? "bg-red-500/40 text-red-300 border-2 border-red-500/70"
                       : "bg-red-500/40 text-red-300 border-2 border-red-500/70"
                     : "bg-[#1a1e2a] text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500"
                 )}
@@ -476,13 +476,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
               <>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">Cost</span>
-                  <span className="text-red-400">
+                  <span className="text-cyan-200 font-medium">
                     💩 {calculateOrderDetails()?.cost}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Potential return</span>
-                  <span className="text-green-400">
+                  <span className="text-cyan-200 font-medium">
                     💩 {calculateOrderDetails()?.totalReturn} (
                     {calculateOrderDetails()?.percentageGain}%)
                   </span>
@@ -492,13 +492,13 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
               <>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">Proceeds</span>
-                  <span className="text-green-400">
+                  <span className="text-cyan-200 font-medium">
                     💩 {calculateOrderDetails()?.proceeds}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Maximum loss</span>
-                  <span className="text-red-400">
+                  <span className="text-cyan-200 font-medium">
                     💩 {calculateOrderDetails()?.maxLoss} (
                     {calculateOrderDetails()?.percentageLoss}%)
                   </span>
@@ -520,10 +520,8 @@ export function TradingInterface({ marketId, userId }: TradingInterfaceProps) {
           className={cn(
             "w-full py-3 px-4 rounded-lg font-medium transition-all duration-200",
             orderConfirmed
-              ? "bg-green-500/30 text-green-300 border-2 border-green-500/70"
-              : activeTab === "buy"
-                ? "bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/50"
-                : "bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/50",
+              ? "bg-blue-500/30 text-blue-300 border-2 border-blue-500/70"
+              : "bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/50",
             (!selectedOutcome || loading) && "opacity-50 cursor-not-allowed"
           )}
         >
