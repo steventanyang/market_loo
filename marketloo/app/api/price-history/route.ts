@@ -1,13 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
-// This endpoint will be called every 5 minutes to record current prices
-
-// Add this type definition
+// Define types more strictly
 type Outcome = {
   outcome_id: string;
   market_id: string;
-  current_price: number;
+  current_price: number | null; // Note: could be null from database
 };
 
 export async function GET() {
@@ -15,24 +13,32 @@ export async function GET() {
     console.log("Price history cron job started:", new Date().toISOString());
     const supabase = await createClient();
 
-    // First, get open market IDs
-    const { data: openMarkets } = await supabase
+    // 1. Get open markets
+    const { data: openMarkets, error: marketsError } = await supabase
       .from("markets")
       .select("id")
       .eq("status", "open");
 
+    if (marketsError) {
+      console.error("Error fetching markets:", marketsError);
+      return NextResponse.json(
+        { error: "Failed to fetch markets" },
+        { status: 500 }
+      );
+    }
+
     const marketIds = openMarkets?.map((m) => m.id) || [];
+    console.log(`Found ${marketIds.length} open markets:`, marketIds);
 
     if (marketIds.length === 0) {
-      console.log("No open markets found");
       return NextResponse.json(
         { message: "No open markets found" },
         { status: 200 }
       );
     }
 
-    // Then get outcomes for those markets
-    const { data: outcomes, error: outcomesError } = (await supabase
+    // 2. Get outcomes with non-null current prices
+    const { data: outcomes, error: outcomesError } = await supabase
       .from("outcomes")
       .select(
         `
@@ -42,7 +48,7 @@ export async function GET() {
       `
       )
       .in("market_id", marketIds)
-      .neq("current_price", null)) as { data: Outcome[] | null; error: any };
+      .not("current_price", "is", null); // Changed from neq to not is null
 
     if (outcomesError) {
       console.error("Error fetching outcomes:", outcomesError);
@@ -52,21 +58,47 @@ export async function GET() {
       );
     }
 
-    if (!outcomes?.length) {
+    if (!outcomes || outcomes.length === 0) {
+      console.log("No outcomes found with prices");
       return NextResponse.json(
-        { message: "No active markets found" },
+        { message: "No outcomes found with prices" },
         { status: 200 }
       );
     }
 
-    // Insert price snapshots into recent_price_history
+    // Log outcomes for debugging
+    console.log(
+      `Found ${outcomes.length} outcomes with prices:`,
+      outcomes.map((o) => ({
+        outcome_id: o.outcome_id,
+        price: o.current_price,
+      }))
+    );
+
+    // 3. Filter out any outcomes with null prices (extra safety)
+    const validOutcomes = outcomes.filter(
+      (outcome): outcome is Outcome =>
+        typeof outcome.current_price === "number" &&
+        !isNaN(outcome.current_price)
+    );
+
+    if (validOutcomes.length === 0) {
+      console.log("No valid prices found in outcomes");
+      return NextResponse.json(
+        { message: "No valid prices found" },
+        { status: 200 }
+      );
+    }
+
+    // 4. Insert price snapshots
     const { error: insertError } = await supabase
       .from("recent_price_history")
       .insert(
-        outcomes.map((outcome) => ({
+        validOutcomes.map((outcome) => ({
           market_id: outcome.market_id,
           outcome_id: outcome.outcome_id,
           price: outcome.current_price,
+          timestamp: new Date().toISOString(), // Explicitly set timestamp
         }))
       );
 
@@ -78,7 +110,7 @@ export async function GET() {
       );
     }
 
-    // Run cleanup function to remove old data
+    // 5. Run cleanup
     const { error: cleanupError } = await supabase.rpc(
       "cleanup_recent_price_history"
     );
@@ -87,10 +119,12 @@ export async function GET() {
       console.error("Error cleaning up old data:", cleanupError);
     }
 
-    console.log("Price snapshots recorded:", outcomes.length);
+    console.log(
+      `Successfully recorded ${validOutcomes.length} price snapshots`
+    );
     return NextResponse.json({
       message: "Price history updated successfully",
-      snapshots: outcomes.length,
+      snapshots: validOutcomes.length,
     });
   } catch (error) {
     console.error("Price history cron error:", error);
