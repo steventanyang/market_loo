@@ -1,12 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { createClient } from "@supabase/supabase-js";
-import { placeOrder } from "../../common/utils";
 import markets from "../markets.json";
 
 class SimpleTraderAgent {
   private supabase;
   private session: any = null;
+  private positions: { [key: string]: number } = {}; // Track positions by outcome_id
 
   constructor() {
     this.supabase = createClient(
@@ -63,6 +61,17 @@ class SimpleTraderAgent {
       const isbuying = Math.random() > 0.5; // 50% chance to buy or sell
       const amount = Math.floor(Math.random() * 50) + 10; // Random amount between 10-60
 
+      // If selling, check position
+      if (!isbuying) {
+        const currentPosition = this.positions[outcomeId] || 0;
+        if (currentPosition < amount) {
+          console.log(
+            `Skipping sell: Insufficient position (have ${currentPosition}, want to sell ${amount})`
+          );
+          return;
+        }
+      }
+
       const response = await fetch("https://market-loo.vercel.app/api/orders", {
         method: "POST",
         headers: {
@@ -77,10 +86,20 @@ class SimpleTraderAgent {
         }),
       });
 
-      const data = await response.json();
-      console.log(
-        `${isbuying ? "Bought" : "Sold"} ${amount} tokens in market ${marketId}`
-      );
+      // Update positions after successful trade
+      if (response.ok) {
+        if (isbuying) {
+          this.positions[outcomeId] = (this.positions[outcomeId] || 0) + amount;
+        } else {
+          this.positions[outcomeId] = (this.positions[outcomeId] || 0) - amount;
+        }
+        console.log(
+          `${isbuying ? "Bought" : "Sold"} ${amount} tokens in market ${marketId}`
+        );
+        console.log(
+          `New position for outcome ${outcomeId}: ${this.positions[outcomeId]}`
+        );
+      }
     } catch (error) {
       console.error("Error placing trade:", error);
     }
@@ -89,10 +108,10 @@ class SimpleTraderAgent {
   async start() {
     await this.initialize();
 
-    // First trade: Buy 100 of random market/outcome
+    // First trade: Buy 100
     try {
       const { marketId, outcomeId } = this.getRandomMarketAndOutcome();
-      await fetch("https://market-loo.vercel.app/api/orders", {
+      const response = await fetch("https://market-loo.vercel.app/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,12 +124,15 @@ class SimpleTraderAgent {
           type: "buying",
         }),
       });
-      console.log(`Initial buy of 100 tokens in market ${marketId}`);
+
+      if (response.ok) {
+        this.positions[outcomeId] = 100;
+        console.log(`Initial buy of 100 tokens in market ${marketId}`);
+      }
     } catch (error) {
       console.error("Error placing initial trade:", error);
     }
 
-    // Random trades every 10 seconds
     setInterval(() => {
       this.placeTrade();
     }, 10000);
