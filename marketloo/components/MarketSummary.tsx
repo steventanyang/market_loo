@@ -82,10 +82,10 @@ export default function MarketSummary({ marketId }: MarketSummaryProps) {
   }
 
   return (
-    <div className="bg-texture hover-card rounded-lg overflow-hidden border border-gray-700/50">
+    <div className="bg-texture hover-card rounded-lg overflow-hidden border border-gray-700/50 relative">
       {/* Loading Bar */}
       {loading && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#1c1f28]">
+        <div className="absolute top-0 inset-x-0 h-1 bg-[#1c1f28]">
           <div
             className="h-full bg-purple-500 transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}

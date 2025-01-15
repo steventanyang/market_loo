@@ -67,7 +67,11 @@ export async function GET(request: Request) {
     }
 
     // Get unique traders
-    const { data: uniqueTraders, error: tradersError } = await supabase
+    const {
+      data: _,
+      count: uniqueTraderCount,
+      error: tradersError,
+    } = await supabase
       .from("positions")
       .select("user_id", { count: "exact", head: true })
       .eq("market_id", marketId);
@@ -82,7 +86,6 @@ export async function GET(request: Request) {
     // Calculate market statistics
     const totalTrades = trades?.length || 0;
     const totalVolume = market?.volume || 0;
-    const uniqueTraderCount = uniqueTraders?.count || 0;
     const averageTradeSize = totalTrades > 0 ? totalVolume / totalTrades : 0;
 
     // Prepare market data for LLM
