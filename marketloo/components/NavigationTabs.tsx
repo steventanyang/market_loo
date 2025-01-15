@@ -1,19 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
 interface NavigationTabsProps {
-  activeTab?: string;
-  setActiveTab?: (tab: string) => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
 export default function NavigationTabs({
-  activeTab = "",
-  setActiveTab = () => {},
+  activeTab,
+  setActiveTab,
 }: NavigationTabsProps) {
-  const pathname = usePathname();
-
   return (
     <div className="w-full flex justify-center px-4 mb-8">
       <nav className="flex relative rounded-lg bg-[#2C3038] p-1 w-full max-w-[400px]">
@@ -25,47 +20,47 @@ export default function NavigationTabs({
             height: "85%",
             top: "7.5%",
             left:
-              pathname === "/leaderboard"
+              activeTab === "leaderboard"
                 ? "1%"
-                : pathname === "/protected"
+                : activeTab === "trade"
                   ? "33.333333%"
                   : "65.666666%",
           }}
         />
 
         {/* Navigation buttons */}
-        <Link
-          href="/leaderboard"
+        <button
+          onClick={() => setActiveTab("leaderboard")}
           className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
-            pathname === "/leaderboard"
+            activeTab === "leaderboard"
               ? "text-white"
               : "text-gray-400 hover:text-gray-200"
           }`}
         >
           <span className="px-3">Leaderboard</span>
-        </Link>
+        </button>
 
-        <Link
-          href="/protected"
+        <button
+          onClick={() => setActiveTab("trade")}
           className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
-            pathname === "/protected"
+            activeTab === "trade"
               ? "text-white"
               : "text-gray-400 hover:text-gray-200"
           }`}
         >
           <span className="px-3">Trade</span>
-        </Link>
+        </button>
 
-        <Link
-          href="/profile"
+        <button
+          onClick={() => setActiveTab("profile")}
           className={`relative py-2 text-sm font-medium rounded-md flex-1 transition-colors duration-200 text-center ${
-            pathname === "/profile"
+            activeTab === "profile"
               ? "text-white"
               : "text-gray-400 hover:text-gray-200"
           }`}
         >
           <span className="px-3">Profile</span>
-        </Link>
+        </button>
       </nav>
     </div>
   );
